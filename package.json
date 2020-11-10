@@ -1,0 +1,24 @@
+{
+  "name": "half-life-web-duel",
+  "version": "1.0.0",
+  "description": "half life world turn based game ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch ./public/sass/main.scss:./public/css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kirperov/turn_based_game.git"
+  },
+  "author": "Kirill Petrov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kirperov/turn_based_game/issues"
+  },
+  "homepage": "https://github.com/kirperov/turn_based_game#readme",
+  "dependencies": {
+    "jquery": "^3.5.1",
+    "sass": "^1.29.0"
+  }
+}
