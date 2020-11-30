@@ -23,24 +23,31 @@ export default class GenerateMap {
     generateRandomNumber(num) {
         return Math.floor((Math.random() * num));
     }
-
+    
     genrateObstacle(numberRand, matrix, generatedMap) {
         for(let n = 0; n < numberRand; n++) {
             let obstNbRand = this.generateRandomNumber(this.obstacles.length);
-            let caseRand = this.generateRandomNumber(matrix.length);
-            matrix[caseRand] = this.obstacles[obstNbRand];
+            let caseNbRand = this.generateRandomNumber(matrix.length);
+            matrix[caseNbRand] = this.obstacles[obstNbRand];
         }
-        return generatedMap.push(matrix);
+        generatedMap.push(matrix);
     }
 
     generatePlayers(generatedMap) {
         let players = this.players;
         for(let i = 0; i < players.length; i++) {
-            let nbRand = this.generateRandomNumber(generatedMap.length);          
-            generatedMap[nbRand].splice(nbRand, 1, players[i]);
+            let nbRand = this.generateRandomNumber(generatedMap.length);   
+            let nbRand2 = this.generateRandomNumber(generatedMap[i].length);   
+            generatedMap[nbRand].splice(nbRand2, 1, players[i]);
         }
-        for(let i = 0; i <generatedMap.length; i++) {
-            console.log(generatedMap[i]);
+    }
+
+    generateWeapons(generatedMap) {
+        let weapons = this.weapons;
+        for(let i = 0; i < weapons.length; i++) {
+            let nbRand = this.generateRandomNumber(generatedMap.length);   
+            let nbRand2 = this.generateRandomNumber(generatedMap[i].length);   
+            generatedMap[nbRand].splice(nbRand2, 1, weapons[i]);
         }
     }
 
@@ -53,6 +60,11 @@ export default class GenerateMap {
             this.genrateObstacle(numberRand, matrix[i], generatedMap);
         }
         this.generatePlayers(generatedMap);
+        this.generateWeapons(generatedMap);
+    
+        for(let i = 0; i <generatedMap.length; i++) {
+            console.log(generatedMap[i]);
+        }
     }
 }
 
@@ -60,6 +72,6 @@ let obstacles = ["ob1", "ob2", "ob3", "ob4"],
     players = ["p1", "p2"],
     weapons = ["w1", "w2", "w3", "w4"];
 let generateMap=new GenerateMap(obstacles, players, weapons);
-generateMap.generateMap()
+generateMap.generateMap();
  
  
