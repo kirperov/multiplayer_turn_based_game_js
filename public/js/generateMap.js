@@ -125,8 +125,22 @@ export default class Map {
         this.genrateObstacles();
         this.generateWeapons();
         this.generatePlayers();
-        
+
+        let container = $(".map-grid");
+
         for(let i = 0; i <this.generatedMap.length; i++) {
+            let rowX = $("<div></div>");
+            rowX.addClass("map-grid__obstacle");
+            rowX.attr("id", "obstacle-"+[i]);
+
+            for(let n = 0; n <this.generatedMap[i].length; n++) {
+                let caseDiv = $("<div></div>");
+                caseDiv.addClass("case");
+                caseDiv.attr('id', "case-"+[n]);
+                caseDiv.text(this.generatedMap[i][n]);
+                rowX.append(caseDiv);
+                container.append(rowX);
+            }
             console.log(this.generatedMap[i]);
         }
     }

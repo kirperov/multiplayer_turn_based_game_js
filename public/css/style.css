@@ -1,3 +1,29 @@
+body {
+  background-color: orange;
+}
 
+.map-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+.map-grid__obstacle {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 1000px;
+  height: 80px;
+  background-color: cadetblue;
+}
+
+.case {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  background-color: blueviolet;
+}
 
 /*# sourceMappingURL=style.css.map */
