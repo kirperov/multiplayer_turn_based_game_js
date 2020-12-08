@@ -27,40 +27,77 @@ export default class Map {
         for(let i = 0; i < this.y; i++) {
             let numberRand = this.generateRandomNumber(this.y * 0.4);
             for(let n = 0; n < numberRand; n++) {
-                let obstNbRand = this.generateRandomNumber(this.obstacles.length);
-                let caseNbRand = this.generateRandomNumber(this.y);
-                if(this.generatedMap[i][caseNbRand] == 0) {
-                    this.generatedMap[i][caseNbRand] = this.obstacles[obstNbRand];
+                let positioned = false;
+                while(positioned == false) {
+                    let obstNbRand = this.generateRandomNumber(this.obstacles.length);
+                    let caseNbRand = this.generateRandomNumber(this.y);
+                    if(this.generatedMap[i][caseNbRand] == 0) {
+                        positioned = true;
+                        this.generatedMap[i][caseNbRand] = this.obstacles[obstNbRand];
+                    }
                 }
             }
         }
     }
 
     generatePlayers() {
-        let players = this.players;
         for(let i = 0; i < players.length; i++) {
             let positioned = false;
             while(positioned == false) {
-                let nbRand = this.generateRandomNumber(this.generatedMap.length);   
-                let nbRand2 = this.generateRandomNumber(this.generatedMap[i].length);   
-                if(this.generatedMap[nbRand][nbRand2] == 0) {
-                    this.generatedMap[nbRand][nbRand2] = players[i];
-                    positioned = true;
+                let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
+                let nbRandX = this.generateRandomNumber(this.generatedMap[i].length);   
+                if(this.generatedMap[nbRandY][nbRandX] == 0) {
+                    let topCase = "blocked";
+                    let downCase = "blocked";
+                    let leftCase = "blocked";
+                    let rightCase = "blocked";
+
+                    //Verification down case
+                    if(typeof this.generatedMap[nbRandY -1]  !== "undefined") {
+                        if(this.generatedMap[nbRandY -1][nbRandX] == this.players[0] || this.generatedMap[nbRandY -1][nbRandX] == this.players[1]) {
+                            continue;
+                        } else {
+                            topCase = this.generatedMap[nbRandY -1][nbRandX];
+                        }
+                        //Verification top case
+                    } else if(typeof this.generatedMap[nbRandY +1] !== "undefined") {
+                        if(this.generatedMap[nbRandY +1][nbRandX] == this.players[0] || this.generatedMap[nbRandY +1][nbRandX] == this.players[1]) {
+                            continue;
+                        } else {
+                            downCase = this.generatedMap[nbRandY +1][nbRandX];
+                        }
+                        //Verification left case
+                    } else if(typeof this.generatedMap[nbRandY][nbRandX -1] !== "undefined"){
+                        if(this.generatedMap[nbRandY][nbRandX -1] == this.players[0] || this.generatedMap[nbRandY][nbRandX -1] == this.players[1]) {
+                            continue;
+                        } else {
+                            leftCase = this.generatedMap[nbRandY][nbRandX -1];
+                            console.log(leftCase)
+                        }
+                        //Verification right case
+                    } else if(typeof this.generatedMap[nbRandY][nbRandX +1] !== "undefined") {
+                        if(this.generatedMap[nbRandY][nbRandX +1] == this.players[0] || this.generatedMap[nbRandY][nbRandX +1] == this.players[1]) {
+                           continue; 
+                        } else {
+                            rightCase = this.generatedMap[nbRandY][nbRandX +1];
+                            positioned = true;
+                        }
+                    }     
+                    this.generatedMap[nbRandY][nbRandX] = this.players[i];
+                    positioned = true;  
                 }
-                console.log("x : " +  nbRand2 + "; y : " + nbRand + this.players[i]);
             }
         }
     }
 
     generateWeapons() {
-        let weapons = this.weapons;
         for(let i = 0; i < weapons.length; i++) {
             let positioned = false;
             while(positioned == false) {
                 let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
                 let nbRandX = this.generateRandomNumber(this.generatedMap[i].length);
                 if(this.generatedMap[nbRandY][nbRandX] == 0) {
-                    this.generatedMap[nbRandY][nbRandX] = weapons[i];
+                    this.generatedMap[nbRandY][nbRandX] = this.weapons[i];
                     positioned = true;
                 }
             }
@@ -72,6 +109,7 @@ export default class Map {
         this.genrateObstacles();
         this.generatePlayers();
         this.generateWeapons();
+        
         for(let i = 0; i <this.generatedMap.length; i++) {
             console.log(this.generatedMap[i]);
         }
