@@ -41,16 +41,16 @@ export default class Map {
     }
 
     generatePlayers() {
-        for(let i = 0; i < players.length; i++) {
+        for(let i = 0; i < this.players.length; i++) {
             let positioned = false;
             while(positioned == false) {
                 let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
                 let nbRandX = this.generateRandomNumber(this.generatedMap[i].length);   
                 if(this.generatedMap[nbRandY][nbRandX] == 0) {
-                    let topCase = "blocked";
-                    let downCase = "blocked";
-                    let leftCase = "blocked";
-                    let rightCase = "blocked";
+                    let topCase = "ob";
+                    let downCase = "ob";
+                    let leftCase = "ob";
+                    let rightCase = "ob";
 
                     //Verification top case
                     if(typeof this.generatedMap[nbRandY -1]  !== "undefined") {
@@ -86,18 +86,9 @@ export default class Map {
                         }
                     }
                     //Verifiy obstacles
-                    if(topCase == 'ob1' || topCase == 'ob2' || topCase == 'ob3' || topCase == 'ob4') {
+                    if(topCase.toString().includes('ob') && downCase.toString().includes('ob')&& leftCase.toString().includes('ob') && rightCase.toString().includes('ob')) {
                         continue; 
-                    }
-                    if(downCase == 'ob1' || downCase == 'ob2' || downCase == 'ob3' || downCase == 'ob4') {
-                        continue; 
-                    }
-                    if(leftCase == 'ob1' || leftCase == 'ob2' || leftCase == 'ob3' || leftCase == 'ob4') {
-                        continue; 
-                    }
-                    if(rightCase == 'ob1' || rightCase == 'ob2' || rightCase == 'ob3' || rightCase == 'ob4') {
-                        continue; 
-                    }  else {
+                    } else {
                         this.generatedMap[nbRandY][nbRandX] = this.players[i];
                     }
                     positioned = true;  
@@ -134,12 +125,63 @@ export default class Map {
             rowX.attr("id", "obstacle-"+[i]);
 
             for(let n = 0; n <this.generatedMap[i].length; n++) {
+                
                 let caseDiv = $("<div></div>");
                 caseDiv.addClass("case");
                 caseDiv.attr('id', "case-"+[n]);
                 caseDiv.text(this.generatedMap[i][n]);
                 rowX.append(caseDiv);
                 container.append(rowX);
+                // Attribution des classes en fonction des cases
+                caseDiv.each(function() {
+                    if($(this).text() == "0") {
+                        $(this).empty();
+                        $(this).addClass('case__empty');
+                        //obstacle 1
+                    } else if($(this).text() == "ob1"){
+                        $(this).empty();
+                        $(this).addClass('case__obstacle_one');
+                        //obstacle 2
+                    } else if($(this).text() == "ob2") {
+                        $(this).empty();
+                        $(this).addClass('case__obstacle_two');
+                        //obstacle 3
+                    } else if($(this).text() == "ob3") {
+                        $(this).empty();
+                        $(this).addClass('case__obstacle_three');
+                        //obstacle 4
+                    } else if($(this).text() == "ob4") {
+                        $(this).empty();
+                        $(this).addClass('case__obstacle_four');
+                    }
+                    // WEAPONS
+                    //weapon 1
+                    if($(this).text() == "w1"){
+                        $(this).empty();
+                        $(this).addClass('case__weapon_one');
+                        //weapon 2
+                    } else if($(this).text() == "w2") {
+                        $(this).empty();
+                        $(this).addClass('case__weapon_two');
+                        //weapon 3
+                    } else if($(this).text() == "w3") {
+                        $(this).empty();
+                        $(this).addClass('case__weapon_three');
+                        //weapon 4
+                    } else if($(this).text() == "w4") {
+                        $(this).empty();
+                        $(this).addClass('case__weapon_four');
+                    } 
+                    // PLAYERS
+                    if($(this).text() == "p1") {
+                        $(this).empty();
+                        $(this).addClass('case__player_one');
+                        //weapon 4
+                    } else if($(this).text() == "p2") {
+                        $(this).empty();
+                        $(this).addClass('case__player_two');
+                    } 
+                });
             }
             console.log(this.generatedMap[i]);
         }
