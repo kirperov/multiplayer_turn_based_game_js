@@ -86,7 +86,7 @@ export default class Map {
                         }
                     }
                     //Verifiy obstacles
-                    if(topCase.toString().includes('ob') && downCase.toString().includes('ob')&& leftCase.toString().includes('ob') && rightCase.toString().includes('ob')) {
+                    if(topCase.toString().includes('ob') && downCase.toString().includes('ob') && leftCase.toString().includes('ob') && rightCase.toString().includes('ob')) {
                         continue; 
                     } else {
                         this.generatedMap[nbRandY][nbRandX] = this.players[i];
@@ -117,15 +117,12 @@ export default class Map {
         this.generateWeapons();
         this.generatePlayers();
 
+        // Creation field for cases
         let container = $(".map-grid");
-
-        for(let i = 0; i <this.generatedMap.length; i++) {
-            let rowX = $("<div></div>");
-            rowX.addClass("map-grid__obstacle");
-            rowX.attr("id", "obstacle-"+[i]);
-
-            for(let n = 0; n <this.generatedMap[i].length; n++) {
-                
+        for(let i = 0; i < this.generatedMap.length; i++) {
+            let rowX = $('<div id="row-'+[i]+ '"' + 'class="map-grid__row"></div>');
+            for(let n = 0; n < this.generatedMap[i].length; n++) {
+                // Creation cases
                 let caseDiv = $("<div></div>");
                 caseDiv.addClass("case");
                 caseDiv.attr('id', "case-"+[n]);
@@ -182,9 +179,45 @@ export default class Map {
                         $(this).addClass('case__player_two');
                     } 
                 });
-            }
-            console.log(this.generatedMap[i]);
+            }           
+            //console.log(this.generatedMap[i]);
         }
+        let myPlayer = "p1";
+        let playerOne = $(".case__player_one");
+        var x = $('.map-grid__row').closest('div').map(function () {
+            return Array.from(this.children);
+        }).get();
+        for(let i = 0; i<x.length; i++) {
+        
+            if(x[i].classList == "case case__player_one") {
+                console.log(x[i])
+                let iterationUp = 0;
+                let iterationDown = 0;
+   
+                document.addEventListener('keydown', (e) => {
+                    if(e.key == "ArrowUp") {
+                        iterationUp+=10;
+                        let classX = "case__player_one";
+                        let classY = "case__empty";     
+                        x[i-iterationUp].classList.remove(classY);
+                        x[i-iterationUp].classList.add(classX);
+                        
+                        x[i+iterationDown].classList.remove(classX);
+                        x[i+iterationDown].classList.add(classY);
+                        iterationDown=-iterationUp;
+                    } 
+                     
+                    if (!e.repeat)
+                      console.log(`Key "${e.key}" pressed  [event: keydown]`);
+                    else
+                    console.log(`Key "${e.key}" repeating  [event: keydown]`);
+                  });
+            }
+        }
+        
+
+
+   
     }
 }
 

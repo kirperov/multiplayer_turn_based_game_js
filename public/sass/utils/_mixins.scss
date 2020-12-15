@@ -1,0 +1,5 @@
+@mixin background_rules($bg-size, $bg-repeat, $bg-position) {
+    background-size: $bg-size;
+    background-repeat: $bg-repeat;
+    background-position: $bg-position; 
+}
