@@ -180,31 +180,55 @@ export default class Map {
                     } 
                 });
             }           
-            //console.log(this.generatedMap[i]);
         }
-        let myPlayer = "p1";
-        let playerOne = $(".case__player_one");
-        var x = $('.map-grid__row').closest('div').map(function () {
-            return Array.from(this.children);
+        var x = $('.map-grid').closest('div').map(function () {
+            return Array.from(this.childNodes);
         }).get();
+        let iterationUp = 0;
+        let iterationDown = 0;
+        let iterUp = 0;
+    
         for(let i = 0; i<x.length; i++) {
-        
-            if(x[i].classList == "case case__player_one") {
-                console.log(x[i])
-                let iterationUp = 0;
-                let iterationDown = 0;
-   
+            for(let n = 0; n<x[i].childNodes.length; n++) {
+            if(x[i].childNodes[n].classList == "case case__player_one") {
                 document.addEventListener('keydown', (e) => {
                     if(e.key == "ArrowUp") {
-                        iterationUp+=10;
+                        iterationUp+=1;
+                        iterUp=iterationUp;
                         let classX = "case__player_one";
                         let classY = "case__empty";     
-                        x[i-iterationUp].classList.remove(classY);
-                        x[i-iterationUp].classList.add(classX);
+                      
+                        x[i-iterationUp].childNodes[n].classList.remove(classY);
+                        x[i-iterationUp].childNodes[n].classList.add(classX);
                         
-                        x[i+iterationDown].classList.remove(classX);
-                        x[i+iterationDown].classList.add(classY);
+                        x[i+iterationDown].childNodes[n].classList.remove(classX);
+                        x[i+iterationDown].childNodes[n].classList.add(classY);
                         iterationDown=-iterationUp;
+                    } else if(e.key == "ArrowDown") {
+                        iterationUp-=1;
+                        iterUp=iterationUp;
+                        let classX = "case__player_one";
+                        let classY = "case__empty";     
+                         x[i-iterationUp].childNodes[n].classList.remove(classY);
+                         x[i-iterationUp].childNodes[n].classList.add(classX);
+                        
+                        x[i+iterationDown].childNodes[n].classList.remove(classX);
+                        x[i+iterationDown].childNodes[n].classList.add(classY);
+                        iterationDown=-iterationUp;
+                    } else if(e.key == "ArrowLeft") {
+                        let classX = "case__player_one";
+                        let classY = "case__empty";         
+                        x[i-iterationUp].childNodes[n-1].classList.add(classX);
+                        x[i-iterationUp].childNodes[n].classList.remove(classX);
+                        x[i-iterationUp].childNodes[n--].classList.add(classY);
+                        x[i-iterationUp].childNodes[n-1].classList.remove(classX);
+                    } else if(e.key == "ArrowRight") {
+                        let classX = "case__player_one";
+                        let classY = "case__empty";         
+                        x[i-iterationUp].childNodes[n+1].classList.add(classX);
+                        x[i-iterationUp].childNodes[n].classList.remove(classX);
+                        x[i-iterationUp].childNodes[n++].classList.add(classY);
+                        x[i-iterationUp].childNodes[n+1].classList.remove(classX);
                     } 
                      
                     if (!e.repeat)
@@ -214,7 +238,7 @@ export default class Map {
                   });
             }
         }
-        
+    }
 
 
    
