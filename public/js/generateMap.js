@@ -127,57 +127,14 @@ export default class Map {
                 caseDiv.addClass("case");
                 caseDiv.attr('id', "case-"+[n]);
                 caseDiv.text(this.generatedMap[i][n]);
-                rowX.append(caseDiv);
                 container.append(rowX);
+                rowX.append(caseDiv);
+
                 // Attribution des classes en fonction des cases
                 caseDiv.each(function() {
-                    if($(this).text() == "0") {
-                        $(this).empty();
-                        $(this).addClass('case__empty');
-                        //obstacle 1
-                    } else if($(this).text() == "ob1"){
-                        $(this).empty();
-                        $(this).addClass('case__obstacle_one');
-                        //obstacle 2
-                    } else if($(this).text() == "ob2") {
-                        $(this).empty();
-                        $(this).addClass('case__obstacle_two');
-                        //obstacle 3
-                    } else if($(this).text() == "ob3") {
-                        $(this).empty();
-                        $(this).addClass('case__obstacle_three');
-                        //obstacle 4
-                    } else if($(this).text() == "ob4") {
-                        $(this).empty();
-                        $(this).addClass('case__obstacle_four');
-                    }
-                    // WEAPONS
-                    //weapon 1
-                    if($(this).text() == "w1"){
-                        $(this).empty();
-                        $(this).addClass('case__weapon_one');
-                        //weapon 2
-                    } else if($(this).text() == "w2") {
-                        $(this).empty();
-                        $(this).addClass('case__weapon_two');
-                        //weapon 3
-                    } else if($(this).text() == "w3") {
-                        $(this).empty();
-                        $(this).addClass('case__weapon_three');
-                        //weapon 4
-                    } else if($(this).text() == "w4") {
-                        $(this).empty();
-                        $(this).addClass('case__weapon_four');
-                    } 
-                    // PLAYERS
-                    if($(this).text() == "p1") {
-                        $(this).empty();
-                        $(this).addClass('case__player_one');
-                        //weapon 4
-                    } else if($(this).text() == "p2") {
-                        $(this).empty();
-                        $(this).addClass('case__player_two');
-                    } 
+                    let classCase = 'case__'+$(this).text();
+                    $(this).empty();
+                    $(this).addClass(classCase);
                 });
             }           
         }
@@ -186,21 +143,21 @@ export default class Map {
         }).get();
         let iterationUp = 0;
         let iterationDown = 0;
+      
         let iterUp = 0;
     
         for(let i = 0; i<x.length; i++) {
             for(let n = 0; n<x[i].childNodes.length; n++) {
             if(x[i].childNodes[n].classList == "case case__player_one") {
                 document.addEventListener('keydown', (e) => {
+                    console.log(iterationDown)
                     if(e.key == "ArrowUp") {
                         iterationUp+=1;
                         iterUp=iterationUp;
                         let classX = "case__player_one";
                         let classY = "case__empty";     
-                      
                         x[i-iterationUp].childNodes[n].classList.remove(classY);
                         x[i-iterationUp].childNodes[n].classList.add(classX);
-                        
                         x[i+iterationDown].childNodes[n].classList.remove(classX);
                         x[i+iterationDown].childNodes[n].classList.add(classY);
                         iterationDown=-iterationUp;
@@ -229,25 +186,20 @@ export default class Map {
                         x[i-iterationUp].childNodes[n].classList.remove(classX);
                         x[i-iterationUp].childNodes[n++].classList.add(classY);
                         x[i-iterationUp].childNodes[n+1].classList.remove(classX);
-                    } 
-                     
+                    }  
                     if (!e.repeat)
                       console.log(`Key "${e.key}" pressed  [event: keydown]`);
                     else
                     console.log(`Key "${e.key}" repeating  [event: keydown]`);
                   });
+                }
             }
         }
     }
-
-
-   
-    }
 }
-
-let obstacles = ["ob1", "ob2", "ob3", "ob4"],
-    players = ["p1", "p2"],
-    weapons = ["w1", "w2", "w3", "w4"];
+let obstacles = ["obstacle_one", "obstacle_two", "obstacle_three", "obstacle_four"],
+    players = ["player_one", "player_two"],
+    weapons = ["weapon_one", "weapon_two", "weapon_three", "weapon_four"];
 let generateMap=new Map(10, 10, obstacles, players, weapons);
 generateMap.generateMap();
  
