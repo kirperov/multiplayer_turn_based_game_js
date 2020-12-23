@@ -116,7 +116,6 @@ export default class Map {
         this.genrateObstacles();
         this.generateWeapons();
         this.generatePlayers();
-
         // Creation field for cases
         let container = $(".map-grid");
         for(let i = 0; i < this.generatedMap.length; i++) {
@@ -125,7 +124,7 @@ export default class Map {
                 // Creation cases
                 let caseDiv = $("<div></div>");
                 caseDiv.addClass("case");
-                caseDiv.attr('id', "case-"+[n]);
+                caseDiv.attr('id', "case-"+[i]+"-"+[n]);
                 caseDiv.text(this.generatedMap[i][n]);
                 container.append(rowX);
                 rowX.append(caseDiv);
@@ -138,63 +137,53 @@ export default class Map {
                 });
             }           
         }
-        var x = $('.map-grid').closest('div').map(function () {
-            return Array.from(this.childNodes);
-        }).get();
-        let iterationUp = 0;
-        let iterationDown = 0;
-      
-        let iterUp = 0;
-    
-        for(let i = 0; i<x.length; i++) {
-            for(let n = 0; n<x[i].childNodes.length; n++) {
-            if(x[i].childNodes[n].classList == "case case__player_one") {
-                document.addEventListener('keydown', (e) => {
-                    console.log(iterationDown)
-                    if(e.key == "ArrowUp") {
-                        iterationUp+=1;
-                        iterUp=iterationUp;
-                        let classX = "case__player_one";
-                        let classY = "case__empty";     
-                        x[i-iterationUp].childNodes[n].classList.remove(classY);
-                        x[i-iterationUp].childNodes[n].classList.add(classX);
-                        x[i+iterationDown].childNodes[n].classList.remove(classX);
-                        x[i+iterationDown].childNodes[n].classList.add(classY);
-                        iterationDown=-iterationUp;
-                    } else if(e.key == "ArrowDown") {
-                        iterationUp-=1;
-                        iterUp=iterationUp;
-                        let classX = "case__player_one";
-                        let classY = "case__empty";     
-                         x[i-iterationUp].childNodes[n].classList.remove(classY);
-                         x[i-iterationUp].childNodes[n].classList.add(classX);
-                        
-                        x[i+iterationDown].childNodes[n].classList.remove(classX);
-                        x[i+iterationDown].childNodes[n].classList.add(classY);
-                        iterationDown=-iterationUp;
-                    } else if(e.key == "ArrowLeft") {
-                        let classX = "case__player_one";
-                        let classY = "case__empty";         
-                        x[i-iterationUp].childNodes[n-1].classList.add(classX);
-                        x[i-iterationUp].childNodes[n].classList.remove(classX);
-                        x[i-iterationUp].childNodes[n--].classList.add(classY);
-                        x[i-iterationUp].childNodes[n-1].classList.remove(classX);
-                    } else if(e.key == "ArrowRight") {
-                        let classX = "case__player_one";
-                        let classY = "case__empty";         
-                        x[i-iterationUp].childNodes[n+1].classList.add(classX);
-                        x[i-iterationUp].childNodes[n].classList.remove(classX);
-                        x[i-iterationUp].childNodes[n++].classList.add(classY);
-                        x[i-iterationUp].childNodes[n+1].classList.remove(classX);
-                    }  
-                    if (!e.repeat)
-                      console.log(`Key "${e.key}" pressed  [event: keydown]`);
-                    else
-                    console.log(`Key "${e.key}" repeating  [event: keydown]`);
-                  });
-                }
-            }
-        }
+
+        let iterationX=0;
+        let iterationY=0;
+        document.addEventListener('keydown', (e) => {
+            let playerOne = $(".case__player_one");
+            let playerOneId = playerOne.attr("id");
+            let x = playerOneId.substring(5,6);
+            let y = playerOneId.substring(7,8);
+            if(e.key == "ArrowUp") {
+                let classX = "case__player_one";
+                iterationX=0;
+                iterationY=0; 
+                iterationX+=1;
+                iterationY=iterationX-1;
+                $('#case-'+(x-iterationX)+'-'+y).addClass(classX);
+                $('#case-'+(x-iterationY)+'-'+y).removeClass(classX);
+                // TODO VERIFICATION IS VALID CASE
+            } else if(e.key == "ArrowDown") {
+                iterationX=0;
+                iterationY=0; 
+                let classX = "case__player_one";
+                iterationX--;    
+                iterationY=iterationX+1;
+                $('#case-'+(x-iterationX)+'-'+y).addClass(classX);
+                $('#case-'+(x-iterationY)+'-'+y).removeClass(classX);
+            } else if(e.key == "ArrowLeft") {
+                iterationX=0;
+                iterationY=0; 
+                let classX = "case__player_one";
+                iterationX+=1;    
+                iterationY=iterationX-1;
+                $('#case-'+(x)+'-'+(y-iterationX)).addClass(classX);
+                $('#case-'+(x)+'-'+(y-iterationY)).removeClass(classX);
+            } else if(e.key == "ArrowRight") {
+                iterationX=0;
+                iterationY=0; 
+                let classX = "case__player_one";        
+                iterationX--;    
+                iterationY=iterationX+1;
+                $('#case-'+(x)+'-'+(y-iterationX)).addClass(classX);
+                $('#case-'+(x)+'-'+(y-iterationY)).removeClass(classX);
+            }  
+            if (!e.repeat)
+                console.log(`Key "${e.key}" pressed  [event: keydown]`);
+            else
+            console.log(`Key "${e.key}" repeating  [event: keydown]`);
+        });
     }
 }
 let obstacles = ["obstacle_one", "obstacle_two", "obstacle_three", "obstacle_four"],
