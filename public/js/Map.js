@@ -1,4 +1,5 @@
 import Player from './Player.js';
+const player = new Player();
 export default class Map {
     constructor(x, y, obstacles, weapons, playerOne, playerTwo) {
         this.x = x;
@@ -6,8 +7,7 @@ export default class Map {
         this.obstacles = obstacles;
         this.weapons = weapons;
         this.generatedMap = [];
-        this.playerOne = playerOne,
-        this.playerTwo = playerTwo
+        this.players = [playerOne, playerTwo];
     }
 
     createMatrix() {
@@ -43,7 +43,7 @@ export default class Map {
     }
 
     positionWeapons() {
-        for(let i = 0; i <  this.weapons.length; i++) {
+        for(let i = 0; i < this.weapons.length; i++) {
             let positioned = false;
             while(positioned == false) {
                 let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
@@ -57,11 +57,11 @@ export default class Map {
     }
 
     positionPlayer() {
-        // for(let i = 0; i < this.players.length; i++) {
+        for(let i = 0; i < this.players.length; i++) {  
             let positioned = false;
             while(positioned == false) {
                 let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
-                let nbRandX = this.generateRandomNumber(2);   
+                let nbRandX = this.generateRandomNumber(this.generatedMap.length);  
                 if(this.generatedMap[nbRandY][nbRandX] == 0) {
                     let topCase = "ob";
                     let downCase = "ob";
@@ -70,7 +70,7 @@ export default class Map {
 
                     //Verification top case
                     if(typeof this.generatedMap[nbRandY -1]  !== "undefined") {
-                        if(this.generatedMap[nbRandY -1][nbRandX] == this.playerOne.name || this.generatedMap[nbRandY -1][nbRandX] == this.playerTwo.name) {
+                        if(this.generatedMap[nbRandY -1][nbRandX] == this.players[0].name || this.generatedMap[nbRandY -1][nbRandX] == this.players[1].name) {
                             continue;
                         } else {
                             topCase = this.generatedMap[nbRandY -1][nbRandX];
@@ -78,7 +78,7 @@ export default class Map {
                     } 
                     //Verification down case
                      if(typeof this.generatedMap[nbRandY +1] !== "undefined") {
-                        if(this.generatedMap[nbRandY +1][nbRandX] == this.playerOne.name || this.generatedMap[nbRandY +1][nbRandX] == this.playerTwo.name) {
+                        if(this.generatedMap[nbRandY +1][nbRandX] == this.players[0].name || this.generatedMap[nbRandY +1][nbRandX] == this.players[1].name) {
                             continue;
                         } else {
                             downCase = this.generatedMap[nbRandY +1][nbRandX];
@@ -86,7 +86,7 @@ export default class Map {
                     } 
                     //Verification left case
                      if(typeof this.generatedMap[nbRandY][nbRandX -1] !== "undefined"){
-                        if(this.generatedMap[nbRandY][nbRandX -1] == this.playerOne.name || this.generatedMap[nbRandY][nbRandX -1] == this.playerTwo.name) {
+                        if(this.generatedMap[nbRandY][nbRandX -1] == this.players[0].name || this.generatedMap[nbRandY][nbRandX -1] == this.players[1].name) {
                             continue;
                         } else {
                             leftCase = this.generatedMap[nbRandY][nbRandX -1];
@@ -94,23 +94,24 @@ export default class Map {
                     }  
                     //Verification right case
                     if(typeof this.generatedMap[nbRandY][nbRandX +1] !== "undefined") {
-                        if(this.generatedMap[nbRandY][nbRandX +1] == this.playerOne.name || this.generatedMap[nbRandY][nbRandX +1] == this.playerTwo.name) {
+                        if(this.generatedMap[nbRandY][nbRandX +1] == this.players[0].name || this.generatedMap[nbRandY][nbRandX +1] == this.players[1].name) {
                            continue; 
                         } else {
                             rightCase = this.generatedMap[nbRandY][nbRandX +1];
                         }
                     }
-                    //Verifiy obstacles
+                    //Verification obstacles
                     if(topCase.toString().includes('ob') && downCase.toString().includes('ob') && leftCase.toString().includes('ob') && rightCase.toString().includes('ob')) {
                         continue; 
                     } else {
-                        this.generatedMap[nbRandY][nbRandX] = this.playerOne.name;
-                        this.generatedMap[nbRandY][nbRandX] = this.playerTwo.name;
+                        this.generatedMap[nbRandY][nbRandX] = this.players[i].name;
+                        this.players[i].x = nbRandX;
+                        this.players[i].y = nbRandY;
                     }
                     positioned = true;  
                 }
             }
-        // }
+        }
     }
 
     generateMap() {
@@ -142,6 +143,5 @@ export default class Map {
                 });
             }           
         }
-    // player.movePlayer();
     }
 }

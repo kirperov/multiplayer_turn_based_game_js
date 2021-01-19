@@ -1,14 +1,16 @@
 export default class Player {
-    constructor(name) {
+    constructor(name, x, y) {
         this.name = name;
-        this.x = 0;
+        this.x = x;
         this.y = 0;
         this.health = 100;
         this.weapon = 0;
     }
 
-    movePlayer() {
+    movePlayer(axeX) {
         document.addEventListener('keydown', (e) => {
+            console.log(axeX)
+
             let playerOne = $(".case__player_one");
             let playerOneId = playerOne.attr("id");
             let x = playerOneId.substring(5,6);
