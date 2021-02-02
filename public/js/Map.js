@@ -1,5 +1,3 @@
-import Player from './Player.js';
-const player = new Player();
 export default class Map {
     constructor(x, y, obstacles, weapons, playerOne, playerTwo) {
         this.x = x;
@@ -24,101 +22,100 @@ export default class Map {
     generateRandomNumber(num) {
         return Math.floor((Math.random() * num));
     }
-    
-    positionObstacles() {
-        for(let i = 0; i < this.y; i++) {   
-            let numberRand = this.generateRandomNumber(this.y * 0.4);
-            for(let n = 0; n < numberRand; n++) {
-                let positioned = false;
-                while(positioned == false) {
-                    let obstNbRand = this.generateRandomNumber(this.obstacles.length);
-                    let caseNbRand = this.generateRandomNumber(this.y);
-                    if(this.generatedMap[i][caseNbRand] == 0) {
-                        positioned = true;
-                        this.generatedMap[i][caseNbRand] = this.obstacles[obstNbRand];
-                    }
-                }
-            }
-        }
-    }
 
-    positionWeapons() {
-        for(let i = 0; i < this.weapons.length; i++) {
-            let positioned = false;
-            while(positioned == false) {
-                let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
-                let nbRandX = this.generateRandomNumber(this.generatedMap[i].length);
-                if(this.generatedMap[nbRandY][nbRandX] == 0) {
-                    this.generatedMap[nbRandY][nbRandX] = this.weapons[i];
-                    positioned = true;
-                }
-            }
+    positionElement(type, array) {
+        let count;
+        if(type=="obstacles") {
+            count = this.y;
+        } else {
+            count = array.length;
         }
-    }
-
-    positionPlayer() {
-        for(let i = 0; i < this.players.length; i++) {  
+        for(let i = 0; i<count; i++) {
             let positioned = false;
-            while(positioned == false) {
-                let nbRandY = this.generateRandomNumber(this.generatedMap.length);   
-                let nbRandX = this.generateRandomNumber(this.generatedMap.length);  
+            let nbRandX = this.generateRandomNumber(this.generatedMap.length);   
+            let nbRandY = this.generateRandomNumber(this.generatedMap.length);  
+            switch(type) {
+                case'players':
                 if(this.generatedMap[nbRandY][nbRandX] == 0) {
                     let topCase = "ob";
                     let downCase = "ob";
                     let leftCase = "ob";
                     let rightCase = "ob";
-
-                    //Verification top case
-                    if(typeof this.generatedMap[nbRandY -1]  !== "undefined") {
-                        if(this.generatedMap[nbRandY -1][nbRandX] == this.players[0].name || this.generatedMap[nbRandY -1][nbRandX] == this.players[1].name) {
-                            continue;
-                        } else {
-                            topCase = this.generatedMap[nbRandY -1][nbRandX];
+                    while(positioned==false) {
+                        //Verification top case
+                        if(typeof this.generatedMap[nbRandY -1]  !== "undefined") {
+                            if(this.generatedMap[nbRandY -1][nbRandX] == array[0].name || this.generatedMap[nbRandY -1][nbRandX] == array[1].name) {
+                                continue;
+                            } else {
+                                topCase = this.generatedMap[nbRandY -1][nbRandX];
+                            }
+                        } 
+                        //Verification down case
+                        if(typeof this.generatedMap[nbRandY +1] !== "undefined") {
+                            if(this.generatedMap[nbRandY +1][nbRandX] == array[0].name || this.generatedMap[nbRandY +1][nbRandX] == array[1].name) {
+                                continue;
+                            } else {
+                                downCase = this.generatedMap[nbRandY +1][nbRandX];
+                            }
+                        } 
+                        //Verification left case
+                        if(typeof this.generatedMap[nbRandY][nbRandX -1] !== "undefined") {
+                            if(this.generatedMap[nbRandY][nbRandX -1] == array[0].name || this.generatedMap[nbRandY][nbRandX -1] == array[1].name) {
+                                continue;
+                            } else {
+                                leftCase = this.generatedMap[nbRandY][nbRandX -1];
+                            }
+                        }  
+                        //Verification right case
+                        if(typeof this.generatedMap[nbRandY][nbRandX +1] !== "undefined") {
+                            if(this.generatedMap[nbRandY][nbRandX +1] == array[0].name || this.generatedMap[nbRandY][nbRandX +1] == array[1].name) {
+                            continue; 
+                            } else {
+                                rightCase = this.generatedMap[nbRandY][nbRandX +1];
+                            }
                         }
-                    } 
-                    //Verification down case
-                     if(typeof this.generatedMap[nbRandY +1] !== "undefined") {
-                        if(this.generatedMap[nbRandY +1][nbRandX] == this.players[0].name || this.generatedMap[nbRandY +1][nbRandX] == this.players[1].name) {
-                            continue;
+                        //Verification obstacles
+                        if(topCase.toString().includes('ob') && downCase.toString().includes('ob') && leftCase.toString().includes('ob') && rightCase.toString().includes('ob')) {
+                            continue; 
                         } else {
-                            downCase = this.generatedMap[nbRandY +1][nbRandX];
+                            this.generatedMap[nbRandY][nbRandX] = array[i].name;
+                            this.players[i].x = nbRandX;
+                            this.players[i].y = nbRandY;
                         }
-                    } 
-                    //Verification left case
-                     if(typeof this.generatedMap[nbRandY][nbRandX -1] !== "undefined"){
-                        if(this.generatedMap[nbRandY][nbRandX -1] == this.players[0].name || this.generatedMap[nbRandY][nbRandX -1] == this.players[1].name) {
-                            continue;
-                        } else {
-                            leftCase = this.generatedMap[nbRandY][nbRandX -1];
-                        }
-                    }  
-                    //Verification right case
-                    if(typeof this.generatedMap[nbRandY][nbRandX +1] !== "undefined") {
-                        if(this.generatedMap[nbRandY][nbRandX +1] == this.players[0].name || this.generatedMap[nbRandY][nbRandX +1] == this.players[1].name) {
-                           continue; 
-                        } else {
-                            rightCase = this.generatedMap[nbRandY][nbRandX +1];
-                        }
+                        positioned = true;  
                     }
-                    //Verification obstacles
-                    if(topCase.toString().includes('ob') && downCase.toString().includes('ob') && leftCase.toString().includes('ob') && rightCase.toString().includes('ob')) {
-                        continue; 
-                    } else {
-                        this.generatedMap[nbRandY][nbRandX] = this.players[i].name;
-                        this.players[i].x = nbRandX;
-                        this.players[i].y = nbRandY;
-                    }
-                    positioned = true;  
                 }
-            }
+                break;
+                case 'weapons':
+                    if(this.generatedMap[nbRandY][nbRandX] == 0) {
+                        this.generatedMap[nbRandY][nbRandX] = array[i];
+                        positioned = true;
+                    }
+                break;  
+                case 'obstacles':
+                    let numberRand = this.generateRandomNumber(this.y * 0.4);
+                        for(let n = 0; n < numberRand; n++) {
+                            while(positioned == false) {
+                                let obstNbRand = this.generateRandomNumber(array.length);
+                                let caseNbRand = this.generateRandomNumber(this.y);
+                                if(this.generatedMap[i][caseNbRand] == 0) {
+                                    positioned = true;
+                                    this.generatedMap[i][caseNbRand] = array[obstNbRand];
+                                }
+                            }
+                        }
+                break;  
+                default:
+                    console.log("erreur");
+            }  
         }
     }
 
     generateMap() {
         this.createMatrix(this.x, this.y);
-        this.positionObstacles();
-        this.positionWeapons();
-        this.positionPlayer();
+        this.positionElement("obstacles",  this.obstacles);
+        this.positionElement("weapons",  this.weapons);
+        this.positionElement("players",  this.players);
     }
 
     visualizeMap() {
@@ -130,7 +127,7 @@ export default class Map {
                 // Creation cases
                 let caseDiv = $("<div></div>");
                 caseDiv.addClass("case");
-                caseDiv.attr('id', "case-"+[i]+"-"+[n]);
+                caseDiv.attr('id', "case-"+[i]+[n]);
                 caseDiv.text(this.generatedMap[i][n]);
                 container.append(rowX);
                 rowX.append(caseDiv);

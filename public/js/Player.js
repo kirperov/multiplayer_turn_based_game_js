@@ -2,47 +2,40 @@ export default class Player {
     constructor(name, x, y) {
         this.name = name;
         this.x = x;
-        this.y = 0;
+        this.y = y;
         this.health = 100;
         this.weapon = 0;
     }
 
-    movePlayer(axeX) {
-        document.addEventListener('keydown', (e) => {
-            console.log(axeX)
-
-            let playerOne = $(".case__player_one");
-            let playerOneId = playerOne.attr("id");
-            let x = playerOneId.substring(5,6);
-            let y = playerOneId.substring(7,8);
+    movePlayer(e,positionX, positionY) {
+        // map.checkPosition(posX,posY)
             let iterationX=0;
             let iterationY=0;
+            let position = positionY+''+positionX;
             let classX = "case__player_one";
             if(e.key == "ArrowUp") { 
-                iterationX+=1;
-                iterationY=iterationX-1;
-                $('#case-'+(x-iterationX)+'-'+y).addClass(classX);
-                $('#case-'+(x-iterationY)+'-'+y).removeClass(classX);               
+                iterationX+=10;
+                let newPosition = (position-iterationX);
+                $("#case-"+(newPosition)).addClass(classX);
+                $('#case-'+position).removeClass(classX);        
             } else if(e.key == "ArrowDown") {
                 iterationX--;    
                 iterationY=iterationX+1;
-                $('#case-'+(x-iterationX)+'-'+y).addClass(classX);
-                $('#case-'+(x-iterationY)+'-'+y).removeClass(classX);
+                $('#case-'+(positionX-iterationX)+'-'+positionY).addClass(classX);
+                $('#case-'+(positionX-iterationY)+'-'+positionY).removeClass(classX);
             } else if(e.key == "ArrowLeft") {
                 iterationX+=1;    
                 iterationY=iterationX-1;
-                $('#case-'+(x)+'-'+(y-iterationX)).addClass(classX);
-                $('#case-'+(x)+'-'+(y-iterationY)).removeClass(classX);
+                $('#case-'+(positionX)+'-'+(positionY-iterationX)).addClass(classX);
+                $('#case-'+(positionX)+'-'+(positionY-iterationY)).removeClass(classX);
             } else if(e.key == "ArrowRight") {
                 iterationX--;    
                 iterationY=iterationX+1;
-                $('#case-'+(x)+'-'+(y-iterationX)).addClass(classX);
-                $('#case-'+(x)+'-'+(y-iterationY)).removeClass(classX);
+                $('#case-'+(positionX)+'-'+(positionY-iterationX)).addClass(classX);
+                $('#case-'+(positionX)+'-'+(positionY-iterationY)).removeClass(classX);
             }  
-            if (!e.repeat)
-                console.log(`Key "${e.key}" pressed  [event: keydown]`);
-            else
-            console.log(`Key "${e.key}" repeating  [event: keydown]`);
-        });
+
+ 
+        //TODO CHECK CASE
     }
 }
