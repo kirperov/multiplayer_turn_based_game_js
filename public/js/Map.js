@@ -1,11 +1,11 @@
 export default class Map {
-    constructor(x, y, obstacles, weapons, playerOne, playerTwo) {
+    constructor(x, y, obstacles, weapons, activePlayerOne, activePlayerTwo) {
         this.x = x;
         this.y = y;
         this.obstacles = obstacles;
         this.weapons = weapons;
         this.generatedMap = [];
-        this.players = [playerOne, playerTwo];
+        this.players = [activePlayerOne, activePlayerTwo];
     }
 
     createMatrix() {
@@ -22,7 +22,7 @@ export default class Map {
     generateRandomNumber(num) {
         return Math.floor((Math.random() * num));
     }
-
+    
     positionElement(type, array) {
         let count;
         if(type=="obstacles") {
@@ -84,12 +84,17 @@ export default class Map {
                         }
                         positioned = true;  
                     }
+                } else {
+                    continue;
                 }
                 break;
                 case 'weapons':
                     if(this.generatedMap[nbRandY][nbRandX] == 0) {
                         this.generatedMap[nbRandY][nbRandX] = array[i];
                         positioned = true;
+                    }
+                    else {
+                        continue;
                     }
                 break;  
                 case 'obstacles':
@@ -102,11 +107,12 @@ export default class Map {
                                     positioned = true;
                                     this.generatedMap[i][caseNbRand] = array[obstNbRand];
                                 }
+                                else {
+                                    continue;
+                                }
                             }
                         }
-                break;  
-                default:
-                    console.log("erreur");
+                break;
             }  
         }
     }
@@ -116,6 +122,32 @@ export default class Map {
         this.positionElement("obstacles",  this.obstacles);
         this.positionElement("weapons",  this.weapons);
         this.positionElement("players",  this.players);
+    }
+
+    checkPosition(action, playerPositionX, playerPositionY) {
+       
+        switch(action) {
+            case "ArrowUp":
+                if(this.generatedMap[playerPositionY][playerPositionX -1] == "obstacle_one") {
+                    console.log("ok");
+                    console.log(this.generatedMap[playerPositionX][playerPositionY -1])
+                } else {
+                    console.log('not ok');
+                    console.log(this.generatedMap[playerPositionY][playerPositionX -1])
+                }
+            console.log('arrow up');
+            break;
+            case "ArrowDown":
+            console.log('arrow down');
+            break;
+            case "ArrowLeft":
+            console.log('arrow left');
+            break;
+            case "ArrowRight":
+            console.log('arrow right');
+            break;
+        }
+ 
     }
 
     visualizeMap() {
