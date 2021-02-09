@@ -12,6 +12,7 @@ generateMap.visualizeMap();
 //TODO Event listener
 document.addEventListener('keydown', (e) => {
     generateMap.checkPosition(e.key, activePlayerOne.x, activePlayerOne.y);
+    console.log(activePlayerOne.y);
     if (!e.repeat) {
         console.log(`Key "${e.key}" pressed  [event: keydown]`);
     } else {

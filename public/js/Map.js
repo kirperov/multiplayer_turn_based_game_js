@@ -124,31 +124,74 @@ export default class Map {
         this.positionElement("players",  this.players);
     }
 
+    // Check position avant modifier la carte
     checkPosition(action, playerPositionX, playerPositionY) {
-       
         switch(action) {
             case "ArrowUp":
-                if(this.generatedMap[playerPositionY][playerPositionX -1] == "obstacle_one") {
-                    console.log("ok");
-                    console.log(this.generatedMap[playerPositionX][playerPositionY -1])
-                } else {
-                    console.log('not ok');
-                    console.log(this.generatedMap[playerPositionY][playerPositionX -1])
+                console.log('arrow up');    
+                if(this.generatedMap[playerPositionY-1][playerPositionX] !== this.obstacles[0] && this.generatedMap[playerPositionY-1][playerPositionX] !== this.obstacles[1] && this.generatedMap[playerPositionY-1][playerPositionX] !== this.obstacles[2] && this.generatedMap[playerPositionY-1][playerPositionX] !== this.obstacles[3]) {
+                    if(this.generatedMap[playerPositionY-1][playerPositionX] == this.weapons[0] || this.generatedMap[playerPositionY-1][playerPositionX] == this.weapons[1] || this.generatedMap[playerPositionY-1][playerPositionX] == this.weapons[2] || this.generatedMap[playerPositionY-1][playerPositionX] == this.weapons[3]) {
+                        this.generatedMap[playerPositionY][playerPositionX] = 0;
+                        this.generatedMap[playerPositionY-1][playerPositionX] = "player_one";
+                        this.players[0].y = this.players[0] = playerPositionY-1;
+                    } else {
+                        this.generatedMap[playerPositionY][playerPositionX] = 0;
+                        this.generatedMap[playerPositionY-1][playerPositionX] = "player_one";
+                        this.players[0].y = this.players[0] = playerPositionY-1;
+                    }
+                } else {    
+                    console.log('case obstacle');
                 }
-            console.log('arrow up');
             break;
             case "ArrowDown":
             console.log('arrow down');
+                if(this.generatedMap[playerPositionY+1][playerPositionX] !== this.obstacles[0] && this.generatedMap[playerPositionY+1][playerPositionX] !== this.obstacles[1] && this.generatedMap[playerPositionY+1][playerPositionX] !== this.obstacles[2] && this.generatedMap[playerPositionY+1][playerPositionX] !== this.obstacles[3]) {
+                    this.generatedMap[playerPositionY][playerPositionX] = 0;
+                    this.generatedMap[playerPositionY+1][playerPositionX] = "player_one";
+                    for(let i = 0; i<this.weapons.length; i++) {
+                        if(this.generatedMap[playerPositionY+1][playerPositionX] == this.weapons[i]) {
+                            this.generatedMap[playerPositionY][playerPositionX] = 0;
+                            this.generatedMap[playerPositionY+1][playerPositionX] = "player_one";;
+                        }
+                    }
+                } else {    
+                    console.log('case obstacle');
+                }
             break;
             case "ArrowLeft":
             console.log('arrow left');
+            if(this.generatedMap[playerPositionY][playerPositionX-1] !== this.obstacles[0] && this.generatedMap[playerPositionY][playerPositionX-1] !== this.obstacles[1] && this.generatedMap[playerPositionY][playerPositionX-1] !== this.obstacles[2] && this.generatedMap[playerPositionY][playerPositionX-1] !== this.obstacles[3]) {
+                this.generatedMap[playerPositionY][playerPositionX] = 0;
+                this.generatedMap[playerPositionY][playerPositionX-1] = "player_one";
+                for(let i = 0; i<this.weapons.length; i++) {
+                    if(this.generatedMap[playerPositionY][playerPositionX-1] == this.weapons[i]) {
+                        this.generatedMap[playerPositionY][playerPositionX-1] = 0;
+                        this.generatedMap[playerPositionY][playerPositionX-1] = "player_one";;
+                    }
+                }
+            } else {    
+                console.log('case obstacle');
+            }
             break;
             case "ArrowRight":
             console.log('arrow right');
+            if(this.generatedMap[playerPositionY][playerPositionX+1] !== this.obstacles[0] && this.generatedMap[playerPositionY][playerPositionX+1] !== this.obstacles[1] && this.generatedMap[playerPositionY][playerPositionX+1] !== this.obstacles[2] && this.generatedMap[playerPositionY][playerPositionX+1] !== this.obstacles[3]) {
+                this.generatedMap[playerPositionY][playerPositionX] = 0;
+                this.generatedMap[playerPositionY][playerPositionX+1] = "player_one";
+                for(let i = 0; i<this.weapons.length; i++) {
+                    if(this.generatedMap[playerPositionY][playerPositionX+1] == this.weapons[i]) {
+                        this.generatedMap[playerPositionY][playerPositionX+1] = 0;
+                        this.generatedMap[playerPositionY][playerPositionX+1] = "player_one";
+                    }
+                }
+            } else {    
+                console.log('case obstacle');
+            }
             break;
         }
  
     }
+
 
     visualizeMap() {
         // Creation field for cases
