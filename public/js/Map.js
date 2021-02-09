@@ -124,8 +124,10 @@ export default class Map {
         this.positionElement("players",  this.players);
     }
 
+
     // Check position avant modifier la carte
     checkPosition(action, playerPositionX, playerPositionY) {
+        let checked = false;
         switch(action) {
             case "ArrowUp":
                 console.log('arrow up');    
@@ -134,10 +136,12 @@ export default class Map {
                         this.generatedMap[playerPositionY][playerPositionX] = 0;
                         this.generatedMap[playerPositionY-1][playerPositionX] = "player_one";
                         this.players[0].y = this.players[0] = playerPositionY-1;
+                        checked=true;
                     } else {
                         this.generatedMap[playerPositionY][playerPositionX] = 0;
                         this.generatedMap[playerPositionY-1][playerPositionX] = "player_one";
                         this.players[0].y = this.players[0] = playerPositionY-1;
+                        checked=true;
                     }
                 } else {    
                     console.log('case obstacle');
@@ -189,9 +193,16 @@ export default class Map {
             }
             break;
         }
- 
+        return checked;
     }
-
+    //Update map ajax
+    updateMap(x,y) {
+        $.ajax({
+            success: function(){
+            $("#case-"+y+x).removeClass("case__0");
+            $("#case-"+y+x).addClass("case__player_one")
+          }});
+    }
 
     visualizeMap() {
         // Creation field for cases
