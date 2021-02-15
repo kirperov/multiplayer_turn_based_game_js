@@ -139,7 +139,7 @@ export default class Map {
     }
 
     // Récupère la position et le nom de la case selon la direction de flèche
-    getCase(direction, playerPositionX, playerPositionY) {
+    getPosition(direction, playerPositionX, playerPositionY) {
         let newPosition;
         let caseName;
         if(direction == "ArrowUp" || direction == "ArrowDown") {
@@ -153,8 +153,8 @@ export default class Map {
     }
 
     //Verification de la case si weapon ou obstacle
-    checkCase(direction, playerPositionX, playerPositionY) {
-        let newPosition = this.getCase(direction, playerPositionX, playerPositionY);
+    checkPosition(direction, playerPositionX, playerPositionY) {
+        let newPosition = this.getPosition(direction, playerPositionX, playerPositionY);
         let numPosition = newPosition[0];
         let namePosition =  newPosition[1];
             if($.inArray(namePosition, this.obstacles) == -1) {
@@ -173,19 +173,19 @@ export default class Map {
         switch(action) {
             case "ArrowUp":
                 console.log('arrow up');
-                this.checkCase("ArrowUp", playerPositionX, playerPositionY);
+                this.checkPosition("ArrowUp", playerPositionX, playerPositionY);
             break;
             case "ArrowDown":
             console.log('arrow down');
-            this.checkCase("ArrowDown", playerPositionX, playerPositionY);
+            this.checkPosition("ArrowDown", playerPositionX, playerPositionY);
             break;
             case "ArrowLeft":
             console.log('arrow left');
-            this.checkCase("ArrowLeft", playerPositionX, playerPositionY);
+            this.checkPosition("ArrowLeft", playerPositionX, playerPositionY);
             break;
             case "ArrowRight":
             console.log('arrow right');
-            this.checkCase("ArrowRight", playerPositionX, playerPositionY);
+            this.checkPosition("ArrowRight", playerPositionX, playerPositionY);
             break;
         }
     }
