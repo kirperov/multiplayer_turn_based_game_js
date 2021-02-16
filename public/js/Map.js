@@ -126,46 +126,41 @@ export default class Map {
         this.positionElement("players",  this.players);
     }
 
-    setPosition(direction, playerPositionX, playerPositionY, newPosition) {
-        this.generatedMap[playerPositionY][playerPositionX] = 0;
-        if(direction == "ArrowUp" || direction == "ArrowDown") {
-            this.generatedMap[newPosition][playerPositionX] = "player_one";
-            this.players[0].y  = newPosition;
-        } else {
-            this.generatedMap[playerPositionY][newPosition] = "player_one";
-            this.players[0].x =  newPosition;
-        }
-        this.updateMap(this.players[0].y, this.players[0].x);
-    }
-
     // Récupère la position et le nom de la case selon la direction de flèche
     getPosition(direction, playerPositionX, playerPositionY) {
-        let newPosition;
+      
+        let oldPosition = [playerPositionY,playerPositionX];
+        let newPosition = [playerPositionY,playerPositionX];
         let caseName;
         if(direction == "ArrowUp" || direction == "ArrowDown") {
-            direction =="ArrowUp" ? newPosition = playerPositionY-1 : newPosition = playerPositionY+1;
-            caseName = this.generatedMap[newPosition][playerPositionX];
+            direction =="ArrowUp" ? newPosition[0] = playerPositionY-1 : newPosition[0] = playerPositionY+1;
+            caseName = this.generatedMap[newPosition[0]][playerPositionX];
         } else {
-            direction =="ArrowLeft" ? newPosition = playerPositionX-1 : newPosition = playerPositionX+1;
-            caseName = this.generatedMap[playerPositionY][newPosition];
+            direction =="ArrowLeft" ? newPosition[1] = playerPositionX-1 : newPosition[1] = playerPositionX+1;
+            caseName = this.generatedMap[playerPositionY][newPosition[1]];
         }
-        return [newPosition,caseName];
+        return [oldPosition,newPosition,caseName];
     }
 
     //Verification de la case si weapon ou obstacle
     checkPosition(direction, playerPositionX, playerPositionY) {
-        let newPosition = this.getPosition(direction, playerPositionX, playerPositionY);
-        let numPosition = newPosition[0];
-        let namePosition =  newPosition[1];
-            if($.inArray(namePosition, this.obstacles) == -1) {
-                if($.inArray(namePosition, this.weapons) !== -1) {
-                    this.setPosition(direction,playerPositionX, playerPositionY, numPosition);
-                } else {
-                    this.setPosition(direction, playerPositionX, playerPositionY, numPosition);
-                }
-            } else {    
-                console.log('case obstacle');
+        let listPositions = this.getPosition(direction, playerPositionX, playerPositionY);
+        let namePosition =  listPositions[2];
+        let posY = listPositions[1][0];
+        let posX = listPositions[1][1];
+        if($.inArray(namePosition, this.obstacles) == -1) {
+            if($.inArray(namePosition, this.weapons) !== -1) {
+                this.players[0].y  = posY;
+                this.players[0].x  = posX;
+                this.updateMap(listPositions);
+            } else {
+                this.players[0].y  = posY;
+                this.players[0].x  = posX;
+                this.updateMap(listPositions);
             }
+        } else {    
+            console.log('case obstacle');
+        }
     }
 
     // Check position avant modifier la carte
@@ -176,25 +171,34 @@ export default class Map {
                 this.checkPosition("ArrowUp", playerPositionX, playerPositionY);
             break;
             case "ArrowDown":
-            console.log('arrow down');
-            this.checkPosition("ArrowDown", playerPositionX, playerPositionY);
+                console.log('arrow down');
+                this.checkPosition("ArrowDown", playerPositionX, playerPositionY);
             break;
             case "ArrowLeft":
-            console.log('arrow left');
-            this.checkPosition("ArrowLeft", playerPositionX, playerPositionY);
+                console.log('arrow left');
+                this.checkPosition("ArrowLeft", playerPositionX, playerPositionY);
             break;
             case "ArrowRight":
-            console.log('arrow right');
-            this.checkPosition("ArrowRight", playerPositionX, playerPositionY);
+                console.log('arrow right');
+                this.checkPosition("ArrowRight", playerPositionX, playerPositionY);
             break;
         }
     }
     //Update map ajax
-    updateMap(x,y) {
+    updateMap(listPositions) {
+        console.log(listPositions)
+        let oldPositionX = listPositions[0][0];
+        let oldPositionY = listPositions[0][1];
+
+        let newPositionX = listPositions[1][0];
+        let newPositionY = listPositions[1][1];
+        
+        let positionName = listPositions[2];
+        console.log(positionName)
         $.ajax({
             success: function(){
-            $("#case-"+x+y).removeClass("case__0");
-            $("#case-"+x+y).addClass("case__player_one")
+            $("#case-"+oldPositionX+oldPositionY).removeClass("case__player_one");
+            $("#case-"+newPositionX+newPositionY).addClass("case__player_one")
           }});
     }
 
