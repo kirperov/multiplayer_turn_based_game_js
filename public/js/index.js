@@ -9,10 +9,13 @@ let generateMap = new Map(10, 10, obstacles, weapons, activePlayerOne, activePla
 generateMap.generateMap();
 generateMap.visualizeMap();
 
-//TODO Event listener
+let startPosition = [activePlayerOne.y, activePlayerOne.x];
+$( "#turn" ).click(function() {
+    startPosition = [activePlayerOne.y, activePlayerOne.x];
+});
+
 document.addEventListener('keydown', (e) => {
-    generateMap.makeStep(e.key, activePlayerOne.x, activePlayerOne.y);
-    // generateMap.updateMap(activePlayerOne.x, activePlayerOne.y);
+    generateMap.makeStep(e.key, activePlayerOne.x, activePlayerOne.y, startPosition);
     if (!e.repeat) {
         console.log(`Key "${e.key}" pressed  [event: keydown]`);
     } else {

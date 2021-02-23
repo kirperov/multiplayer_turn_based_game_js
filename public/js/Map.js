@@ -143,15 +143,41 @@ export default class Map {
     }
 
     //Verification de la case si weapon ou obstacle
-    checkPosition(direction, playerPositionX, playerPositionY) {
+    checkPosition(direction, playerPositionX, playerPositionY, startPosition) {
+
         let listPositions = this.getPosition(direction, playerPositionX, playerPositionY),
             namePosition =  listPositions[2],             
-            posY = listPositions[1][0],
-            posX = listPositions[1][1];
+            newPositionY = listPositions[1][0],
+            newPositionX = listPositions[1][1];
+
+            let upBlock = startPosition[0] - 4,
+                downBlock = startPosition[0] + 4,
+                leftBlock = startPosition[1] - 4,
+                rightBlock = startPosition[1] + 4;
+            
+            let startCoordinates = parseInt(startPosition[0]+""+startPosition[1]);
+            let newCoordinates = parseInt(newPositionY+""+newPositionX);
+            let oldPositionY =  startPosition[0];
+            let oldPositionX = startPosition[1];
+            console.log("Start position: "+startCoordinates);
+            console.log("New Position: "+newCoordinates);
         if($.inArray(namePosition, this.obstacles) == -1) {
-            this.players[0].y  = posY;
-            this.players[0].x  = posX;
-            this.updateMap(listPositions);
+            if(newPositionY !== upBlock && newPositionY !== downBlock && newPositionX !== leftBlock && newPositionX !== rightBlock && newPositionY !== "undefined" && newPositionX !== "undefined") {
+                if(newPositionX == oldPositionX) {
+                    this.players[0].y  = newPositionY;
+                    this.players[0].x  = newPositionX;  
+                    this.updateMap(listPositions);
+                } else if(newPositionY == oldPositionY) {          
+                    this.players[0].y  = newPositionY;
+                    this.players[0].x  = newPositionX;  
+                    this.updateMap(listPositions);
+                } else {
+                    console.log('block')
+                }
+            } else {
+                console.log("stop");
+            }
+
             if($.inArray(namePosition, this.weapons) !== -1) {
                 console.log("case weapon "+ '['+namePosition+']');
                 this.players[0].weapon  = namePosition;
@@ -164,37 +190,37 @@ export default class Map {
     }
 
     // Check position avant modifier la carte
-    makeStep(action, playerPositionX, playerPositionY) {
+    makeStep(action, playerPositionX, playerPositionY, startPosition) {
         switch(action) {
             case "ArrowUp":
                 console.log('arrow up');
-                this.checkPosition("ArrowUp", playerPositionX, playerPositionY);
+                    this.checkPosition("ArrowUp", playerPositionX, playerPositionY, startPosition);
             break;
             case "ArrowDown":
                 console.log('arrow down');
-                this.checkPosition("ArrowDown", playerPositionX, playerPositionY);
+                    this.checkPosition("ArrowDown", playerPositionX, playerPositionY, startPosition);
             break;
             case "ArrowLeft":
                 console.log('arrow left');
-                this.checkPosition("ArrowLeft", playerPositionX, playerPositionY);
+                    this.checkPosition("ArrowLeft", playerPositionX, playerPositionY, startPosition);
             break;
             case "ArrowRight":
                 console.log('arrow right');
-                this.checkPosition("ArrowRight", playerPositionX, playerPositionY);
+                    this.checkPosition("ArrowRight", playerPositionX, playerPositionY, startPosition);
             break;
         }
     }
     //Update map ajax
     updateMap(listPositions) {
-        let oldPositionX = listPositions[0][0],
-            oldPositionY = listPositions[0][1],
-            newPositionX = listPositions[1][0],
-            newPositionY = listPositions[1][1],
+        let oldPositionY = listPositions[0][0],
+            oldPositionX = listPositions[0][1],
+            newPositionY = listPositions[1][0],
+            newPositionX = listPositions[1][1],
             positionName = listPositions[2];
         $.ajax({
             success: function(){
-            $("#case-"+oldPositionX+oldPositionY).removeClass("case__player_one");
-            $("#case-"+newPositionX+newPositionY).addClass("case__player_one")
+            $("#case-"+oldPositionY+oldPositionX).removeClass("case__player_one");
+            $("#case-"+newPositionY+newPositionX).addClass("case__player_one")
         }});
     }
 
