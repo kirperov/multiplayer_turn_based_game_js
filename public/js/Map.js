@@ -162,17 +162,17 @@ export default class Map {
             console.log("Start position: "+startCoordinates);
             console.log("New Position: "+newCoordinates);
         if($.inArray(namePosition, this.obstacles) == -1) {
-            if(newPositionY !== upBlock && newPositionY !== downBlock && newPositionX !== leftBlock && newPositionX !== rightBlock && newPositionY !== "undefined" && newPositionX !== "undefined") {
-                if(newPositionX == oldPositionX) {
-                    this.players[0].y  = newPositionY;
-                    this.players[0].x  = newPositionX;  
-                    this.updateMap(listPositions);
-                } else if(newPositionY == oldPositionY) {          
-                    this.players[0].y  = newPositionY;
-                    this.players[0].x  = newPositionX;  
-                    this.updateMap(listPositions);
+            if (newPositionY !== upBlock && newPositionY !== downBlock && newPositionX !== leftBlock && newPositionX !== rightBlock && newPositionY !== "undefined" && newPositionX !== "undefined") {
+                if (newPositionX == oldPositionX || newPositionY == oldPositionY) {
+                    if (newCoordinates < startCoordinates || newCoordinates > startCoordinates) {
+                        this.players[0].y = newPositionY;
+                        this.players[0].x = newPositionX;
+                        this.updateMap(listPositions);
+                    } else {
+                        console.log("stop");
+                    }
                 } else {
-                    console.log('block')
+                    console.log("stop");
                 }
             } else {
                 console.log("stop");
