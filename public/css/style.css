@@ -70,12 +70,14 @@
   background-position: center;
 }
 .case__player_one {
+  background-color: green;
   background-image: url("/public/icons/players/icons8-top-view-man-100.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
 .case__player_two {
+  background-color: red;
   background-image: url("/public/icons/players/icons8-top-view-man-2-100.png");
   background-size: 50%;
   background-repeat: no-repeat;

@@ -42,35 +42,34 @@ export default class Map {
                         rightCase = "ob";
                     //Verification top case
                      if(nbRandY -1 >= 0) {
-                      
-                        if(this.generatedMap[nbRandY -1][nbRandX] !== this.players[0].name || this.generatedMap[nbRandY -1][nbRandX] !== this.players[1].name) {
-                            topCase = this.generatedMap[nbRandY -1][nbRandX];
-                        } else {
+                        if(this.generatedMap[nbRandY -1][nbRandX] == this.players[0].name || this.generatedMap[nbRandY -1][nbRandX] == this.players[1].name) {
                             continue;
+                        } else {
+                            topCase = this.generatedMap[nbRandY -1][nbRandX];
                         }
                     }
                     //Verification down case
                     if(nbRandY +1 < this.y) {
-                        if(this.generatedMap[nbRandY +1][nbRandX] !== this.players[0].name || this.generatedMap[nbRandY +1][nbRandX] !== this.players[1].name) {
-                            downCase = this.generatedMap[nbRandY +1][nbRandX];
-                        } else {
+                        if(this.generatedMap[nbRandY +1][nbRandX] == this.players[0].name || this.generatedMap[nbRandY +1][nbRandX] == this.players[1].name) {
                             continue;
+                        } else {
+                            downCase = this.generatedMap[nbRandY +1][nbRandX];
                         }
                     }
                     //Verification left case
                     if(nbRandX -1 >= 0) {
-                        if(this.generatedMap[nbRandY][nbRandX -1] !== this.players[0].name || this.generatedMap[nbRandY][nbRandX -1] !== this.players[1].name) {
-                            leftCase = this.generatedMap[nbRandY][nbRandX -1];
-                        } else {
+                        if(this.generatedMap[nbRandY][nbRandX -1] == this.players[0].name || this.generatedMap[nbRandY][nbRandX -1] == this.players[1].name) {
                             continue;
+                        } else {
+                            leftCase = this.generatedMap[nbRandY][nbRandX -1];
                         }
                     }
                     //Verification right case
                     if(nbRandX +1 < this.x) {
-                        if(this.generatedMap[nbRandY][nbRandX +1] !== this.players[0].name || this.generatedMap[nbRandY][nbRandX +1] !== this.players[1].name) {
-                            rightCase = this.generatedMap[nbRandY][nbRandX +1];
-                        } else {
+                        if(this.generatedMap[nbRandY][nbRandX +1] == this.players[0].name || this.generatedMap[nbRandY][nbRandX +1] == this.players[1].name) {
                             continue;
+                        } else {
+                            rightCase = this.generatedMap[nbRandY][nbRandX +1];
                         }
                     }
                     //Verification obstacles
@@ -78,10 +77,6 @@ export default class Map {
                         continue;
                     } else {
                         this.generatedMap[nbRandY][nbRandX] = this.players[i].name;
-                        console.log(topCase);
-                        console.log(downCase);
-                        console.log(leftCase);
-                        console.log(rightCase);
                         this.players[i].x = nbRandX;
                         this.players[i].y = nbRandY;
                     }
@@ -102,7 +97,6 @@ export default class Map {
                     continue;
                 } else {
                     positionned = true;
-
                 }
             }
         }
@@ -114,7 +108,6 @@ export default class Map {
             for(let n = 0; n < numberRand; n++) {
                 let positionned = false;
                 while(positionned == false) {
-
                     let obstNbRand = this.generateRandomNumber(array.length),
                         caseNbRand = this.generateRandomNumber(this.y);
                     if(this.generatedMap[i][caseNbRand] == 0) {
@@ -137,8 +130,6 @@ export default class Map {
         this.positionObstacle(this.obstacles);
         console.log("obstacles positionné")
     }
-
-    // Récupère la position et le nom de la case selon la direction de flèche
     getPosition(direction, playerPositionX, playerPositionY) {
         let oldPosition = [playerPositionY,playerPositionX],
             newPosition = [playerPositionY,playerPositionX],
@@ -160,44 +151,53 @@ export default class Map {
             newPositionY = listPositions[1][0],
             newPositionX = listPositions[1][1];
 
-            let upBlock = startPosition[0] - 4,
-                downBlock = startPosition[0] + 4,
-                leftBlock = startPosition[1] - 4,
-                rightBlock = startPosition[1] + 4;
-            
-            let startCoordinates = parseInt(startPosition[0]+""+startPosition[1]);
-            let newCoordinates = parseInt(newPositionY+""+newPositionX);
-            let oldPositionY =  startPosition[0];
-            let oldPositionX = startPosition[1];
-            console.log("Start position: "+startCoordinates);
-            console.log("New Position: "+newCoordinates);
-        if($.inArray(namePosition, this.obstacles) == -1) {
-            if (newPositionY !== upBlock && newPositionY !== downBlock && newPositionX !== leftBlock && newPositionX !== rightBlock && newPositionY !== "undefined" && newPositionX !== "undefined") {
-                 if (newPositionX == oldPositionX || newPositionY == oldPositionY) {
-                    if (newCoordinates == prevPosition) {
-                        console.log("stop");
+        let upBlock = startPosition[0] - 4,
+            downBlock = startPosition[0] + 4,
+            leftBlock = startPosition[1] - 4,
+            rightBlock = startPosition[1] + 4;
+        
+        let startCoordinates = parseInt(startPosition[0])+""+parseInt(startPosition[1]),
+            newCoordinates = parseInt(newPositionY)+""+parseInt(newPositionX),
+            oldPositionY =  startPosition[0],
+            oldPositionX = startPosition[1];
+
+        // Logs positions
+        console.log("Start position: " + "["+startCoordinates+"]");
+        console.log("New Position: "+ "["+newCoordinates+"]");
+        if(newPositionX >= 0 && newPositionX < this.x && oldPositionY >= 0 && oldPositionY  < this.y) {
+            if($.inArray(namePosition, this.obstacles) == -1) {
+                if (newPositionY !== upBlock && newPositionY !== downBlock && newPositionX !== leftBlock && newPositionX !== rightBlock) {
+                     if (newPositionX == oldPositionX || newPositionY == oldPositionY) {
+                        if (newCoordinates == prevPosition) {
+                            console.log("stop");
+                        } else {
+                            console.log("PREV POSITION: " + "["+parseInt(prevPosition)+"]");
+                            this.players[0].y = newPositionY;
+                            this.players[0].x = newPositionX;
+                            this.players[0].previousPosition = parseInt(playerPositionY)+""+parseInt(playerPositionX);
+    
+                            this.updateMap(listPositions);
+                        }
                     } else {
-                        this.players[0].y = newPositionY;
-                        this.players[0].x = newPositionX;
-                        this.players[0].previousPosition = playerPositionY+""+playerPositionX;
-                        this.updateMap(listPositions);
+                        console.log("stop");
                     }
                 } else {
                     console.log("stop");
                 }
-            } else {
-                console.log("stop");
+    
+                if($.inArray(namePosition, this.weapons) !== -1) {
+                    console.log("case weapon: "+ '['+namePosition+']');
+                    this.players[0].weapon  = namePosition;
+                } else if(namePosition == this.players[0].name || namePosition == this.players[1].name) {
+                    console.log("case player: "+ '['+namePosition+']')
+                } else {
+                    console.log("case vide: "+ '['+namePosition+']')
+                }
+            } else {    
+                console.log("case obstacle: "+ '['+namePosition+']')
             }
-
-            if($.inArray(namePosition, this.weapons) !== -1) {
-                console.log("case weapon "+ '['+namePosition+']');
-                this.players[0].weapon  = namePosition;
-            } else {
-                console.log("case vide "+ '['+namePosition+']')
-            }
-        } else {    
-            console.log("case obstacle "+ '['+namePosition+']')
         }
+
     }
 
     // Check position avant modifier la carte
