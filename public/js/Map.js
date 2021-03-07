@@ -131,7 +131,7 @@ export default class Map {
         console.log("obstacles positionné")
     }
     getPosition(direction, playerPositionX, playerPositionY) {
-        let oldPosition = [playerPositionY,playerPositionX],
+        let previousPosition = [playerPositionY,playerPositionX],
             newPosition = [playerPositionY,playerPositionX],
             caseName;
 
@@ -153,46 +153,55 @@ export default class Map {
                 caseName = this.generatedMap[playerPositionY][newPosition[1]];
                 break;
         }
-        return [oldPosition, newPosition, caseName];
+        return [previousPosition, newPosition, caseName];
     }
 
     //Verification de la case si weapon ou obstacle
-    checkPosition(direction, playerPositionX, playerPositionY, startPosition, prevPosition) {
+    checkPosition(direction, playerPositionX, playerPositionY, startPosition, previousPosition) {
         let listPositions = this.getPosition(direction, playerPositionX, playerPositionY),
             namePosition =  listPositions[2],             
-            newPositionY = listPositions[1][0],
-            newPositionX = listPositions[1][1];
-        let maxBlocksToGo = 4;
-        let upBlock = startPosition[0] - maxBlocksToGo,
+            currentPositionY = listPositions[1][0],
+            currentPositionX = listPositions[1][1],
+            previousPositionY =  startPosition[0],
+            previousPositionX = startPosition[1],
+            maxBlocksToGo = 4,
+            upBlock = startPosition[0] - maxBlocksToGo,
             downBlock = startPosition[0] + maxBlocksToGo,
             leftBlock = startPosition[1] - maxBlocksToGo,
-            rightBlock = startPosition[1] + maxBlocksToGo;
-        
-        let startCoordinates = parseInt(startPosition[0])+""+parseInt(startPosition[1]),
-            newCoordinates = parseInt(newPositionY)+""+parseInt(newPositionX),
-            oldPositionY =  startPosition[0],
-            oldPositionX = startPosition[1];
-
-        console.log(newPositionX+ "test")
-        console.log(newPositionY+ "test")
+            rightBlock = startPosition[1] + maxBlocksToGo,
+            currentPosition = parseInt(currentPositionY)+""+parseInt(currentPositionX);
+            
         // Logs positions
-        console.log("Start position: " + "["+startCoordinates+"]");
-        console.log("New Position: "+ "["+newCoordinates+"]");
-        console.log("Previous Position: " +"["+prevPosition+"]");
+        console.log("Start position: " + "["+startPosition+"]");
+        console.log("New Position: "+ "["+currentPosition+"]");
+        console.log("Previous Position: " +"["+previousPosition+"]");
         // Vérification si la case n'est pas un obstacle ou un joueur
         if($.inArray(namePosition, this.obstacles) == -1 && namePosition !== this.players[0].name && namePosition !== this.players[1].name) {
             // Définition le périmètre de déplacements possibles
-            if (newPositionY !== upBlock && newPositionY !== downBlock && newPositionX !== leftBlock && newPositionX !== rightBlock) {
+            if (currentPositionY !== upBlock && currentPositionY !== downBlock && currentPositionX !== leftBlock && currentPositionX !== rightBlock) {
                 // Réduction du périmètre par rapport de la déstination choisi
-                    if (newPositionX == oldPositionX || newPositionY == oldPositionY) {
+                    if (currentPositionX == previousPositionX || currentPositionY == previousPositionY) {
                     //  Intérdiction de se déplacer en arrière
-                    if (newCoordinates == prevPosition) {
+                    if (currentPosition == previousPosition) {
                         console.log("ERROR: Impossible to go on previous position");
                     } else {
-                        this.players[0].y = newPositionY;
-                        this.players[0].x = newPositionX;
+                        this.players[0].y = currentPositionY;
+                        this.players[0].x = currentPositionX;
                         this.players[0].previousPosition = parseInt(playerPositionY)+""+parseInt(playerPositionX);
+                        if($.inArray(namePosition, this.weapons) !== -1) {
+                            if(namePosition !== this.players[0].previousWeapon && namePosition !== this.players[0].weapon) {
+                                this.players[0].previousWeapon = this.players[0].weapon;
+                                this.players[0].weapon = namePosition;
+                                console.log("Case weapon: "+ '['+namePosition+']');
+                            } else {
+                                console.log("meme arme")
+                            }
+                     
+                        }
+                        listPositions.push(this.players[0].weapon,this.players[0].previousWeapon);
+
                         this.updateMap(listPositions);
+
                     }
                 } else {
                     console.log("ERROR: Impossible to turn from current direction");
@@ -200,10 +209,7 @@ export default class Map {
             } else {
                 console.log("ERROR: Impossible to go more than 3 steps forward");
             }
-            if($.inArray(namePosition, this.weapons) !== -1) {
-                console.log("Case weapon: "+ '['+namePosition+']');
-                this.players[0].weapon  = namePosition;
-            }
+
         } else {    
             console.log("Case obstacle: "+ '['+namePosition+']')
         }
@@ -213,25 +219,25 @@ export default class Map {
     }
 
     // Check position avant modifier la carte
-    makeStep(action, playerPositionX, playerPositionY, startPosition, prevPosition) {
+    makeStep(action, playerPositionX, playerPositionY, startPosition, previousPosition) {
         switch(action) {
             case "ArrowUp":
                 if(playerPositionY -1 >= 0) {
-                    this.checkPosition("ArrowUp", playerPositionX, playerPositionY, startPosition, prevPosition);
+                    this.checkPosition("ArrowUp", playerPositionX, playerPositionY, startPosition, previousPosition);
                 } else {
                     console.log("ERROR: Can't go outside the top border")
                 }
             break;
             case "ArrowDown":
                 if(playerPositionY+1 < this.y) {
-                    this.checkPosition("ArrowDown", playerPositionX, playerPositionY, startPosition, prevPosition);
+                    this.checkPosition("ArrowDown", playerPositionX, playerPositionY, startPosition, previousPosition);
                 } else {
                     console.log("ERROR: Can't go outside the bottom border")
                 }
             break;
             case "ArrowLeft":
                 if(playerPositionX-1 >= 0) {
-                    this.checkPosition("ArrowLeft", playerPositionX, playerPositionY, startPosition, prevPosition);
+                    this.checkPosition("ArrowLeft", playerPositionX, playerPositionY, startPosition, previousPosition);
                 } else {
                     console.log("ERROR: Can't go outside the left border")
                 }
@@ -239,7 +245,7 @@ export default class Map {
             case "ArrowRight":
                 console.log('arrow right');
                 if(playerPositionX+1 < this.x) {
-                    this.checkPosition("ArrowRight", playerPositionX, playerPositionY, startPosition, prevPosition);
+                    this.checkPosition("ArrowRight", playerPositionX, playerPositionY, startPosition, previousPosition);
                 } else {
                     console.log("ERROR: Can't go outside the right border")
                 }
@@ -248,15 +254,24 @@ export default class Map {
     }
     //Update map ajax
     updateMap(listPositions) {
-        let oldPositionY = listPositions[0][0],
-            oldPositionX = listPositions[0][1],
-            newPositionY = listPositions[1][0],
-            newPositionX = listPositions[1][1],
-            positionName = listPositions[2];
+        console.log(listPositions)
+        let previousPosition = listPositions[0][0]+""+listPositions[0][1],
+            currenPosition = listPositions[1][0]+""+listPositions[1][1],
+            currentPositionName = listPositions[2],
+            currentWeapon = listPositions[3],
+            previousWeapon = listPositions[4];
+        let listClasses = $("#case-"+currenPosition).attr("class").split(/\s+/);
+        console.log("Current weapon: "+currentWeapon);
+        console.log("Previous weapon: "+previousWeapon);
         $.ajax({
             success: function(){
-            $("#case-"+oldPositionY+oldPositionX).removeClass("case__player_one");
-            $("#case-"+newPositionY+newPositionX).addClass("case__player_one")
+ 
+                $("#case-"+currenPosition).addClass("case__player_one");
+                if(listClasses[1]!== currentWeapon && listClasses[1]!== "case__0" && listClasses[1]!== previousWeapon ) {
+                    $("#case-"+currenPosition).removeClass("case__"+currentWeapon);
+                    $("#case-"+currenPosition).addClass("case__"+previousWeapon);
+                }
+                $("#case-"+previousPosition).removeClass("case__player_one");
         }});
     }
 

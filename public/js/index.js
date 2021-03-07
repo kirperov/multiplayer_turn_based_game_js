@@ -12,11 +12,12 @@ generateMap.visualizeMap();
 let startPosition = [activePlayerOne.y, activePlayerOne.x];
 $( "#turn" ).click(function() {
     startPosition = [activePlayerOne.y, activePlayerOne.x];
+    console.log('TURN POSITION: '+startPosition)
 });
 
 document.addEventListener('keydown', (e) => {
-    let prevPosition = parseInt(activePlayerOne.previousPosition);
-    generateMap.makeStep(e.key, activePlayerOne.x, activePlayerOne.y, startPosition, prevPosition);
+    let previousPosition = parseInt(activePlayerOne.previousPosition);
+    generateMap.makeStep(e.key, activePlayerOne.x, activePlayerOne.y, startPosition, previousPosition);
     if (!e.repeat) {
         console.log(`Key "${e.key}" pressed  [event: keydown]`);
     } else {
