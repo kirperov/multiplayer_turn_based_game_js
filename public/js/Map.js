@@ -88,16 +88,17 @@ export default class Map {
 
     positionWeapon(array) {
         for(let i = 0; i < array.length; i++) {
-            let nbRandX = this.generateRandomNumber(this.generatedMap.length),
-                nbRandY = this.generateRandomNumber(this.generatedMap.length); 
+
             let positionned = false;
             while(positionned == false) {
+                let nbRandX = this.generateRandomNumber(this.generatedMap.length),
+                    nbRandY = this.generateRandomNumber(this.generatedMap.length); 
                 if(this.generatedMap[nbRandY][nbRandX] == 0) {
                     this.generatedMap[nbRandY][nbRandX] = array[i];
-                    continue;
                 } else {
-                    positionned = true;
+                    continue;
                 }
+                positionned = true;
             }
         }
     }
@@ -137,8 +138,8 @@ export default class Map {
 
         switch(direction) {
             case "ArrowUp":
-                    newPosition[0] = playerPositionY-1;
-                    caseName = this.generatedMap[newPosition[0]][playerPositionX];
+                newPosition[0] = playerPositionY-1;
+                caseName = this.generatedMap[newPosition[0]][playerPositionX];
                 break;
             case "ArrowDown":
                 newPosition[0] = playerPositionY+1;
@@ -180,7 +181,7 @@ export default class Map {
             // Définition le périmètre de déplacements possibles
             if (currentPositionY !== upBlock && currentPositionY !== downBlock && currentPositionX !== leftBlock && currentPositionX !== rightBlock) {
                 // Réduction du périmètre par rapport de la déstination choisi
-                    if (currentPositionX == previousPositionX || currentPositionY == previousPositionY) {
+                if (currentPositionX == previousPositionX || currentPositionY == previousPositionY) {
                     //  Intérdiction de se déplacer en arrière
                     if (currentPosition == previousPosition) {
                         console.log("ERROR: Impossible to go on previous position");
@@ -188,17 +189,13 @@ export default class Map {
                         this.players[0].y = currentPositionY;
                         this.players[0].x = currentPositionX;
                         this.players[0].previousPosition = parseInt(playerPositionY)+""+parseInt(playerPositionX);
-                        if($.inArray(namePosition, this.weapons) !== -1) {
-                            if(namePosition !== this.players[0].previousWeapon && namePosition !== this.players[0].weapon) {
-                                this.players[0].previousWeapon = this.players[0].weapon;
-                                this.players[0].weapon = namePosition;
-                                console.log("Case weapon: "+ '['+namePosition+']');
-                            } else {
-                                console.log("meme arme")
-                            }
-                     
+                        let previousWeapon;
+                        if($.inArray(namePosition, this.weapons) !== -1) {                    
+                            previousWeapon = this.players[0].weapon;
+                            this.players[0].weapon = namePosition;
+                            console.log("Case weapon: "+ '['+namePosition+']');               
                         }
-                        listPositions.push(this.players[0].weapon,this.players[0].previousWeapon);
+                        listPositions.push(this.players[0].weapon, previousWeapon);
 
                         this.updateMap(listPositions);
 

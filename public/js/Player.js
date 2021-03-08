@@ -6,6 +6,5 @@ export default class Player {
         this.previousPosition;
         this.health = 100;
         this.weapon = "weapon_one";
-        this.previousWeapon;
     }
 }
