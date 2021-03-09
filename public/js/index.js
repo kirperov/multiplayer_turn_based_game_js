@@ -9,10 +9,12 @@ let generateMap = new Map(10, 10, obstacles, weapons, activePlayerOne, activePla
 generateMap.generateMap();
 generateMap.visualizeMap();
 
+
 let startPosition = [activePlayerOne.y, activePlayerOne.x];
 $( "#turn" ).click(function() {
+    generateMap.generatedMap[activePlayerOne.y][ activePlayerOne.x] = activePlayerOne.name;
     startPosition = [activePlayerOne.y, activePlayerOne.x];
-    console.log('TURN POSITION: '+startPosition)
+    activePlayerOne.previousPosition = parseInt(activePlayerOne.y)+""+parseInt(activePlayerOne.x);
 });
 
 document.addEventListener('keydown', (e) => {
@@ -24,3 +26,4 @@ document.addEventListener('keydown', (e) => {
         console.log(`Key "${e.key}" repeating  [event: keydown]`);
     }
 });
+

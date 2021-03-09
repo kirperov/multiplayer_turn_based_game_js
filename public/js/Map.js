@@ -163,8 +163,10 @@ export default class Map {
             namePosition =  listPositions[2],             
             currentPositionY = listPositions[1][0],
             currentPositionX = listPositions[1][1],
+
             previousPositionY =  startPosition[0],
             previousPositionX = startPosition[1],
+            
             maxBlocksToGo = 4,
             upBlock = startPosition[0] - maxBlocksToGo,
             downBlock = startPosition[0] + maxBlocksToGo,
@@ -177,6 +179,7 @@ export default class Map {
         console.log("New Position: "+ "["+currentPosition+"]");
         console.log("Previous Position: " +"["+previousPosition+"]");
         // Vérification si la case n'est pas un obstacle ou un joueur
+        console.log(namePosition)
         if($.inArray(namePosition, this.obstacles) == -1 && namePosition !== this.players[0].name && namePosition !== this.players[1].name) {
             // Définition le périmètre de déplacements possibles
             if (currentPositionY !== upBlock && currentPositionY !== downBlock && currentPositionX !== leftBlock && currentPositionX !== rightBlock) {
@@ -186,19 +189,23 @@ export default class Map {
                     if (currentPosition == previousPosition) {
                         console.log("ERROR: Impossible to go on previous position");
                     } else {
+                        //effacer la position d'avant
+                        this.generatedMap[previousPositionY][previousPositionX] = 0; 
+
                         this.players[0].y = currentPositionY;
                         this.players[0].x = currentPositionX;
                         this.players[0].previousPosition = parseInt(playerPositionY)+""+parseInt(playerPositionX);
                         let previousWeapon;
-                        if($.inArray(namePosition, this.weapons) !== -1) {                    
+                        // Si la case avec une arme
+                        if($.inArray(namePosition, this.weapons) !== -1) {    
                             previousWeapon = this.players[0].weapon;
-                            this.players[0].weapon = namePosition;
-                            console.log("Case weapon: "+ '['+namePosition+']');               
+                            this.players[0].weapon = namePosition; 
+                            console.log("Case weapon: "+ '['+namePosition+']');    
+                            listPositions.push(this.players[0].weapon, previousWeapon);
+                            this.updateWeapon(listPositions); 
                         }
-                        listPositions.push(this.players[0].weapon, previousWeapon);
-
+                        //listPositions.push(this.players[0].weapon, previousWeapon);
                         this.updateMap(listPositions);
-
                     }
                 } else {
                     console.log("ERROR: Impossible to turn from current direction");
@@ -206,7 +213,6 @@ export default class Map {
             } else {
                 console.log("ERROR: Impossible to go more than 3 steps forward");
             }
-
         } else {    
             console.log("Case obstacle: "+ '['+namePosition+']')
         }
@@ -252,23 +258,33 @@ export default class Map {
     //Update map ajax
     updateMap(listPositions) {
         console.log(listPositions)
+        console.log(this.generatedMap)
+        let previousPosition = listPositions[0][0]+""+listPositions[0][1],
+            currenPosition = listPositions[1][0]+""+listPositions[1][1],
+            currentWeapon = listPositions[3],
+            previousWeapon = listPositions[4];
+        // console.log("Current weapon: "+currentWeapon);
+        // console.log("Previous weapon: "+previousWeapon);
+        $.ajax({
+            success: function(){
+                $("#case-"+currenPosition).addClass("case__player_one");
+                $("#case-"+previousPosition).removeClass("case__player_one");
+        }});
+    }
+
+    updateWeapon(listPositions) {
+        console.log(listPositions)
         let previousPosition = listPositions[0][0]+""+listPositions[0][1],
             currenPosition = listPositions[1][0]+""+listPositions[1][1],
             currentPositionName = listPositions[2],
             currentWeapon = listPositions[3],
             previousWeapon = listPositions[4];
-        let listClasses = $("#case-"+currenPosition).attr("class").split(/\s+/);
+        
         console.log("Current weapon: "+currentWeapon);
         console.log("Previous weapon: "+previousWeapon);
         $.ajax({
             success: function(){
- 
-                $("#case-"+currenPosition).addClass("case__player_one");
-                if(listClasses[1]!== currentWeapon && listClasses[1]!== "case__0" && listClasses[1]!== previousWeapon ) {
-                    $("#case-"+currenPosition).removeClass("case__"+currentWeapon);
-                    $("#case-"+currenPosition).addClass("case__"+previousWeapon);
-                }
-                $("#case-"+previousPosition).removeClass("case__player_one");
+                $("#case-"+currenPosition).removeClass().addClass("case case__"+previousWeapon);
         }});
     }
 
