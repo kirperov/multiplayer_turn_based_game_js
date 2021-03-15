@@ -41,19 +41,19 @@
     }
     // WEAPONS
     &__weapon {
-        &_one {
+        &_0 {
             background-image:  url("/public/icons/weapons/icons8-gun-100.png");
             @include background_rules(50%, no-repeat, center)
         }
-        &_two {
+        &_1 {
             background-image:  url("/public/icons/weapons/icons8-assault-rifle-100.png");
             @include background_rules(50%, no-repeat, center)
         }
-        &_three {
+        &_2 {
             background-image:  url("/public/icons/weapons/icons8-crowbar-100.png");
             @include background_rules(50%, no-repeat, center)
         }
-        &_four {
+        &_3 {
             background-image:  url("/public/icons/weapons/icons8-bulletproof-vest-100.png");
             @include background_rules(50%, no-repeat, center)
         }

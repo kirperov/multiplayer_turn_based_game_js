@@ -45,25 +45,25 @@
   background-repeat: no-repeat;
   background-position: center;
 }
-.case__weapon_one {
+.case__weapon_0 {
   background-image: url("/public/icons/weapons/icons8-gun-100.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
-.case__weapon_two {
+.case__weapon_1 {
   background-image: url("/public/icons/weapons/icons8-assault-rifle-100.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
-.case__weapon_three {
+.case__weapon_2 {
   background-image: url("/public/icons/weapons/icons8-crowbar-100.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
-.case__weapon_four {
+.case__weapon_3 {
   background-image: url("/public/icons/weapons/icons8-bulletproof-vest-100.png");
   background-size: 50%;
   background-repeat: no-repeat;

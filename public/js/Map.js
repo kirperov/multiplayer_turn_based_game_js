@@ -1,11 +1,11 @@
 export default class Map {
-    constructor(x, y, obstacles, weapons, activePlayerOne, activePlayerTwo) {
+    constructor(x, y, obstacles, listWeapons, activePlayers) {
         this.x = x;
         this.y = y;
         this.obstacles = obstacles;
-        this.weapons = weapons;
+        this.weapons = listWeapons;
         this.generatedMap = [];
-        this.players = [activePlayerOne, activePlayerTwo];
+        this.players = activePlayers;
     }
 
     //Création de la carte vide avec la largeur et la longeur
@@ -88,13 +88,12 @@ export default class Map {
 
     positionWeapon(array) {
         for(let i = 0; i < array.length; i++) {
-
             let positionned = false;
             while(positionned == false) {
                 let nbRandX = this.generateRandomNumber(this.generatedMap.length),
                     nbRandY = this.generateRandomNumber(this.generatedMap.length); 
                 if(this.generatedMap[nbRandY][nbRandX] == 0) {
-                    this.generatedMap[nbRandY][nbRandX] = array[i];
+                    this.generatedMap[nbRandY][nbRandX] = array[i].weapon;
                 } else {
                     continue;
                 }
@@ -158,7 +157,7 @@ export default class Map {
     }
 
     //Verification de la case si weapon ou obstacle
-    checkPosition(direction, playerPositionX, playerPositionY, startPosition, previousPosition,nbPlayer) {
+    checkPosition(direction, playerPositionX, playerPositionY, startPosition, previousPosition, nbPlayer) {
         console.log(this.players)
         let listPositions = this.getPosition(direction, playerPositionX, playerPositionY),
             namePosition =  listPositions[2],             
@@ -202,7 +201,7 @@ export default class Map {
                             this.players[nbPlayer].weapon = namePosition; 
                             console.log("Case weapon: "+ '['+namePosition+']');    
                             listPositions.push(this.players[nbPlayer].weapon, previousWeapon);
-                            
+                            this.generatedMap[previousPositionY][previousPositionX] = this.players[nbPlayer].weapon;
                             this.updateWeapon(listPositions); 
                         }
                         //listPositions.push(this.players[0].weapon, previousWeapon);
