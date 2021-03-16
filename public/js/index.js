@@ -2,8 +2,9 @@ import Map from './Map.js';
 import Player from './Player.js';
 import Weapon from './Weapon.js';
 
-let activePlayers = [];
+let players = [];
 let listWeapons = [];
+
 let obstacles = [
     "obstacle_one",
     "obstacle_two",
@@ -11,55 +12,41 @@ let obstacles = [
     "obstacle_four"
 ];
 
+let lengthPlayers = 2;
+let lengthWeapons = 4;
 // Initalisation des joueurs
-for(let i = 0; i<2; i++) {
-    let activePlayer  = new Player("player_"+[i]);
-    activePlayers.push(activePlayer);
+for(let i = 0; i<lengthPlayers; i++) {
+    let player = new Player("player_"+[i]);
+    players.push(player);
 }
 
 //Initialisation des armes
-for(let i = 0; i < 4; i++) {
+for(let i = 0; i < lengthWeapons; i++) {
     let weapon = new Weapon("weapon_"+[i]);
     listWeapons.push(weapon);
 }
 
 //Initialisation de la carte
-let generateMap = new Map(10, 10, obstacles, listWeapons, activePlayers);
-generateMap.generateMap();
-generateMap.visualizeMap();
-
-let startPosition = [activePlayers[0].y, activePlayers[0].x];
-let activePlayer = activePlayers[0];
-let nbPlayer = 0;
+let map = new Map(10, 10, obstacles, listWeapons, players[0], players);
+map.generateMap();
+map.visualizeMap();
+let startPosition = [map.activePlayer.y, map.activePlayer.x]; 
 
 // Changement de joueur
-let switchPlayer = false;
-$( "#turn").click(function() {
-    if(switchPlayer == false) {
-        switchPlayer = true;
-        activePlayer = activePlayers[1];
-        nbPlayer=1;
+$( "#turn").on("click", function() {
+    if (map.activePlayer === players[0]) {
+        map.activePlayer = players[1];
     } else {
-        switchPlayer = false;
-        activePlayer = activePlayers[0];
-        nbPlayer=0;
+        map.activePlayer = players[0];
     }
-
-    //Mise à jour la carte avec la nouvelle position des joueurs
-    for(let i = 0; i<2;i++) {
-        console.log(activePlayers[i].name)
-        generateMap.generatedMap[activePlayers[i].y][ activePlayers[i].x] = activePlayers[i].name;
-    }
-
-    // Initialisation de la position de départ et enregistrement de la position d'avant
-    startPosition = [activePlayer.y, activePlayer.x];
-    activePlayer.previousPosition = parseInt(activePlayer.y)+""+parseInt(activePlayer.x);
+    startPosition = [map.activePlayer.y, map.activePlayer.x];
+    map.activePlayer.previousPosition = null;
+    console.log(map.generatedMap)
 });
 
 // Appel à la méthode de déplacement en fonction de la touche
 document.addEventListener('keydown', (e) => {
-    let previousPosition = parseInt(activePlayer.previousPosition);
-    generateMap.makeStep(e.key, activePlayer.x, activePlayer.y, startPosition, previousPosition,nbPlayer);
+    map.makeStep(e.key, startPosition);
     if (!e.repeat) {
         console.log(`Key "${e.key}" pressed  [event: keydown]`);
     } else {

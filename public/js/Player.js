@@ -4,7 +4,8 @@ export default class Player {
         this.x = x;
         this.y = y;
         this.previousPosition;
+        this.previousWeapon;
         this.health = 100;
-        this.weapon = "weapon_one";
+        this.weapon = "weapon_0";
     }
 }
