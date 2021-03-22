@@ -83,5 +83,8 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.case__can_go {
+  background-color: gray;
+}
 
 /*# sourceMappingURL=style.css.map */

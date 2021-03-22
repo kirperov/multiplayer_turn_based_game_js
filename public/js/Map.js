@@ -194,6 +194,7 @@ export default class Map {
 
     //Verification de la case si weapon ou obstacle
     checkPosition(direction, startPosition) {
+        
         let previousPosition =  this.activePlayer.previousPosition;
         let nextPositionInfos = this.getNextPosition(direction, this.activePlayer.x, this.activePlayer.y);
         let nameNextPosition =  nextPositionInfos[2],             
@@ -223,8 +224,8 @@ export default class Map {
                     } else {
                         this.updatePosition(nextPositionY, nextPositionX);
                         // Si la case avec une arme
-                        this.updateWeapon(nameNextPosition, nextPositionInfos);
                         this.updateVisualMap(nextPositionInfos, this.activePlayer);
+                        this.updateWeapon(nameNextPosition, nextPositionInfos);
                     }
                 } else {
                     console.log("ERROR: Impossible to turn from current direction");
@@ -317,6 +318,42 @@ export default class Map {
         } 
     }
 
+    backLightBlocks() {
+        let stopGoDown = false;
+        let stopGoUp = false;
+        let stopGoLeft = false;
+        let stopGoRight = false;
+        for(let n = 1; n< 4; n++) {
+            if(this.activePlayer.y+n < this.y) {
+                if($.inArray(this.generatedMap[this.activePlayer.y+n][this.activePlayer.x], this.obstacles) == -1 && stopGoDown == false) {
+                    $("#case-"+(this.activePlayer.y+n)+''+(this.activePlayer.x)).addClass("case__can_go");
+                }  else {
+                    stopGoDown = true;
+                }
+            }
+
+            if(this.activePlayer.y - n >= 0) {
+                if($.inArray(this.generatedMap[this.activePlayer.y-n][this.activePlayer.x], this.obstacles) == -1 && stopGoUp == false) {
+                    $("#case-"+(this.activePlayer.y-n)+''+(this.activePlayer.x)).addClass("case__can_go")
+                }  else {
+                    stopGoUp = true;
+                }
+            }
+
+
+            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x+n], this.obstacles) == -1 && stopGoLeft == false) {
+                $("#case-"+(this.activePlayer.y)+''+(this.activePlayer.x+n)).addClass("case__can_go")
+            }  else {
+                stopGoLeft = true;
+            }
+            
+            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x-n], this.obstacles) == -1 && stopGoRight == false) {
+                $("#case-"+(this.activePlayer.y)+''+(this.activePlayer.x-n)).addClass("case__can_go")
+            }  else {
+                stopGoRight = true;
+            }
+        }
+    }
     //Visualiser la carte dans le DOM
     visualizeMap() {
         // Creation field for cases
@@ -324,5 +361,6 @@ export default class Map {
         for (let i = 0; i < this.generatedMap.length; i++) {
             this.createRowOnGrid(container, i);
         }
+        this.backLightBlocks();
     }
 }

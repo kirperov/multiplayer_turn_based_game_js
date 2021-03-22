@@ -71,4 +71,8 @@
             @include background_rules(50%, no-repeat, center)
         }
     }
+
+    &__can_go {
+        background-color: gray;
+    }
 }

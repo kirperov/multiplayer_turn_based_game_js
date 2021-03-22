@@ -34,13 +34,17 @@ let startPosition = [map.activePlayer.y, map.activePlayer.x];
 
 // Changement de joueur
 $( "#turn").on("click", function() {
+    $(".case__can_go").removeClass('case__can_go');
     if (map.activePlayer === players[0]) {
         map.activePlayer = players[1];
+        map.backLightBlocks();
     } else {
         map.activePlayer = players[0];
+        map.backLightBlocks();
     }
     startPosition = [map.activePlayer.y, map.activePlayer.x];
     map.activePlayer.previousPosition = null;
+   
     console.log(map.generatedMap)
 });
 
