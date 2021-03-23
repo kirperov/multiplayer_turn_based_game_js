@@ -14,18 +14,23 @@ let obstacles = [
 
 let lengthPlayers = 2;
 let lengthWeapons = 4;
-// Initalisation des joueurs
-for(let i = 0; i<lengthPlayers; i++) {
-    let player = new Player("player_"+[i]);
-    players.push(player);
-}
+
 
 //Initialisation des armes
 for(let i = 0; i < lengthWeapons; i++) {
-    let weapon = new Weapon("weapon_"+[i]);
+    let dommageIndex=i+1+'0';
+    let weapon = new Weapon("weapon_"+[i], parseInt(dommageIndex));
     listWeapons.push(weapon);
 }
 
+// Initalisation des joueurs
+for(let i = 0; i<lengthPlayers; i++) {
+    let player = new Player("player_"+[i]);
+    player.weapon = listWeapons[0].weapon;
+    players.push(player);
+}
+
+console.log(players)
 //Initialisation de la carte
 let map = new Map(10, 10, obstacles, listWeapons, players[0], players);
 map.generateMap();
@@ -44,7 +49,6 @@ $( "#turn").on("click", function() {
     }
     startPosition = [map.activePlayer.y, map.activePlayer.x];
     map.activePlayer.previousPosition = null;
-   
     console.log(map.generatedMap)
 });
 

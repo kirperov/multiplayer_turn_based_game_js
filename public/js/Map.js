@@ -7,6 +7,7 @@ export default class Map {
         this.generatedMap = [];
         this.activePlayer = activePlayer;
         this.players = players;
+        this.onFight = false;
     }
 
     //Création de la carte vide avec la largeur et la longeur
@@ -194,7 +195,8 @@ export default class Map {
 
     //Verification de la case si weapon ou obstacle
     checkPosition(direction, startPosition) {
-        
+        $(".case__can_go").removeClass('case__can_go');
+
         let previousPosition =  this.activePlayer.previousPosition;
         let nextPositionInfos = this.getNextPosition(direction, this.activePlayer.x, this.activePlayer.y);
         let nameNextPosition =  nextPositionInfos[2],             
@@ -213,32 +215,50 @@ export default class Map {
         console.log("New Position: "+ "["+nextPosition+"]");
         console.log("Previous Position: " +"["+previousPosition+"]");
         // Vérification si la case n'est pas un obstacle ou un joueur
-        if ($.inArray(nameNextPosition, this.obstacles) == -1 && nameNextPosition !== this.players[0].name && nameNextPosition !== this.players[1].name) {
+        if ($.inArray(nameNextPosition, this.obstacles) == -1 && this.onFight !== true) {
             // Définition le périmètre de déplacements possibles
             if (nextPositionY !== upBlock && nextPositionY !== downBlock && nextPositionX !== leftBlock && nextPositionX !== rightBlock) {
                 // Réduction du périmètre par rapport de la déstination choisi
                 if (nextPositionX == startPositionX || nextPositionY == startPositionY) {
                     //  Intérdiction de se déplacer en arrière
                     if (nextPosition == previousPosition) {
-                        console.log("ERROR: Impossible to go on previous position");
+                        console.error("ERROR: Impossible to go on previous position");
                     } else {
-                        this.updatePosition(nextPositionY, nextPositionX);
                         // Si la case avec une arme
-                        this.updateVisualMap(nextPositionInfos, this.activePlayer);
+                        this.updatePosition(nextPositionY, nextPositionX);
                         this.updateWeapon(nameNextPosition, nextPositionInfos);
+                        this.updateVisualMap(nextPositionInfos, this.activePlayer);
                     }
                 } else {
-                    console.log("ERROR: Impossible to turn from current direction");
+                    console.error("ERROR: Impossible to turn from current direction");
                 }
             } else {
-                console.log("ERROR: Impossible to go more than 3 steps forward");
+                console.error("ERROR: Impossible to go more than 3 steps forward");
             }
         } else {    
             console.log("Case obstacle: "+ '['+nameNextPosition+']')
         }
-        if (nameNextPosition == this.players[1].name) {
+        this.checkPlayerToFight(nextPositionY, nextPositionX, nameNextPosition);
+    }
+
+    // Method who verify if case adjacent is player
+    checkPlayerToFight(nextPositionY, nextPositionX, nameNextPosition) {
+        let topCaseName = () => { return nextPositionY-1 >= 0 ? this.generatedMap[nextPositionY-1][nextPositionX] : false; }; 
+        let downCaseName =  () => { return nextPositionY+1 < this.y ? this.generatedMap[nextPositionY+1][nextPositionX] : false; }; 
+        let leftCaseName = () => { return nextPositionX-1 >= 0 ? this.generatedMap[nextPositionY][nextPositionX-1] : false; }; 
+        let rightCaseName = () => { return nextPositionX+1 <  this.y ? this.generatedMap[nextPositionY][nextPositionX+1] : false; }; 
+        let opponent;
+        if(this.activePlayer == this.players[0]) {
+            opponent = this.players[1].name;
+        } else {
+            opponent = this.players[0].name;
+        }
+
+        if (topCaseName() == opponent || downCaseName() == opponent || leftCaseName() == opponent || rightCaseName() == opponent) {
+            this.onFight = true;
             console.log("Case player: "+ '['+nameNextPosition+']')
         }
+        console.log("Combat: "+ this.onFight)
     }
 
     // Check position avant modifier la carte
@@ -248,41 +268,42 @@ export default class Map {
                 if (this.activePlayer.y -1 >= 0) {
                     this.checkPosition("ArrowUp", startPosition);
                 } else {
-                    console.log("ERROR: Can't go outside the top border")
+                    console.error("ERROR: Can't go outside the top border")
                 }
             break;
             case "ArrowDown":
                 if (this.activePlayer.y +1 < this.y) {
                     this.checkPosition("ArrowDown", startPosition);
                 } else {
-                    console.log("ERROR: Can't go outside the bottom border")
+                    console.error("ERROR: Can't go outside the bottom border")
                 }
             break;
             case "ArrowLeft":
                 if (this.activePlayer.x -1 >= 0) {
                     this.checkPosition("ArrowLeft", startPosition);
                 } else {
-                    console.log("ERROR: Can't go outside the left border")
+                    console.error("ERROR: Can't go outside the left border")
                 }
             break;
             case "ArrowRight":
                 if (this.activePlayer.x +1 < this.x) {
                     this.checkPosition("ArrowRight", startPosition);
                 } else {
-                    console.log("ERROR: Can't go outside the right border")
+                    console.error("ERROR: Can't go outside the right border")
                 }
             break;
         }
     }
 
     //Update map ajax
-    updateVisualMap(nextPositionInfos, player) {
+    updateVisualMap(nextPositionInfos) {
+        let playerName = this.activePlayer.name;
         let previousPosition = nextPositionInfos[0][0]+""+nextPositionInfos[0][1],
             nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1];
         $.ajax({
             success: function(){
-                $("#case-"+nextPosition).addClass("case__"+player.name);
-                $("#case-"+previousPosition).removeClass("case__"+player.name);
+                $("#case-"+nextPosition).addClass("case__"+playerName);
+                $("#case-"+previousPosition).removeClass("case__"+playerName);
         }});
     }
 
@@ -318,6 +339,7 @@ export default class Map {
         } 
     }
 
+    // Colored blocks where the player can go
     backLightBlocks() {
         let stopGoDown = false;
         let stopGoUp = false;
@@ -325,35 +347,35 @@ export default class Map {
         let stopGoRight = false;
         for(let n = 1; n< 4; n++) {
             if(this.activePlayer.y+n < this.y) {
-                if($.inArray(this.generatedMap[this.activePlayer.y+n][this.activePlayer.x], this.obstacles) == -1 && stopGoDown == false) {
+                if($.inArray(this.generatedMap[this.activePlayer.y+n][this.activePlayer.x], this.obstacles) == -1 && stopGoDown == false && this.generatedMap[this.activePlayer.y+n][this.activePlayer.x] !== this.players[0].name && this.generatedMap[this.activePlayer.y+n][this.activePlayer.x] !== this.players[1].name) {
                     $("#case-"+(this.activePlayer.y+n)+''+(this.activePlayer.x)).addClass("case__can_go");
                 }  else {
                     stopGoDown = true;
                 }
             }
-
+            
             if(this.activePlayer.y - n >= 0) {
-                if($.inArray(this.generatedMap[this.activePlayer.y-n][this.activePlayer.x], this.obstacles) == -1 && stopGoUp == false) {
+                if($.inArray(this.generatedMap[this.activePlayer.y-n][this.activePlayer.x], this.obstacles) == -1 && stopGoUp == false && this.generatedMap[this.activePlayer.y-n][this.activePlayer.x] !== this.players[0].name && this.generatedMap[this.activePlayer.y-n][this.activePlayer.x] !== this.players[1].name) {
                     $("#case-"+(this.activePlayer.y-n)+''+(this.activePlayer.x)).addClass("case__can_go")
                 }  else {
                     stopGoUp = true;
                 }
             }
 
-
-            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x+n], this.obstacles) == -1 && stopGoLeft == false) {
+            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x+n], this.obstacles) == -1 && stopGoLeft == false && this.generatedMap[this.activePlayer.y][this.activePlayer.x+n] !== this.players[0].name && this.generatedMap[this.activePlayer.y][this.activePlayer.x+n] !== this.players[1].name) {
                 $("#case-"+(this.activePlayer.y)+''+(this.activePlayer.x+n)).addClass("case__can_go")
             }  else {
                 stopGoLeft = true;
             }
             
-            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x-n], this.obstacles) == -1 && stopGoRight == false) {
+            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x-n], this.obstacles) == -1 && stopGoRight == false && this.generatedMap[this.activePlayer.y][this.activePlayer.x-n] !== this.players[0].name && this.generatedMap[this.activePlayer.y][this.activePlayer.x-n] !== this.players[1].name) {
                 $("#case-"+(this.activePlayer.y)+''+(this.activePlayer.x-n)).addClass("case__can_go")
             }  else {
                 stopGoRight = true;
             }
         }
     }
+
     //Visualiser la carte dans le DOM
     visualizeMap() {
         // Creation field for cases
