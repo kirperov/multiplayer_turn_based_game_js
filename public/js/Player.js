@@ -6,10 +6,25 @@ export default class Player {
         this.previousPosition;
         this.previousWeapon;
         this.health = 100;
-        this.weapon;
+        this.defense = false;
+        this.weapon = {
+            weapon: "weapon_0",
+            dommage: 10
+        };
     }
 
-    attack() {
-        
+    toAttack(playerToAttack) {
+        let dommage = this.weapon.dommage;
+        if(playerToAttack.health > 0) {
+            if(playerToAttack.defense === true) {
+                dommage = dommage-(dommage * 50/100);
+                playerToAttack.defense = false;
+            } 
+            playerToAttack.health  = playerToAttack.health - dommage;
+        }
+    }
+
+    toBlockTheAttack() {
+        this.defense = true;
     }
 }

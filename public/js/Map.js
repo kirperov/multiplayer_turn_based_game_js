@@ -238,28 +238,52 @@ export default class Map {
         } else {    
             console.log("Case obstacle: "+ '['+nameNextPosition+']')
         }
-        this.checkPlayerToFight(nextPositionY, nextPositionX, nameNextPosition);
+        this.checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition);
     }
 
-    // Method who verify if case adjacent is player
-    checkPlayerToFight(nextPositionY, nextPositionX, nameNextPosition) {
-        let topCaseName = () => { return nextPositionY-1 >= 0 ? this.generatedMap[nextPositionY-1][nextPositionX] : false; }; 
-        let downCaseName =  () => { return nextPositionY+1 < this.y ? this.generatedMap[nextPositionY+1][nextPositionX] : false; }; 
-        let leftCaseName = () => { return nextPositionX-1 >= 0 ? this.generatedMap[nextPositionY][nextPositionX-1] : false; }; 
-        let rightCaseName = () => { return nextPositionX+1 <  this.y ? this.generatedMap[nextPositionY][nextPositionX+1] : false; }; 
-        let opponent;
-        
-        if(this.activePlayer == this.players[0]) {
+    getOpponent() {
+        let opponent = this.activePlayer.name;
+        if(opponent === this.players[0].name) {
             opponent = this.players[1].name;
         } else {
             opponent = this.players[0].name;
         }
+        return opponent;
+    }
 
-        if (topCaseName() == opponent || downCaseName() == opponent || leftCaseName() == opponent || rightCaseName() == opponent) {
+    // Method who verify if case adjacent is player
+    checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition) {
+        let topCaseName = () => { return nextPositionY-1 >= 0 ? this.generatedMap[nextPositionY-1][nextPositionX] : false; }; 
+        let downCaseName =  () => { return nextPositionY+1 < this.y ? this.generatedMap[nextPositionY+1][nextPositionX] : false; }; 
+        let leftCaseName = () => { return nextPositionX-1 >= 0 ? this.generatedMap[nextPositionY][nextPositionX-1] : false; }; 
+        let rightCaseName = () => { return nextPositionX+1 <  this.y ? this.generatedMap[nextPositionY][nextPositionX+1] : false; }; 
+        let opponent = this.getOpponent();
+
+        if (topCaseName() === opponent || downCaseName() === opponent || leftCaseName() === opponent || rightCaseName() === opponent) {
             this.onFight = true;
-            console.log("Case player: "+ '['+nameNextPosition+']')
+            console.log("Opponent: "+ '['+nameNextPosition+']');
         }
-        console.log("Combat: "+ this.onFight)
+        console.log("Combat: "+ this.onFight);
+    }
+
+    switchPlayer() {
+        if (this.activePlayer === this.players[0]) {
+            this.activePlayer = this.players[1];
+        } else {
+            this.activePlayer = this.players[0];
+        }
+    }
+
+    toFight() {
+        if (this.activePlayer === this.players[0]) {
+            this.activePlayer.toAttack(this.players[1]);
+        } else {
+            this.activePlayer.toAttack(this.players[0]);
+        }
+    }
+
+    toBlockTheAttack() {
+        this.activePlayer.toBlockTheAttack();
     }
 
     // Check position avant modifier la carte
@@ -310,7 +334,6 @@ export default class Map {
 
     // Update weapon
     updateVisualWeaponOnMap(nextPositionInfos) {
-        console.log(nextPositionInfos)
         let nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1],
             currentWeapon = nextPositionInfos[3].weapon,
             previousWeapon = nextPositionInfos[4];
@@ -342,7 +365,7 @@ export default class Map {
     }
 
     // Colored blocks where the player can go
-    backLightBlocks() {
+    backLightBlocksToGo() {
         let stopGoDown = false;
         let stopGoUp = false;
         let stopGoLeft = false;
@@ -385,6 +408,6 @@ export default class Map {
         for (let i = 0; i < this.generatedMap.length; i++) {
             this.createRowOnGrid(container, i);
         }
-        this.backLightBlocks();
+        this.backLightBlocksToGo();
     }
 }

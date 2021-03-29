@@ -41,16 +41,23 @@ let startPosition = [map.activePlayer.y, map.activePlayer.x];
 // Changement de joueur
 $( "#turn").on("click", function() {
     $(".case__can_go").removeClass('case__can_go');
-    if (map.activePlayer === players[0]) {
-        map.activePlayer = players[1];
-        map.backLightBlocks();
-    } else {
-        map.activePlayer = players[0];
-        map.backLightBlocks();
-    }
+    map.switchPlayer();
+    map.backLightBlocksToGo();
     startPosition = [map.activePlayer.y, map.activePlayer.x];
     map.activePlayer.previousPosition = null;
     console.log(map.generatedMap)
+});
+
+// attaquer le joueur
+$( "#attack").on("click", function() {
+    map.toFight();
+    console.log(players)
+});
+
+// Se defendre
+$("#to-defend").on("click", function() {
+    map.toBlockTheAttack();
+    console.log(players)
 });
 
 // Appel à la méthode de déplacement en fonction de la touche
