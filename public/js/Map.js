@@ -184,8 +184,8 @@ export default class Map {
         let weaponsLength = this.weapons.length;
         for (let i = 0 ; i< weaponsLength; i++) {
             if (nameNextPosition == this.weapons[i].weapon) {   
-                this.activePlayer.previousWeapon = this.activePlayer.weapon;
-                this.activePlayer.weapon = nameNextPosition; 
+                this.activePlayer.previousWeapon = this.activePlayer.weapon.weapon;
+                this.activePlayer.weapon =  this.weapons[i]; 
                 console.log("Case weapon: "+ '['+nameNextPosition+']');    
                 nextPositionInfos.push(this.activePlayer.weapon, this.activePlayer.previousWeapon);
                 this.updateVisualWeaponOnMap(nextPositionInfos); 
@@ -248,6 +248,7 @@ export default class Map {
         let leftCaseName = () => { return nextPositionX-1 >= 0 ? this.generatedMap[nextPositionY][nextPositionX-1] : false; }; 
         let rightCaseName = () => { return nextPositionX+1 <  this.y ? this.generatedMap[nextPositionY][nextPositionX+1] : false; }; 
         let opponent;
+        
         if(this.activePlayer == this.players[0]) {
             opponent = this.players[1].name;
         } else {
@@ -309,8 +310,9 @@ export default class Map {
 
     // Update weapon
     updateVisualWeaponOnMap(nextPositionInfos) {
+        console.log(nextPositionInfos)
         let nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1],
-            currentWeapon = nextPositionInfos[3],
+            currentWeapon = nextPositionInfos[3].weapon,
             previousWeapon = nextPositionInfos[4];
         console.log("Current weapon: "+'['+currentWeapon+']');
         console.log("Previous weapon: "+'['+previousWeapon+']');

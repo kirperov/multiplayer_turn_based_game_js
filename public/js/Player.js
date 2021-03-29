@@ -8,4 +8,8 @@ export default class Player {
         this.health = 100;
         this.weapon;
     }
+
+    attack() {
+        
+    }
 }

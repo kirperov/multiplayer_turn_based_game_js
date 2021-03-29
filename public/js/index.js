@@ -26,8 +26,9 @@ for(let i = 0; i < lengthWeapons; i++) {
 // Initalisation des joueurs
 for(let i = 0; i<lengthPlayers; i++) {
     let player = new Player("player_"+[i]);
-    player.weapon = listWeapons[0].weapon;
+    player.weapon = listWeapons[0];
     players.push(player);
+    console.log(player.weapon)
 }
 
 console.log(players)
@@ -54,6 +55,7 @@ $( "#turn").on("click", function() {
 
 // Appel à la méthode de déplacement en fonction de la touche
 document.addEventListener('keydown', (e) => {
+    console.log(map.activePlayer)
     map.makeStep(e.key, startPosition);
     if (!e.repeat) {
         console.log(`Key "${e.key}" pressed  [event: keydown]`);
