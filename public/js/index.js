@@ -37,12 +37,13 @@ let map = new Map(10, 10, obstacles, listWeapons, players[0], players);
 map.generateMap();
 map.visualizeMap();
 let startPosition = [map.activePlayer.y, map.activePlayer.x]; 
+map.showWaysToGo(startPosition[0], startPosition[1])
 
 // Changement de joueur
 $( "#turn").on("click", function() {
     $(".case__can_go").removeClass('case__can_go');
     map.switchPlayer();
-    map.backLightBlocksToGo();
+    map.showWaysToGo(map.activePlayer.y, map.activePlayer.x);
     startPosition = [map.activePlayer.y, map.activePlayer.x];
     map.activePlayer.previousPosition = null;
     console.log(map.generatedMap)
@@ -70,4 +71,3 @@ document.addEventListener('keydown', (e) => {
         console.log(`Key "${e.key}" repeating  [event: keydown]`);
     }
 });
-

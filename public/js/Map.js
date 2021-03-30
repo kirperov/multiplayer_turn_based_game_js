@@ -196,7 +196,6 @@ export default class Map {
     //Verification de la case si weapon ou obstacle
     checkPosition(direction, startPosition) {
         $(".case__can_go").removeClass('case__can_go');
-
         let previousPosition =  this.activePlayer.previousPosition;
         let nextPositionInfos = this.getNextPosition(direction, this.activePlayer.x, this.activePlayer.y);
         let nameNextPosition =  nextPositionInfos[2],             
@@ -204,20 +203,19 @@ export default class Map {
             nextPositionX = nextPositionInfos[1][1];
         let startPositionY =  startPosition[0],
             startPositionX = startPosition[1];
-        let maxBlocksToGo = 4;
-        let upBlock = startPosition[0] - maxBlocksToGo,
-            downBlock = startPosition[0] + maxBlocksToGo,
-            leftBlock = startPosition[1] - maxBlocksToGo,
-            rightBlock = startPosition[1] + maxBlocksToGo,
-            nextPosition = parseInt(nextPositionY)+""+parseInt(nextPositionX);
+        let possiblesBlocks = this.possiblesWays(startPositionY, startPositionX);
+        let  nextPosition = parseInt(nextPositionY)+""+parseInt(nextPositionX);
+        let playerCurrentPosition = this.activePlayer.y + "" + this.activePlayer.x;
         // Logs positions
-        console.log("Start position: " + "["+startPosition+"]");
+        console.log("Start position: " + "["+startPositionY+"]");
         console.log("New Position: "+ "["+nextPosition+"]");
         console.log("Previous Position: " +"["+previousPosition+"]");
+        console.log("CURRENT Position: " +"["+playerCurrentPosition+"]");
+        console.log('POSSIBLE BLOCK' +possiblesBlocks.down['block3'])
         // Vérification si la case n'est pas un obstacle ou un joueur
-        if ($.inArray(nameNextPosition, this.obstacles) == -1 && this.onFight !== true) {
-            // Définition le périmètre de déplacements possibles
-            if (nextPositionY !== upBlock && nextPositionY !== downBlock && nextPositionX !== leftBlock && nextPositionX !== rightBlock) {
+        if ($.inArray(nameNextPosition, this.obstacles) == -1 && this.onFight !== true) {   
+            if (playerCurrentPosition !== possiblesBlocks.down['block3'] && playerCurrentPosition !== possiblesBlocks.up['block3']  && playerCurrentPosition !== possiblesBlocks.left['block3']  && playerCurrentPosition !== possiblesBlocks.right['block3'] ) {
+                this.showWaysToGo(startPositionY, startPositionX, direction)
                 // Réduction du périmètre par rapport de la déstination choisi
                 if (nextPositionX == startPositionX || nextPositionY == startPositionY) {
                     //  Intérdiction de se déplacer en arrière
@@ -239,6 +237,58 @@ export default class Map {
             console.log("Case obstacle: "+ '['+nameNextPosition+']')
         }
         this.checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition);
+    }
+
+    possiblesWays(startPositionY, startPositionX) {
+        let stopGoDown = false;
+        let stopGoUp = false;
+        let stopGoLeft = false;
+        let stopGoRight = false;
+        let possiblesWays = {down: [], up: [], left: [], right: [] };
+  
+        for(let n = 1; n< 4; n++) {
+            if(startPositionY+n < this.y) {
+                if($.inArray(this.generatedMap[startPositionY+n][startPositionX], this.obstacles) == -1 && stopGoDown == false) {
+                    possiblesWays.down['block'+n] = parseInt(startPositionY+n) + '' +parseInt((startPositionX));
+                }  else {
+                    stopGoDown = true;
+                }
+            } else {
+                stopGoDown = true;
+            }
+            
+            if(startPositionY-n  >= 0) {
+                if($.inArray(this.generatedMap[startPositionY-n][startPositionX], this.obstacles) == -1 && stopGoUp == false) {
+                    possiblesWays.up['block'+n] = parseInt((startPositionY-n)) + '' +parseInt((startPositionX));
+                }  else {
+                    stopGoUp = true;
+                }
+            } else {
+                stopGoUp = true;
+            }
+
+            if(startPositionX-n >= 0) {
+                if($.inArray(this.generatedMap[startPositionY][startPositionX-n], this.obstacles) == -1 && stopGoLeft == false) {
+                    possiblesWays.left['block'+n] = parseInt((startPositionY)) + '' +parseInt((startPositionX-n));
+                }  else {
+                    stopGoLeft = true;
+                }
+            } else {
+                stopGoLeft = true;
+            }
+
+            if(startPositionX+n < this.x) {
+                if($.inArray(this.generatedMap[startPositionY][startPositionX+n], this.obstacles) == -1 && stopGoRight == false) {
+                    possiblesWays.right['block'+n] = parseInt((startPositionY)) + '' +parseInt((startPositionX+n));
+                }  else {
+                    stopGoRight = true;
+                }
+            } else {
+                stopGoRight = true;
+            }
+        }
+        console.log(possiblesWays)
+        return possiblesWays;
     }
 
     getOpponent() {
@@ -364,40 +414,24 @@ export default class Map {
         } 
     }
 
-    // Colored blocks where the player can go
-    backLightBlocksToGo() {
-        let stopGoDown = false;
-        let stopGoUp = false;
-        let stopGoLeft = false;
-        let stopGoRight = false;
-        for(let n = 1; n< 4; n++) {
-            if(this.activePlayer.y+n < this.y) {
-                if($.inArray(this.generatedMap[this.activePlayer.y+n][this.activePlayer.x], this.obstacles) == -1 && stopGoDown == false && this.generatedMap[this.activePlayer.y+n][this.activePlayer.x] !== this.players[0].name && this.generatedMap[this.activePlayer.y+n][this.activePlayer.x] !== this.players[1].name) {
-                    $("#case-"+(this.activePlayer.y+n)+''+(this.activePlayer.x)).addClass("case__can_go");
-                }  else {
-                    stopGoDown = true;
-                }
-            }
-            
-            if(this.activePlayer.y - n >= 0) {
-                if($.inArray(this.generatedMap[this.activePlayer.y-n][this.activePlayer.x], this.obstacles) == -1 && stopGoUp == false && this.generatedMap[this.activePlayer.y-n][this.activePlayer.x] !== this.players[0].name && this.generatedMap[this.activePlayer.y-n][this.activePlayer.x] !== this.players[1].name) {
-                    $("#case-"+(this.activePlayer.y-n)+''+(this.activePlayer.x)).addClass("case__can_go")
-                }  else {
-                    stopGoUp = true;
-                }
-            }
+    lightUpTheWay(possiblesWays) {  
+        for (var key in  possiblesWays) {
+            console.log("down " + key + " has value " +  possiblesWays[key]);
+            $("#case-"+(possiblesWays[key])).addClass("case__can_go");
+        }
+    }
 
-            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x+n], this.obstacles) == -1 && stopGoLeft == false && this.generatedMap[this.activePlayer.y][this.activePlayer.x+n] !== this.players[0].name && this.generatedMap[this.activePlayer.y][this.activePlayer.x+n] !== this.players[1].name) {
-                $("#case-"+(this.activePlayer.y)+''+(this.activePlayer.x+n)).addClass("case__can_go")
-            }  else {
-                stopGoLeft = true;
-            }
-            
-            if($.inArray(this.generatedMap[this.activePlayer.y][this.activePlayer.x-n], this.obstacles) == -1 && stopGoRight == false && this.generatedMap[this.activePlayer.y][this.activePlayer.x-n] !== this.players[0].name && this.generatedMap[this.activePlayer.y][this.activePlayer.x-n] !== this.players[1].name) {
-                $("#case-"+(this.activePlayer.y)+''+(this.activePlayer.x-n)).addClass("case__can_go")
-            }  else {
-                stopGoRight = true;
-            }
+    // Colored blocks where the player can go
+    showWaysToGo(startPositionY, startPositionX, direction=null) {
+        let possiblesWays = this.possiblesWays(startPositionY, startPositionX)
+        // direction = "Down";
+        if(direction == null) {
+            this.lightUpTheWay(possiblesWays.down);
+            this.lightUpTheWay(possiblesWays.up);
+            this.lightUpTheWay(possiblesWays.left);
+            this.lightUpTheWay(possiblesWays.right);
+        } else if(direction==="ArrowDown") {
+            this.lightUpTheWay(possiblesWays.down);
         }
     }
 
@@ -408,6 +442,5 @@ export default class Map {
         for (let i = 0; i < this.generatedMap.length; i++) {
             this.createRowOnGrid(container, i);
         }
-        this.backLightBlocksToGo();
     }
 }
