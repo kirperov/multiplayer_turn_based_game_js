@@ -22,10 +22,14 @@
 
 <body>
     <h1>Half life: Web Duel</h1> 
-    <button id="turn">Turn</button>
-    <button id="attack">Attack</button>
-    <button id="to-defend">To defend</button>
-    <div class="map-grid"></div>
+    <div class="game">
+        <div class="actions-container">
+            <button class="actions-container__btn--turn" id="turn">Turn</button>
+            <button class="actions-container__btn--attack" id="attack">Attack</button>
+            <button class="actions-container__btn--defend" id="to-defend">To defend</button>
+        </div>
+        <div class="map-grid"></div>
+    </div>
     <!-- SCRIPTS -->
     
     <script type="module" src="/public/js/index.js"></script>

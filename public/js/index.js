@@ -43,6 +43,8 @@ map.showWaysToGo(map.possiblesWays(startPosition[0], startPosition[1]))
 $( "#turn").on("click", function() {
     $(".case__can_go").removeClass('case__can_go');
     map.switchPlayer();
+    map.showWaysToGo(map.possiblesWays(map.activePlayer.y, map.activePlayer.x))
+
     startPosition = [map.activePlayer.y, map.activePlayer.x];
     map.activePlayer.previousPosition = null;
     map.activePlayer.previousMouvement = [];

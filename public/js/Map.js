@@ -178,7 +178,6 @@ export default class Map {
         this.activePlayer.y = nextPositionY;
         this.activePlayer.x = nextPositionX;
         this.activePlayer.previousMouvement.push(parseInt(this.activePlayer.y)+""+parseInt(this.activePlayer.x));
-
     }
 
     //Update weapon if case is weapon
@@ -213,7 +212,7 @@ export default class Map {
         console.log("New Position: "+ "["+nextPosition+"]");
         console.log("Previous Position: " +"["+previousPosition+"]");
         console.log("CURRENT Position: " +"["+playerCurrentPosition+"]");
-        console.log("Previous mouvement "+this.activePlayer.previousMouvement)
+        console.log("Previous mouvement "+this.activePlayer.previousMouvement);
         // Vérification si la case n'est pas un obstacle ou un joueur
         if ($.inArray(nameNextPosition, this.obstacles) == -1 && this.onFight !== true) {  
             if (possiblesBlocks.down.includes(nextPosition) || possiblesBlocks.up.includes(nextPosition) || possiblesBlocks.left.includes(nextPosition) || possiblesBlocks.right.includes(nextPosition)) {
@@ -226,9 +225,9 @@ export default class Map {
                 console.error("ERROR: Impossible to go to this position");
             }
             // Verification si la case adjecente est l'adversaire
-            this.checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition);
+            this.checkIfPlayerAdjecent(this.activePlayer.y, this.activePlayer.x, nameNextPosition);
         } else {    
-            console.log("Case obstacle: "+ '['+nameNextPosition+']')
+            console.log("Case obstacle: "+ '['+nameNextPosition+']');
             console.log("Combat: "+ this.onFight);
         }
     }
@@ -244,7 +243,7 @@ export default class Map {
             if(startPositionY+n < this.y) {
                 if($.inArray(this.generatedMap[startPositionY+n][startPositionX], this.obstacles) == -1 && stopGoDown == false) {
                     if(!this.activePlayer.previousMouvement.includes(parseInt(startPositionY+n) + '' +parseInt((startPositionX)))) {
-                        possiblesWays.down.push( parseInt(startPositionY+n) + '' +parseInt((startPositionX)))
+                        possiblesWays.down.push(parseInt(startPositionY+n) + '' +parseInt((startPositionX)));
                     }
                 }  else {
                     stopGoDown = true;
@@ -293,14 +292,11 @@ export default class Map {
     }
 
     getOpponent() {
-    
-        let opponent = this.activePlayer.name;
-        if(opponent === this.players[0].name) {
-            opponent = this.players[1].name;
+        if(this.activePlayer.name === this.players[0].name) {
+            return this.players[1].name;
         } else {
-            opponent = this.players[0].name;
+            return this.players[0].name;
         }
-        return opponent;
     }
 
     // Method who verify if case adjacent is player
@@ -420,16 +416,13 @@ export default class Map {
         for (var key in  possiblesWays) {
             console.log("Block " + key + " has value " +  possiblesWays[key]);
             $("#case-"+(possiblesWays[key])).addClass("case__can_go");
-            // $("#case-"+(currentPosition)).removeClass("case__can_go");
-
+            // $("#case-"+currentPosition).removeClass("case__can_go");
         }
     }
 
     // Colored blocks where the player can go
     showWaysToGo(possiblesWays, currentPosition, direction=null) {
         $(".case__can_go").removeClass("case__can_go");
-        // let possiblesWays = this.possiblesWays(startPositionY, startPositionX)
-        console.log(possiblesWays)
         switch (direction) {
             case "ArrowUp":
                  this.lightUpTheWay(possiblesWays.up, currentPosition);
