@@ -4,6 +4,7 @@ export default class Player {
         this.x = x;
         this.y = y;
         this.previousPosition;
+        this.previousMouvement = [];
         this.previousWeapon;
         this.health = 100;
         this.defense = false;
