@@ -190,6 +190,7 @@ export default class Map {
                 console.log("Case weapon: "+ '['+nameNextPosition+']');    
                 nextPositionInfos.push(this.activePlayer.weapon, this.activePlayer.previousWeapon);
                 this.updateVisualWeaponOnMap(nextPositionInfos); 
+                this.updateWeaponPlayerInfo();
             }
         }     
     }
@@ -221,8 +222,10 @@ export default class Map {
                 this.updateWeapon(nameNextPosition, nextPositionInfos);
                 this.updateVisualMap(nextPositionInfos, this.activePlayer);
                 this.showWaysToGo(possiblesBlocks, playerCurrentPosition, direction);
+                
             } else {
                 console.error("ERROR: Impossible to go to this position");
+
             }
             // Verification si la case adjecente est l'adversaire
             this.checkIfPlayerAdjecent(this.activePlayer.y, this.activePlayer.x, nameNextPosition);
@@ -232,6 +235,7 @@ export default class Map {
         }
     }
 
+    // Get possibles blocks to go
     possiblesWays(startPositionY, startPositionX) {
         let stopGoDown = false;
         let stopGoUp = false;
@@ -291,6 +295,7 @@ export default class Map {
         return possiblesWays;
     }
 
+    // Get opponent's name
     getOpponent() {
         if(this.activePlayer.name === this.players[0].name) {
             return this.players[1].name;
@@ -328,6 +333,7 @@ export default class Map {
         } else {
             this.activePlayer.toAttack(this.players[0]);
         }
+        this.upupdateHealthPlayerInfo();
     }
 
     toBlockTheAttack() {
@@ -380,6 +386,39 @@ export default class Map {
         }});
     }
 
+    // Update weapon on section info player
+    updateWeaponPlayerInfo() {
+        let playerInfosContainer = $("#"+this.activePlayer.name);
+        let weapon = playerInfosContainer.children()[1].childNodes;
+        let weaponImage = weapon[1].classList[0];
+        weapon = weapon[3].classList[0];
+
+        let imageUrl = "/public/icons/weapons/"+this.activePlayer.weapon.weapon+".png"
+        $('#'+playerInfosContainer.attr('id') + " " + '.'+weaponImage).css("background-image", "url(" + imageUrl + ")");
+        $('#'+playerInfosContainer.attr('id') + " " + '.'+weapon).text(this.activePlayer.weapon.weapon);
+    }
+
+    // Update health on section info player
+    upupdateHealthPlayerInfo() {
+        for(let i = 0; i < this.players.length; i ++) {
+            let playerInfosContainer = $("#"+this.players[i].name);
+            let health = playerInfosContainer.children()[0].childNodes;
+            let playerHealth = this.players[i].health;
+            health = health[3].classList[0];
+            $.ajax({
+                success: function(){
+                    $('#'+playerInfosContainer.attr('id') + " " + '.'+health).text(playerHealth)
+            }});
+        }
+    }
+
+    // Update if shield on section info player
+    updateUserShieldInfo() {
+        let playerInfosContainer = $("#"+this.activePlayer.name);
+        let blockAttack = playerInfosContainer.children()[2].childNodes;
+        blockAttack = blockAttack[3].classList[0];
+    }
+    
     // Update weapon
     updateVisualWeaponOnMap(nextPositionInfos) {
         let nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1],
@@ -389,7 +428,7 @@ export default class Map {
         console.log("Previous weapon: "+'['+previousWeapon+']');
         $.ajax({
             success: function(){
-                $("#case-"+nextPosition).removeClass().addClass("case case__"+previousWeapon);
+                $("#case-"+nextPosition).removeClass().addClass("case case__"+previousWeapon);    
         }});
     }
 
@@ -426,7 +465,6 @@ export default class Map {
         switch (direction) {
             case "ArrowUp":
                  this.lightUpTheWay(possiblesWays.up, currentPosition);
-
             break;
             case "ArrowDown":
                 this.lightUpTheWay(possiblesWays.down, currentPosition);

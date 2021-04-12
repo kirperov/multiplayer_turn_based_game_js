@@ -28,7 +28,6 @@ for(let i = 0; i<lengthPlayers; i++) {
     let player = new Player("player_"+[i]);
     player.weapon = listWeapons[0];
     players.push(player);
-    console.log(player.weapon)
 }
 
 console.log(players)
@@ -49,6 +48,7 @@ $( "#turn").on("click", function() {
     map.activePlayer.previousPosition = null;
     map.activePlayer.previousMouvement = [];
     console.log(map.generatedMap)
+    console.log(map.activePlayer)
 });
 
 // attaquer le joueur

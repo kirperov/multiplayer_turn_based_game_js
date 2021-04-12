@@ -57,25 +57,25 @@
   background-position: center;
 }
 .case__weapon_0 {
-  background-image: url("/public/icons/weapons/icons8-gun-100.png");
+  background-image: url("/public/icons/weapons/weapon_0.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
 .case__weapon_1 {
-  background-image: url("/public/icons/weapons/icons8-assault-rifle-100.png");
+  background-image: url("/public/icons/weapons/weapon_1.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
 .case__weapon_2 {
-  background-image: url("/public/icons/weapons/icons8-crowbar-100.png");
+  background-image: url("/public/icons/weapons/weapon_2.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
 .case__weapon_3 {
-  background-image: url("/public/icons/weapons/icons8-bulletproof-vest-100.png");
+  background-image: url("/public/icons/weapons/weapon_3.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
@@ -139,7 +139,7 @@
   width: 3em;
   border: 0;
   height: 3em;
-  background-image: url("/public/icons/weapons/icons8-assault-rifle-100.png");
+  background-image: url("/public/icons/weapons/weapon0.png");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
