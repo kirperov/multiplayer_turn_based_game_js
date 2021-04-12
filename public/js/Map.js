@@ -394,7 +394,7 @@ export default class Map {
     }
 
     createRowOnGrid(container, numberRow) {
-        let rowX = $('<div id="row-'+[numberRow]+ '"' + 'class="map-grid__row"></div>');
+        let rowX = $('<div id="row-'+[numberRow]+ '"' + 'class="map__row"></div>');
         for (let n = 0; n < this.generatedMap[numberRow].length; n++) {
             // Creation cases
             let caseDiv = $("<div></div>");
@@ -452,7 +452,7 @@ export default class Map {
     //Visualiser la carte dans le DOM
     visualizeMap() {
         // Creation field for cases
-        let container = $(".map-grid");
+        let container = $(".map");
         for (let i = 0; i < this.generatedMap.length; i++) {
             this.createRowOnGrid(container, i);
         }

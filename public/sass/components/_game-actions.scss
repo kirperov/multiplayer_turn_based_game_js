@@ -1,0 +1,38 @@
+.game {
+    &__actions {
+        display: flex;
+        justify-content: center;
+        margin: 1em;
+    }
+}
+ 
+.btn-turn {
+    margin: 1em;
+    padding:2em;
+    border: none;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.904);
+    background-image: url("/public/icons/players/repeat.png");
+    @include background_rules(100%, no-repeat, center)
+}
+
+.btn-attack {
+    margin: 1em;
+    border: none;
+    cursor: pointer;
+    padding:2em;
+    background-color: rgba(255, 255, 255, 0.904);
+    background-image: url("/public/icons/players/assault-rifle.png");
+    @include background_rules(100%, no-repeat, center)
+}
+
+.btn-defend {
+    margin: 1em;
+    border: none;
+    cursor: pointer;
+    cursor: pointer;
+    padding:2em;
+    background-color: rgba(255, 255, 255, 0.904);
+    background-image: url("/public/icons/players/shield.png");
+    @include background_rules(100%, no-repeat, center)
+}

@@ -1,6 +1,13 @@
-.map-grid {
+.game {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.map {
     display: flex;
     flex-direction: column;
+    border: 1px solid black;
     &__row {
         display: flex;
         flex-direction: row;
@@ -14,9 +21,9 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width:3em;
-    height: 3em;
-    border: 1px solid black;
+    width:4em;
+    height: 4em;
+    border: 1px solid rgba(109, 109, 109, 0.548);
     &__empty {
         background-color: white;
     }

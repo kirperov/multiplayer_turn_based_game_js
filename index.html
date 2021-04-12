@@ -21,14 +21,44 @@
     </head>
 
 <body>
-    <h1>Half life: Web Duel</h1> 
     <div class="game">
-        <div class="actions-container">
-            <button class="actions-container__btn--turn" id="turn">Turn</button>
-            <button class="actions-container__btn--attack" id="attack">Attack</button>
-            <button class="actions-container__btn--defend" id="to-defend">To defend</button>
+        <div class="game__actions">
+            <button class="btn-turn" id="turn"></button>
+            <button class="btn-attack" id="attack"></button>
+            <button class="btn-defend" id="to-defend"></button>
         </div>
-        <div class="map-grid"></div>
+        <div class="game__field">
+            <div class="player-infos">
+                <div class="player-infos__health">
+                    <div class="player-infos__health--img"></div>
+                    <div class="player-infos__health--value">100</div>
+                </div>
+                <div class="player-infos__weapon">
+                    <div class="player-infos__weapon--img"></div>
+                    <div class="player-infos__weapon--value">Ak-47</div>
+                </div>
+                <div class="player-infos__shield">
+                    <div class="player-infos__shield--img"></div>
+                    <div class="player-infos__shield--value">Blocked</div>
+                </div>
+            </div>
+            <div class="map"></div>
+            <div class="player-infos">
+                <div class="player-infos__health">
+                    <div class="player-infos__health--img"></div>
+                    <div class="player-infos__health--value">100</div>
+                </div>
+                <div class="player-infos__weapon">
+                    <div class="player-infos__weapon--img"></div>
+                    <div class="player-infos__weapon--value">Ak-47</div>
+                </div>
+                <div class="player-infos__shield">
+                    <div class="player-infos__shield--img"></div>
+                    <div class="player-infos__shield--value">Blocked</div>
+                </div>
+            </div>
+        </div>
+        
     </div>
     <!-- SCRIPTS -->
     

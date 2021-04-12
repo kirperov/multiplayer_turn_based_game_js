@@ -1,8 +1,19 @@
-.map-grid {
+@font-face {
+  font-family: "InterBold";
+  src: url("/public/fonts/Inter/static/Inter-Bold.ttf");
+}
+.game {
   display: flex;
+  justify-content: center;
   flex-direction: column;
 }
-.map-grid__row {
+
+.map {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+}
+.map__row {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -14,9 +25,9 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 3em;
-  height: 3em;
-  border: 1px solid black;
+  width: 4em;
+  height: 4em;
+  border: 1px solid rgba(109, 109, 109, 0.548);
 }
 .case__empty {
   background-color: white;
@@ -85,6 +96,120 @@
 }
 .case__can_go {
   background-color: gray;
+}
+
+.game__field {
+  display: flex;
+  justify-content: space-around;
+}
+
+.player-infos {
+  background-color: rgba(250, 130, 17, 0.822);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 20%;
+}
+.player-infos__health {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.player-infos__health--img {
+  width: 3em;
+  height: 3em;
+  background-image: url("/public/icons/players/heart.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.player-infos__health--value {
+  color: white;
+  font-family: "InterBold";
+  font-weight: bold;
+}
+.player-infos__weapon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.player-infos__weapon--img {
+  width: 3em;
+  border: 0;
+  height: 3em;
+  background-image: url("/public/icons/weapons/icons8-assault-rifle-100.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.player-infos__weapon--value {
+  color: white;
+  font-family: "InterBold";
+  font-weight: bold;
+}
+.player-infos__shield {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.player-infos__shield--img {
+  width: 3em;
+  height: 3em;
+  background-image: url("/public/icons/players/shield.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.player-infos__shield--value {
+  color: white;
+  font-family: "InterBold";
+  font-weight: bold;
+}
+
+.game__actions {
+  display: flex;
+  justify-content: center;
+  margin: 1em;
+}
+
+.btn-turn {
+  margin: 1em;
+  padding: 2em;
+  border: none;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.904);
+  background-image: url("/public/icons/players/repeat.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.btn-attack {
+  margin: 1em;
+  border: none;
+  cursor: pointer;
+  padding: 2em;
+  background-color: rgba(255, 255, 255, 0.904);
+  background-image: url("/public/icons/players/assault-rifle.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.btn-defend {
+  margin: 1em;
+  border: none;
+  cursor: pointer;
+  cursor: pointer;
+  padding: 2em;
+  background-color: rgba(255, 255, 255, 0.904);
+  background-image: url("/public/icons/players/shield.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 /*# sourceMappingURL=style.css.map */

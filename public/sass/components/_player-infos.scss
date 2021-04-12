@@ -1,0 +1,73 @@
+ 
+.game__field {
+    display: flex;
+    justify-content: space-around;
+}
+
+.player-infos {
+    background-color: rgba(250, 130, 17, 0.822);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 20%;
+    
+    &__health {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        &--img {
+            width:3em;
+            height: 3em;
+            background-image: url("/public/icons/players/heart.png");
+            @include background_rules(100%, no-repeat, center)
+        } 
+        &--value {
+            color: white;
+            font-family: 'InterBold';
+            font-weight: bold;
+        }
+    }
+
+    &__weapon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        &--img {
+            width:3em;
+            border:0; 
+            height: 3em;
+            background-image: url("/public/icons/weapons/icons8-assault-rifle-100.png");
+            @include background_rules(80%, no-repeat, center)
+          
+        } 
+        &--value {
+            color: white;
+            font-family: 'InterBold';
+            font-weight: bold;
+        }
+    }
+
+    &__shield {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        &--img {
+            width:3em;
+            height: 3em;
+            background-image: url("/public/icons/players/shield.png");
+            @include background_rules(100%, no-repeat, center)
+        } 
+        &--value {
+            color: white;
+            font-family: 'InterBold';
+            font-weight: bold;
+        }
+    }
+}
+
+ 
+
+ 
