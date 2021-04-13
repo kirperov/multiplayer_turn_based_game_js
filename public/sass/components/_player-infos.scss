@@ -1,9 +1,3 @@
- 
-.game__field {
-    display: flex;
-    justify-content: space-around;
-}
-
 .player-infos {
     background-color: rgba(250, 130, 17, 0.822);
     display: flex;
@@ -34,13 +28,33 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        &--img {
+        &_0 {
             width:3em;
             border:0; 
             height: 3em;
-            background-image: url("/public/icons/weapons/weapon0.png");
+            background-image: url("/public/icons/weapons/weapon_0.png");
             @include background_rules(80%, no-repeat, center)
-          
+        } 
+        &_1 {
+            width:3em;
+            border:0; 
+            height: 3em;
+            background-image: url("/public/icons/weapons/weapon_1.png");
+            @include background_rules(80%, no-repeat, center)
+        } 
+        &_2 {
+            width:3em;
+            border:0; 
+            height: 3em;
+            background-image: url("/public/icons/weapons/weapon_2.png");
+            @include background_rules(80%, no-repeat, center)
+        } 
+        &_3 {
+            width:3em;
+            border:0; 
+            height: 3em;
+            background-image: url("/public/icons/weapons/weapon_3.png");
+            @include background_rules(80%, no-repeat, center)
         } 
         &--value {
             color: white;
@@ -50,10 +64,10 @@
     }
 
     &__shield {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+        // flex-direction: column;
         &--img {
             width:3em;
             height: 3em;
@@ -64,6 +78,15 @@
             color: white;
             font-family: 'InterBold';
             font-weight: bold;
+        }
+        &--hidden {
+            display: none;
+        } 
+        &--visible {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
     }
 }

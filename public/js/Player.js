@@ -20,12 +20,42 @@ export default class Player {
             if(playerToAttack.defense === true) {
                 dommage = dommage-(dommage * 50/100);
                 playerToAttack.defense = false;
+                this.updatShieldPlayerInfo(playerToAttack.name, playerToAttack.defense);
             } 
             playerToAttack.health  = playerToAttack.health - dommage;
+            this.updateHealthPlayerInfo(playerToAttack);
         }
     }
 
     toBlockTheAttack() {
         this.defense = true;
+        this.updatShieldPlayerInfo();
+    }
+
+    // Update weapon on section info player
+    updateWeaponPlayerInfo() {
+        let playerWeaponInfoImg = $("#"+this.name+"-weapon-img");
+        let playerWeaponInfoValue = $("#"+this.name+"-weapon-value");
+        $('#'+playerWeaponInfoImg.attr('id')).removeClass("player-infos__"+this.previousWeapon).addClass("player-infos__"+this.weapon.weapon);
+        $('#'+playerWeaponInfoValue.attr('id')).text(this.weapon.weapon);
+    }
+
+    // Update health on section info player
+    updateHealthPlayerInfo(playerToAttack) {
+        let playerHealthInfoValue = $("#"+playerToAttack.name+"-health-value");
+        $.ajax({
+            success: function(){
+                $('#'+playerHealthInfoValue.attr('id')).text(playerToAttack.health + "%");
+        }});
+    }
+
+    // Update if shield on section info player
+    updatShieldPlayerInfo(playerName=this.name, playerDefense=this.defense) {
+        let playerShieldImageInfo = $("#"+playerName+"-shield");
+        if(playerDefense) {
+            $('#'+playerShieldImageInfo.attr('id')).removeClass("player-infos__shield--hidden").addClass("player-infos__shield--visible");
+        } else {
+            $('#'+playerShieldImageInfo.attr('id')).removeClass("player-infos__shield--visible").addClass("player-infos__shield--hidden");
+        }
     }
 }

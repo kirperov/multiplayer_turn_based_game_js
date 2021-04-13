@@ -7,11 +7,15 @@
   justify-content: center;
   flex-direction: column;
 }
+.game__field {
+  display: flex;
+  justify-content: space-evenly;
+}
 
 .map {
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  border: 1px solid rgba(109, 109, 109, 0.548);
 }
 .map__row {
   display: flex;
@@ -25,8 +29,8 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  width: 4em;
-  height: 4em;
+  width: 3.8em;
+  height: 3.8em;
   border: 1px solid rgba(109, 109, 109, 0.548);
 }
 .case__empty {
@@ -98,11 +102,6 @@
   background-color: gray;
 }
 
-.game__field {
-  display: flex;
-  justify-content: space-around;
-}
-
 .player-infos {
   background-color: rgba(250, 130, 17, 0.822);
   display: flex;
@@ -135,11 +134,38 @@
   align-items: center;
   flex-direction: column;
 }
-.player-infos__weapon--img {
+.player-infos__weapon_0 {
   width: 3em;
   border: 0;
   height: 3em;
-  background-image: url("/public/icons/weapons/weapon0.png");
+  background-image: url("/public/icons/weapons/weapon_0.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.player-infos__weapon_1 {
+  width: 3em;
+  border: 0;
+  height: 3em;
+  background-image: url("/public/icons/weapons/weapon_1.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.player-infos__weapon_2 {
+  width: 3em;
+  border: 0;
+  height: 3em;
+  background-image: url("/public/icons/weapons/weapon_2.png");
+  background-size: 80%;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.player-infos__weapon_3 {
+  width: 3em;
+  border: 0;
+  height: 3em;
+  background-image: url("/public/icons/weapons/weapon_3.png");
   background-size: 80%;
   background-repeat: no-repeat;
   background-position: center;
@@ -148,12 +174,6 @@
   color: white;
   font-family: "InterBold";
   font-weight: bold;
-}
-.player-infos__shield {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 }
 .player-infos__shield--img {
   width: 3em;
@@ -167,6 +187,15 @@
   color: white;
   font-family: "InterBold";
   font-weight: bold;
+}
+.player-infos__shield--hidden {
+  display: none;
+}
+.player-infos__shield--visible {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .game__actions {
@@ -202,7 +231,6 @@
 .btn-defend {
   margin: 1em;
   border: none;
-  cursor: pointer;
   cursor: pointer;
   padding: 2em;
   background-color: rgba(255, 255, 255, 0.904);

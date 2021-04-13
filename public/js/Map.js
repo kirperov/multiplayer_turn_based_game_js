@@ -190,7 +190,7 @@ export default class Map {
                 console.log("Case weapon: "+ '['+nameNextPosition+']');    
                 nextPositionInfos.push(this.activePlayer.weapon, this.activePlayer.previousWeapon);
                 this.updateVisualWeaponOnMap(nextPositionInfos); 
-                this.updateWeaponPlayerInfo();
+                this.activePlayer.updateWeaponPlayerInfo();
             }
         }     
     }
@@ -212,8 +212,8 @@ export default class Map {
         console.log("Start position: " + "["+startPositionY+"]");
         console.log("New Position: "+ "["+nextPosition+"]");
         console.log("Previous Position: " +"["+previousPosition+"]");
-        console.log("CURRENT Position: " +"["+playerCurrentPosition+"]");
-        console.log("Previous mouvement "+this.activePlayer.previousMouvement);
+        console.log("Current Position: " +"["+playerCurrentPosition+"]");
+        console.log("Previous mouvement: "+this.activePlayer.previousMouvement);
         // Vérification si la case n'est pas un obstacle ou un joueur
         if ($.inArray(nameNextPosition, this.obstacles) == -1 && this.onFight !== true) {  
             if (possiblesBlocks.down.includes(nextPosition) || possiblesBlocks.up.includes(nextPosition) || possiblesBlocks.left.includes(nextPosition) || possiblesBlocks.right.includes(nextPosition)) {
@@ -245,7 +245,7 @@ export default class Map {
   
         for(let n = 1; n < 4; n++) {
             if(startPositionY+n < this.y) {
-                if($.inArray(this.generatedMap[startPositionY+n][startPositionX], this.obstacles) == -1 && stopGoDown == false) {
+                if($.inArray(this.generatedMap[startPositionY+n][startPositionX], this.obstacles) == -1 && this.generatedMap[startPositionY+n][startPositionX] !== this.getOpponent() && stopGoDown == false) {
                     if(!this.activePlayer.previousMouvement.includes(parseInt(startPositionY+n) + '' +parseInt((startPositionX)))) {
                         possiblesWays.down.push(parseInt(startPositionY+n) + '' +parseInt((startPositionX)));
                     }
@@ -257,7 +257,7 @@ export default class Map {
             }
             
             if(startPositionY-n  >= 0) {
-                if($.inArray(this.generatedMap[startPositionY-n][startPositionX], this.obstacles) == -1 && stopGoUp == false) {
+                if($.inArray(this.generatedMap[startPositionY-n][startPositionX], this.obstacles) == -1 && this.generatedMap[startPositionY-n][startPositionX] !== this.getOpponent() && stopGoUp == false) {
                     if(!this.activePlayer.previousMouvement.includes( parseInt(startPositionY-n) + '' +parseInt((startPositionX)))) {
                         possiblesWays.up.push(parseInt((startPositionY-n)) + '' +parseInt((startPositionX)));
                     }
@@ -269,7 +269,7 @@ export default class Map {
             }
 
             if(startPositionX-n >= 0) {
-                if($.inArray(this.generatedMap[startPositionY][startPositionX-n], this.obstacles) == -1 && stopGoLeft == false) {
+                if($.inArray(this.generatedMap[startPositionY][startPositionX-n], this.obstacles) == -1 && this.generatedMap[startPositionY][startPositionX-n] !== this.getOpponent() &&  stopGoLeft == false) {
                     if(!this.activePlayer.previousMouvement.includes( parseInt(startPositionY) + '' +parseInt((startPositionX-n)))) {
                         possiblesWays.left.push(parseInt((startPositionY)) + '' +parseInt((startPositionX-n)));
                     }
@@ -281,7 +281,7 @@ export default class Map {
             }
 
             if(startPositionX+n < this.x) {
-                if($.inArray(this.generatedMap[startPositionY][startPositionX+n], this.obstacles) == -1 && stopGoRight == false) {
+                if($.inArray(this.generatedMap[startPositionY][startPositionX+n], this.obstacles) == -1 && this.generatedMap[startPositionY][startPositionX+n] !== this.getOpponent() && stopGoRight == false) {
                     if(!this.activePlayer.previousMouvement.includes( parseInt(startPositionY) + '' +parseInt((startPositionX+n)))) {
                         possiblesWays.right.push( parseInt((startPositionY)) + '' +parseInt((startPositionX+n)));
                     }
@@ -333,11 +333,6 @@ export default class Map {
         } else {
             this.activePlayer.toAttack(this.players[0]);
         }
-        this.upupdateHealthPlayerInfo();
-    }
-
-    toBlockTheAttack() {
-        this.activePlayer.toBlockTheAttack();
     }
 
     // Check position avant modifier la carte
@@ -386,39 +381,6 @@ export default class Map {
         }});
     }
 
-    // Update weapon on section info player
-    updateWeaponPlayerInfo() {
-        let playerInfosContainer = $("#"+this.activePlayer.name);
-        let weapon = playerInfosContainer.children()[1].childNodes;
-        let weaponImage = weapon[1].classList[0];
-        weapon = weapon[3].classList[0];
-
-        let imageUrl = "/public/icons/weapons/"+this.activePlayer.weapon.weapon+".png"
-        $('#'+playerInfosContainer.attr('id') + " " + '.'+weaponImage).css("background-image", "url(" + imageUrl + ")");
-        $('#'+playerInfosContainer.attr('id') + " " + '.'+weapon).text(this.activePlayer.weapon.weapon);
-    }
-
-    // Update health on section info player
-    upupdateHealthPlayerInfo() {
-        for(let i = 0; i < this.players.length; i ++) {
-            let playerInfosContainer = $("#"+this.players[i].name);
-            let health = playerInfosContainer.children()[0].childNodes;
-            let playerHealth = this.players[i].health;
-            health = health[3].classList[0];
-            $.ajax({
-                success: function(){
-                    $('#'+playerInfosContainer.attr('id') + " " + '.'+health).text(playerHealth)
-            }});
-        }
-    }
-
-    // Update if shield on section info player
-    updateUserShieldInfo() {
-        let playerInfosContainer = $("#"+this.activePlayer.name);
-        let blockAttack = playerInfosContainer.children()[2].childNodes;
-        blockAttack = blockAttack[3].classList[0];
-    }
-    
     // Update weapon
     updateVisualWeaponOnMap(nextPositionInfos) {
         let nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1],
@@ -455,7 +417,6 @@ export default class Map {
         for (var key in  possiblesWays) {
             console.log("Block " + key + " has value " +  possiblesWays[key]);
             $("#case-"+(possiblesWays[key])).addClass("case__can_go");
-            // $("#case-"+currentPosition).removeClass("case__can_go");
         }
     }
 

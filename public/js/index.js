@@ -42,11 +42,12 @@ map.showWaysToGo(map.possiblesWays(startPosition[0], startPosition[1]))
 $( "#turn").on("click", function() {
     $(".case__can_go").removeClass('case__can_go');
     map.switchPlayer();
-    map.showWaysToGo(map.possiblesWays(map.activePlayer.y, map.activePlayer.x))
 
-    startPosition = [map.activePlayer.y, map.activePlayer.x];
     map.activePlayer.previousPosition = null;
     map.activePlayer.previousMouvement = [];
+    map.showWaysToGo(map.possiblesWays(map.activePlayer.y, map.activePlayer.x))
+    startPosition = [map.activePlayer.y, map.activePlayer.x];
+
     console.log(map.generatedMap)
     console.log(map.activePlayer)
 });
@@ -59,7 +60,7 @@ $( "#attack").on("click", function() {
 
 // Se defendre
 $("#to-defend").on("click", function() {
-    map.toBlockTheAttack();
+    map.activePlayer.toBlockTheAttack();
     console.log(players)
 });
 
