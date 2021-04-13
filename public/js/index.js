@@ -42,7 +42,6 @@ map.showWaysToGo(map.possiblesWays(startPosition[0], startPosition[1]))
 $( "#turn").on("click", function() {
     $(".case__can_go").removeClass('case__can_go');
     map.switchPlayer();
-
     map.activePlayer.previousPosition = null;
     map.activePlayer.previousMouvement = [];
     map.showWaysToGo(map.possiblesWays(map.activePlayer.y, map.activePlayer.x))
@@ -55,20 +54,18 @@ $( "#turn").on("click", function() {
 // attaquer le joueur
 $( "#attack").on("click", function() {
     map.toFight();
-    console.log(players)
+    map.switchPlayer();
 });
 
 // Se defendre
 $("#to-defend").on("click", function() {
     map.activePlayer.toBlockTheAttack();
-    console.log(players)
+    map.switchPlayer();
 });
 
 // Appel à la méthode de déplacement en fonction de la touche
 document.addEventListener('keydown', (e) => {
     map.makeStep(e.key, startPosition);
-    console.log(map.activePlayer)
-
     if (!e.repeat) {
         console.log(`Key "${e.key}" pressed  [event: keydown]`);
     } else {

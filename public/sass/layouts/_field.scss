@@ -72,18 +72,16 @@
     // PLAYERS
     &__player {
         &_0 {
-            background-color: green;
             background-image:  url("/public/icons/players/icons8-top-view-man-100.png");
             @include background_rules(50%, no-repeat, center)
         }
         &_1 {
-            background-color: red;
             background-image:  url("/public/icons/players/icons8-top-view-man-2-100.png");
             @include background_rules(50%, no-repeat, center)
         }
     }
 
     &__can_go {
-        background-color: gray;
+        background-color: rgb(134, 134, 134);
     }
 }

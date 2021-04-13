@@ -85,21 +85,19 @@
   background-position: center;
 }
 .case__player_0 {
-  background-color: green;
   background-image: url("/public/icons/players/icons8-top-view-man-100.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
 .case__player_1 {
-  background-color: red;
   background-image: url("/public/icons/players/icons8-top-view-man-2-100.png");
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center;
 }
 .case__can_go {
-  background-color: gray;
+  background-color: #868686;
 }
 
 .player-infos {
@@ -204,7 +202,7 @@
   margin: 1em;
 }
 
-.btn-turn {
+.btn-turn--active {
   margin: 1em;
   padding: 2em;
   border: none;
@@ -215,8 +213,11 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.btn-turn--hidden {
+  display: none;
+}
 
-.btn-attack {
+.btn-attack--active {
   margin: 1em;
   border: none;
   cursor: pointer;
@@ -227,8 +228,11 @@
   background-repeat: no-repeat;
   background-position: center;
 }
+.btn-attack--hidden {
+  display: none;
+}
 
-.btn-defend {
+.btn-defend--active {
   margin: 1em;
   border: none;
   cursor: pointer;
@@ -238,6 +242,9 @@
   background-size: 100%;
   background-repeat: no-repeat;
   background-position: center;
+}
+.btn-defend--hidden {
+  display: none;
 }
 
 /*# sourceMappingURL=style.css.map */

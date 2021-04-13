@@ -231,7 +231,6 @@ export default class Map {
             this.checkIfPlayerAdjecent(this.activePlayer.y, this.activePlayer.x, nameNextPosition);
         } else {    
             console.log("Case obstacle: "+ '['+nameNextPosition+']');
-            console.log("Combat: "+ this.onFight);
         }
     }
 
@@ -314,6 +313,10 @@ export default class Map {
 
         if (topCaseName() === opponent || downCaseName() === opponent || leftCaseName() === opponent || rightCaseName() === opponent) {
             this.onFight = true;
+            this.hideTurnButton();
+            this.showAttackButton();
+            this.showShieldButton();
+            this.removeLightUpTheWay();
             console.log("Opponent: "+ '['+nameNextPosition+']');
         }
         console.log("Combat: "+ this.onFight);
@@ -328,10 +331,12 @@ export default class Map {
     }
 
     toFight() {
-        if (this.activePlayer === this.players[0]) {
-            this.activePlayer.toAttack(this.players[1]);
-        } else {
-            this.activePlayer.toAttack(this.players[0]);
+        if(this.onFight) {
+            if (this.activePlayer === this.players[0]) {
+                this.activePlayer.toAttack(this.players[1]);
+            } else {
+                this.activePlayer.toAttack(this.players[0]);
+            }
         }
     }
 
@@ -390,7 +395,7 @@ export default class Map {
         console.log("Previous weapon: "+'['+previousWeapon+']');
         $.ajax({
             success: function(){
-                $("#case-"+nextPosition).removeClass().addClass("case case__"+previousWeapon);    
+                $("#case-"+nextPosition).removeClass("case case__"+currentWeapon).addClass("case case__"+previousWeapon);    
         }});
     }
 
@@ -413,10 +418,32 @@ export default class Map {
         } 
     }
 
-    lightUpTheWay(possiblesWays,currentPosition) {  
+    lightUpTheWay(possiblesWays) {  
         for (var key in  possiblesWays) {
             console.log("Block " + key + " has value " +  possiblesWays[key]);
             $("#case-"+(possiblesWays[key])).addClass("case__can_go");
+        }
+    }
+
+    removeLightUpTheWay() {
+        $(".case__can_go").removeClass("case__can_go");
+    }
+
+    hideTurnButton() {
+        if(this.onFight) {
+            $("#turn").removeClass("btn-turn--active").addClass("btn-turn--hidden");
+        } 
+    }
+
+    showAttackButton() {
+        if(this.onFight) {
+            $("#attack").removeClass("btn-attack--hidden").addClass("btn-attack--active");
+        }
+    }
+
+    showShieldButton() {
+        if(this.onFight) {
+            $("#to-defend").removeClass("btn-defend--hidden").addClass("btn-defend--active");
         }
     }
 
