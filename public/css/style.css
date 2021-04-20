@@ -107,6 +107,9 @@
   justify-content: space-around;
   width: 20%;
 }
+.player-infos--active {
+  background-color: #76b2ff;
+}
 .player-infos__health {
   display: flex;
   justify-content: center;

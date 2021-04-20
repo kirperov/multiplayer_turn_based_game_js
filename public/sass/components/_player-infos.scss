@@ -5,6 +5,9 @@
     justify-content: space-around;
     width: 20%;
     
+    &--active {
+        background-color: rgb(118, 178, 255);
+    }
     &__health {
         display: flex;
         justify-content: center;

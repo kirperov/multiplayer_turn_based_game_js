@@ -3,14 +3,16 @@ export default class Player {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.startPosition = [];
         this.previousPosition;
         this.previousMouvement = [];
         this.previousWeapon;
         this.health = 100;
         this.defense = false;
         this.weapon = {
-            weapon: "weapon_0",
-            dommage: 10
+            weapon: "",
+            dommage: "",
+            name: ""
         };
     }
 
@@ -21,9 +23,10 @@ export default class Player {
                 dommage = dommage-(dommage * 50/100);
                 playerToAttack.defense = false;
                 this.updatShieldPlayerInfo(playerToAttack.name, playerToAttack.defense);
-            } 
+            }
             playerToAttack.health  = playerToAttack.health - dommage;
             this.updateHealthPlayerInfo(playerToAttack);
+            this.updateSectionColorPlayer(playerToAttack.name);
         }
     }
 
@@ -37,7 +40,7 @@ export default class Player {
         let playerWeaponInfoImg = $("#"+this.name+"-weapon-img");
         let playerWeaponInfoValue = $("#"+this.name+"-weapon-value");
         $('#'+playerWeaponInfoImg.attr('id')).removeClass("player-infos__"+this.previousWeapon).addClass("player-infos__"+this.weapon.weapon);
-        $('#'+playerWeaponInfoValue.attr('id')).text(this.weapon.weapon);
+        $('#'+playerWeaponInfoValue.attr('id')).text(this.weapon.name);
     }
 
     // Update health on section info player
@@ -57,5 +60,11 @@ export default class Player {
         } else {
             $('#'+playerShieldImageInfo.attr('id')).removeClass("player-infos__shield--visible").addClass("player-infos__shield--hidden");
         }
+    }
+
+    // Update section color of activ player
+    updateSectionColorPlayer(playerToAttack) {
+        $("#"+playerToAttack).removeClass("player-infos--active");
+        $("#"+this.name).addClass("player-infos--active");
     }
 }
