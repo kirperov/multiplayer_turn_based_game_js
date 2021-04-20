@@ -1,5 +1,6 @@
 import Player from './Player.js';
 import Weapon from './Weapon.js';
+import Fight from './Fight.js';
 import Map from './Map.js';
 
 export default class Game {
@@ -15,11 +16,11 @@ export default class Game {
         ];
         this.weapons = ["Crowbar", "Gun", "Ak-47", "Gatling"];
         this.map = new Map(10, 10, this.obstacles, this.listWeapons, this.players[0], this.players);
+        this.onFight = false;
+        this.fight = new Fight();
     }
 
-
     initWeapon() {
-        //Initialisation des armes
         for(let i = 0; i < this.weapons.length; i++) {
             let dommageIndex=i+1+'0';
             let weapon = new Weapon("weapon_"+[i], parseInt(dommageIndex), this.weapons[i]);
@@ -28,7 +29,6 @@ export default class Game {
     }
 
     initPlayer() {
-        // Initalisation des joueurs
         let lengthPlayers = 2;
         for(let i = 0; i<lengthPlayers; i++) {
             let player = new Player("player_"+[i]);
@@ -41,15 +41,12 @@ export default class Game {
     }
 
     initMap() {
-        //Initialisation de la carte
-        // let map = new Map(10, 10, this.obstacles, this.listWeapons, this.players[0], this.players);
         this.map.generateMap();
         this.map.visualizeMap();
         this.activePlayer.startPosition = [this.activePlayer.y, this.activePlayer.x];
         this.map.showWaysToGo(this.map.possiblesWays(this.activePlayer.y, this.activePlayer.x, this.activePlayer, this.getOpponent()))
     }
 
-    // Get opponent's name
     getOpponent() {
         if(this.activePlayer.name === this.players[0].name) {
             return this.players[1].name;
@@ -73,7 +70,6 @@ export default class Game {
         $( "#turn").on("click", function() {
             $(".case__can_go").removeClass('case__can_go');
             that.switchPlayer();
-            // Changement de joueur
             that.activePlayer.previousPosition = null;
             that.activePlayer.previousMouvement = [];
             let possiblesWays = that.map.possiblesWays(that.activePlayer.y, that.activePlayer.x, that.activePlayer, that.getOpponent());
@@ -82,24 +78,41 @@ export default class Game {
         });
     }
 
-    attack() {
-        // attaquer le joueur
+    toAttack() {
+        let that = this;
         $( "#attack").on("click", function() {
-            map.toFight();
+            console.log("Fight");
+            if (that.activePlayer === that.players[0]) {
+                that.fight.toAttack(that.players[1], that.activePlayer.weapon.dommage);
+            } else {
+                that.fight.toAttack(that.players[0], that.activePlayer.weapon.dommage);
+            }
+            that.switchPlayer();
         });
     }
-    
+
     toDefend() {
-        // Se defendre
+        let that = this;
         $("#to-defend").on("click", function() {
-            map.activePlayer.toBlockTheAttack();
-            map.switchPlayer();
+            that.fight.toBlockTheAttack(that.activePlayer);
+            that.switchPlayer();
         });
     }
+
+    modeFight() {
+        this.fight.hideTurnButton();
+        this.fight.showAttackButton();
+        this.fight.showShieldButton();
+        this.activePlayer.removeLightUpTheWay();
+    }
+
     movement() {
         document.addEventListener('keydown', (e) => {
             console.log(this.activePlayer)
             this.map.makeStep(e.key, this.activePlayer, this.getOpponent());
+            if(this.players[0].onFight == true && this.players[1].onFight == true) {
+                this.modeFight();
+            }
             if (!e.repeat) {
                 console.log(`Key "${e.key}" pressed  [event: keydown]`);
             } else {
@@ -113,5 +126,8 @@ export default class Game {
         this.initPlayer();
         this.initMap();
         this.movement();
+        this.turnPlayer();
+        this.toAttack();
+        this.toDefend();
     }
 }

@@ -1,8 +1,10 @@
+import Fight from './Fight.js';
 export default class Player {
     constructor(name, x, y) {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.onFight = false;
         this.startPosition = [];
         this.previousPosition;
         this.previousMouvement = [];
@@ -16,26 +18,11 @@ export default class Player {
         };
     }
 
-    toAttack(playerToAttack) {
-        let dommage = this.weapon.dommage;
-        if(playerToAttack.health > 0) {
-            if(playerToAttack.defense === true) {
-                dommage = dommage-(dommage * 50/100);
-                playerToAttack.defense = false;
-                this.updatShieldPlayerInfo(playerToAttack.name, playerToAttack.defense);
-            }
-            playerToAttack.health  = playerToAttack.health - dommage;
-            this.updateHealthPlayerInfo(playerToAttack);
-            this.updateSectionColorPlayer(playerToAttack.name);
-        }
+    removeLightUpTheWay() {
+        $(".case__can_go").removeClass("case__can_go");
     }
 
-    toBlockTheAttack() {
-        this.defense = true;
-        this.updatShieldPlayerInfo();
-    }
-
-    // Update weapon on section info player
+    //Update weapon on section info player
     updateWeaponPlayerInfo() {
         let playerWeaponInfoImg = $("#"+this.name+"-weapon-img");
         let playerWeaponInfoValue = $("#"+this.name+"-weapon-value");
@@ -43,7 +30,7 @@ export default class Player {
         $('#'+playerWeaponInfoValue.attr('id')).text(this.weapon.name);
     }
 
-    // Update health on section info player
+    //Update health on section info player
     updateHealthPlayerInfo(playerToAttack) {
         let playerHealthInfoValue = $("#"+playerToAttack.name+"-health-value");
         $.ajax({
@@ -52,7 +39,7 @@ export default class Player {
         }});
     }
 
-    // Update if shield on section info player
+    //Update if shield on section info player
     updatShieldPlayerInfo(playerName=this.name, playerDefense=this.defense) {
         let playerShieldImageInfo = $("#"+playerName+"-shield");
         if(playerDefense) {
@@ -62,7 +49,7 @@ export default class Player {
         }
     }
 
-    // Update section color of activ player
+    //Update section color of activ player
     updateSectionColorPlayer(playerToAttack) {
         $("#"+playerToAttack).removeClass("player-infos--active");
         $("#"+this.name).addClass("player-infos--active");

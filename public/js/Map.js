@@ -10,7 +10,7 @@ export default class Map {
         this.onFight = false;
     }
 
-    //Création de la carte vide avec la largeur et la longeur
+    //Creation of the empty map with the width and length
     createMatrix() {
         for (let i = 0; i < this.y; i++) {
             //axe y
@@ -22,7 +22,7 @@ export default class Map {
         }
     }
 
-    //Générer le nombre aléatoire en fonction de paramétre num
+    //Generate random number based on num parameter
     generateRandomNumber(num) {
         let randNumber =  Math.floor((Math.random() * num));
         if (randNumber !== -1) {
@@ -30,7 +30,7 @@ export default class Map {
         }
     }
     
-    // Positionnement des joueurs sur la carte
+    //Positioning of players on the map
     positionPlayer() {
         for (let i = 0; i < this.players.length; i++) {
             let positionned = false;
@@ -88,7 +88,7 @@ export default class Map {
         }
     }
 
-    // Positionnement des armes sur la carte
+    //Positioning weapons on the map
     positionWeapon() {
         let weaponsLength = this.weapons.length;
         for (let i = 0; i < weaponsLength; i++) {
@@ -106,7 +106,7 @@ export default class Map {
         }
     }
 
-    // Positionnement des obstacles sur la carte
+    //Positioning of obstacles on the map
     positionObstacle() {
         let lengthAxeY = this.y;
         for (let i = 0; i < lengthAxeY; i++) {
@@ -127,7 +127,7 @@ export default class Map {
         }
     }
 
-    // Création de la carte avec les éléments générées
+    //Creation of the map with the generated elements
     generateMap() {
         this.createMatrix();
         this.positionPlayer();
@@ -138,7 +138,6 @@ export default class Map {
         console.log("obstacles positionné")
     }
 
-    // Récupèrer la position du joueur et sa direction
     getNextPosition(direction, playerPositionX, playerPositionY) {
         let currentPosition = [playerPositionY, playerPositionX],
             nextPosition = [playerPositionY, playerPositionX, playerPositionX],
@@ -166,7 +165,7 @@ export default class Map {
 
     //Update position of player and delete previous position if not weapon
     updatePosition(nextPositionY, nextPositionX, player) {
-        //effacer la position d'avant
+        //Erase the previous position
         if (player.previousWeapon) {
             this.generatedMap[player.y][player.x] =  player.previousWeapon;
             player.previousWeapon = null;
@@ -198,7 +197,6 @@ export default class Map {
 
     //Verification de la case si weapon ou obstacle
     checkPosition(direction, player, opponent) {
-        console.log("tt" + player)
         let startPosition = player.startPosition;    
         let previousPosition =  player.previousPosition;
         let nextPositionInfos = this.getNextPosition(direction, player.x, player.y);
@@ -218,19 +216,18 @@ export default class Map {
         console.log("Current Position: " +"["+playerCurrentPosition+"]");
         console.log("Previous mouvement: "+player.previousMouvement);
         // Vérification si la case n'est pas un obstacle ou un joueur
-        if ($.inArray(nameNextPosition, this.obstacles) == -1 && this.onFight !== true) {  
+        if ($.inArray(nameNextPosition, this.obstacles) == -1) {  
             if (possiblesBlocks.down.includes(nextPosition) || possiblesBlocks.up.includes(nextPosition) || possiblesBlocks.left.includes(nextPosition) || possiblesBlocks.right.includes(nextPosition)) {
-                // Update la position, les weapons et les chemins possibles
+                //Update the position, weapons and ways possibles
                 this.updatePosition(nextPositionY, nextPositionX, player);
                 this.updateWeapon(nameNextPosition, nextPositionInfos, player);
                 this.updateVisualMap(nextPositionInfos, player);
                 this.showWaysToGo(possiblesBlocks, direction);
-                
             } else {
                 console.error("ERROR: Impossible to go to this position");
             }
-            // Verification si la case adjecente est l'adversaire
-            this.checkIfPlayerAdjecent(player.y, player.x, nameNextPosition, opponent);
+            // Check if adjacent block is opponent
+            this.checkIfPlayerAdjecent(player.y, player.x, nameNextPosition, opponent, player);
         } else {    
             console.log("Case obstacle: "+ '['+nameNextPosition+']');
         }
@@ -297,95 +294,57 @@ export default class Map {
         return possiblesWays;
     }
 
-    // // Get opponent's name
-    // getOpponent() {
-    //     if(this.activePlayer.name === this.players[0].name) {
-    //         return this.players[1].name;
-    //     } else {
-    //         return this.players[0].name;
-    //     }
-    // }
-
     // Method who verify if case adjacent is player
-    checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition, opponent) {
+    checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition, opponent, player) {
         let topCaseName = () => { return nextPositionY-1 >= 0 ? this.generatedMap[nextPositionY-1][nextPositionX] : false; }; 
         let downCaseName =  () => { return nextPositionY+1 < this.y ? this.generatedMap[nextPositionY+1][nextPositionX] : false; }; 
         let leftCaseName = () => { return nextPositionX-1 >= 0 ? this.generatedMap[nextPositionY][nextPositionX-1] : false; }; 
         let rightCaseName = () => { return nextPositionX+1 <  this.y ? this.generatedMap[nextPositionY][nextPositionX+1] : false; }; 
-        // let opponent = this.getOpponent();
 
         if (topCaseName() === opponent || downCaseName() === opponent || leftCaseName() === opponent || rightCaseName() === opponent) {
-            this.onFight = true;
-            this.hideTurnButton();
-            this.showAttackButton();
-            this.showShieldButton();
-            this.removeLightUpTheWay();
+            this.players[0].onFight = true;
+            this.players[1].onFight = true;
             console.log("Opponent: "+ '['+nameNextPosition+']');
         }
-        console.log("Combat: "+ this.onFight);
+        console.log("Combat: "+ player.onFight);
     }
 
-    // switchPlayer() {
-    //     if (this.activePlayer === this.players[0]) {
-    //         this.activePlayer = this.players[1];
-    //         this.activePlayer.updateSectionColorPlayer(this.players[0].name);
-    //     } else {
-    //         this.activePlayer = this.players[0];
-    //         this.activePlayer.updateSectionColorPlayer(this.players[1].name);
-    //     }
- 
-    // }
-
-    // turnPlayer() {
-    //     $(".case__can_go").removeClass('case__can_go');
-    //     this.switchPlayer();
-    //     this.activePlayer.previousPosition = null;
-    //     this.activePlayer.previousMouvement = [];
-    //     let possiblesWays = this.possiblesWays(this.activePlayer.y, this.activePlayer.x);
-    //     this.showWaysToGo(possiblesWays);
-    //     this.activePlayer.startPosition = [this.activePlayer.y, this.activePlayer.x];
-
-    // }
-
-    toFight() {
-        if(this.onFight) {
-            if (this.activePlayer === this.players[0]) {
-                this.activePlayer.toAttack(this.players[1]);
-            } else {
-                this.activePlayer.toAttack(this.players[0]);
-            }
-        }
-        this.switchPlayer();
-    }
-
-    // Check position avant modifier la carte
+    // Check position after to modify the map
     makeStep(direction, player, opponent) {
         console.log('ee' + player.weapon)
         switch(direction) {
             case "ArrowUp":
                 if (player.y -1 >= 0) {
-                    this.checkPosition("ArrowUp", player, opponent);
+                    if(player.onFight == false) {
+                        this.checkPosition("ArrowUp", player, opponent);
+                    }
                 } else {
                     console.error("ERROR: Can't go outside the top border")
                 }
             break;
             case "ArrowDown":
                 if (player.y +1 < this.y) {
+                    if(player.onFight == false) {
                     this.checkPosition("ArrowDown", player, opponent);
+                    }
                 } else {
                     console.error("ERROR: Can't go outside the bottom border")
                 }
             break;
             case "ArrowLeft":
                 if (player.x -1 >= 0) {
+                    if(player.onFight == false) {
                     this.checkPosition("ArrowLeft", player, opponent);
+                    }
                 } else {
                     console.error("ERROR: Can't go outside the left border")
                 }
             break;
             case "ArrowRight":
                 if (player.x +1 < this.x) {
+                    if(player.onFight == false) {
                     this.checkPosition("ArrowRight", player, opponent);
+                    }
                 } else {
                     console.error("ERROR: Can't go outside the right border")
                 }
@@ -393,7 +352,6 @@ export default class Map {
         }
     }
 
-    //Update map ajax
     updateVisualMap(nextPositionInfos, player) {
         let playerName = player.name;
         let previousPosition = nextPositionInfos[0][0]+""+nextPositionInfos[0][1],
@@ -405,7 +363,6 @@ export default class Map {
         }});
     }
 
-    // Update weapon
     updateVisualWeaponOnMap(nextPositionInfos) {
         let nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1],
             currentWeapon = nextPositionInfos[3].weapon,
@@ -421,14 +378,14 @@ export default class Map {
     createRowOnGrid(container, numberRow) {
         let rowX = $('<div id="row-'+[numberRow]+ '"' + 'class="map__row"></div>');
         for (let n = 0; n < this.generatedMap[numberRow].length; n++) {
-            // Creation cases
+            //Creation blocks
             let caseDiv = $("<div></div>");
                 caseDiv.addClass("case");
                 caseDiv.attr('id', "case-"+[numberRow]+[n]);
                 caseDiv.text(this.generatedMap[numberRow][n]);
                 container.append(rowX);
                 rowX.append(caseDiv);
-            // Attribution des classes en fonction des cases
+            //Add classes according to blocks generated
             caseDiv.each(function() {
                 let classCase = 'case__'+$(this).text();
                 $(this).empty();
@@ -444,29 +401,7 @@ export default class Map {
         }
     }
 
-    removeLightUpTheWay() {
-        $(".case__can_go").removeClass("case__can_go");
-    }
-
-    hideTurnButton() {
-        if(this.onFight) {
-            $("#turn").removeClass("btn-turn--active").addClass("btn-turn--hidden");
-        } 
-    }
-
-    showAttackButton() {
-        if(this.onFight) {
-            $("#attack").removeClass("btn-attack--hidden").addClass("btn-attack--active");
-        }
-    }
-
-    showShieldButton() {
-        if(this.onFight) {
-            $("#to-defend").removeClass("btn-defend--hidden").addClass("btn-defend--active");
-        }
-    }
-
-    // Colored blocks where the player can go
+    //Colored blocks where the player can go
     showWaysToGo(possiblesWays, direction=null) {
         $(".case__can_go").removeClass("case__can_go");
         switch (direction) {
@@ -494,9 +429,9 @@ export default class Map {
         } 
     }
 
-    //Visualiser la carte dans le DOM
+    //Visualize map into the DOM
     visualizeMap() {
-        // Creation field for cases
+        //Creation field for cases
         let container = $(".map");
         for (let i = 0; i < this.generatedMap.length; i++) {
             this.createRowOnGrid(container, i);
