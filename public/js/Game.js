@@ -70,11 +70,8 @@ export default class Game {
         $( "#turn").on("click", function() {
             $(".case__can_go").removeClass('case__can_go');
             that.switchPlayer();
-            that.activePlayer.previousPosition = null;
-            that.activePlayer.previousMouvement = [];
-            let possiblesWays = that.map.possiblesWays(that.activePlayer.y, that.activePlayer.x, that.activePlayer, that.getOpponent());
-            that.map.showWaysToGo(possiblesWays);
-            that.activePlayer.startPosition = [that.activePlayer.y, that.activePlayer.x];
+            that.activePlayer.newTurn();
+            that.map.showWaysToGo(that.activePlayer.y, that.activePlayer.x, that.activePlayer, that.getOpponent());
         });
     }
 

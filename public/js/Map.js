@@ -222,7 +222,7 @@ export default class Map {
                 this.updatePosition(nextPositionY, nextPositionX, player);
                 this.updateWeapon(nameNextPosition, nextPositionInfos, player);
                 this.updateVisualMap(nextPositionInfos, player);
-                this.showWaysToGo(possiblesBlocks, direction);
+                this.showWaysToGo(startPositionY, startPositionX, player, opponent, direction);
             } else {
                 console.error("ERROR: Impossible to go to this position");
             }
@@ -402,7 +402,8 @@ export default class Map {
     }
 
     //Colored blocks where the player can go
-    showWaysToGo(possiblesWays, direction=null) {
+    showWaysToGo(playerPositionY, positionPlayerX, player, opponent, direction=null) {
+        let possiblesWays = this.possiblesWays(playerPositionY, positionPlayerX, player, opponent);
         $(".case__can_go").removeClass("case__can_go");
         switch (direction) {
             case "ArrowUp":

@@ -18,6 +18,12 @@ export default class Player {
         };
     }
 
+    newTurn() {
+        this.previousPosition = null;
+        this.previousMouvement = [];
+        this.startPosition = [this.y, this.x];
+    }
+
     removeLightUpTheWay() {
         $(".case__can_go").removeClass("case__can_go");
     }
