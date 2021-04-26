@@ -56,14 +56,13 @@ export default class Player {
     }
 
     //Update section color of activ player
-    updateSectionColorPlayer(playerToAttack) {
-        $("#"+playerToAttack).removeClass("player-infos--active");
+    updateSectionColorPlayer(opponent) {
+        $("#"+opponent).removeClass("player-infos--active");
         $("#"+this.name).addClass("player-infos--active");
     }
 
     lightUpTheWay(possiblesWays) {  
-        for (var key in  possiblesWays) {
-            console.log("Block " + key + " has value " +  possiblesWays[key]);
+        for (var key in possiblesWays) {
             $("#case-"+(possiblesWays[key])).addClass("case__can_go");
         }
     }

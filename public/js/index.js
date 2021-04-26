@@ -1,3 +1,3 @@
 import Game from './Game.js';
-
-let game = new Game();
+import { mapHeight, mapWidth } from './utils/variables.js';
+let game = new Game(mapHeight, mapWidth);

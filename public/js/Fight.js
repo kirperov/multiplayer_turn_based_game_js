@@ -16,7 +16,6 @@ export default class Fight {
     toBlockTheAttack(player) {
         player.defense = true;
         player.updatShieldPlayerInfo();
-        console.log(player.defense)
     }
 
     hideTurnButton() {

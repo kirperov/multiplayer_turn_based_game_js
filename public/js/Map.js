@@ -1,3 +1,4 @@
+import generateRandomNumber from "./utils/functions.js";
 export default class Map {
     constructor(x, y, obstacles, listWeapons, activePlayer, players) {
         this.x = x;
@@ -21,22 +22,14 @@ export default class Map {
             }
         }
     }
-
-    //Generate random number based on num parameter
-    generateRandomNumber(num) {
-        let randNumber =  Math.floor((Math.random() * num));
-        if (randNumber !== -1) {
-            return Math.floor((Math.random() * num));
-        }
-    }
     
     //Positioning of players on the map
     positionPlayer() {
         for (let i = 0; i < this.players.length; i++) {
             let positionned = false;
             while(positionned == false) {
-                let nbRandX = this.generateRandomNumber(this.generatedMap.length),
-                    nbRandY = this.generateRandomNumber(this.generatedMap.length); 
+                let nbRandX = generateRandomNumber(this.generatedMap.length),
+                    nbRandY = generateRandomNumber(this.generatedMap.length); 
                 if (this.generatedMap[nbRandY][nbRandX] == 0) {
                     let topCase = "ob",
                         downCase = "ob",
@@ -94,8 +87,8 @@ export default class Map {
         for (let i = 0; i < weaponsLength; i++) {
             let positionned = false;
             while(positionned == false) {
-                let nbRandX = this.generateRandomNumber(this.generatedMap.length),
-                    nbRandY = this.generateRandomNumber(this.generatedMap.length); 
+                let nbRandX = generateRandomNumber(this.generatedMap.length),
+                    nbRandY = generateRandomNumber(this.generatedMap.length); 
                 if (this.generatedMap[nbRandY][nbRandX] == 0) {
                     this.generatedMap[nbRandY][nbRandX] = this.weapons[i].weapon;
                 } else {
@@ -110,12 +103,12 @@ export default class Map {
     positionObstacle() {
         let lengthAxeY = this.y;
         for (let i = 0; i < lengthAxeY; i++) {
-            let numberRand = this.generateRandomNumber(this.y * 0.4);
+            let numberRand = generateRandomNumber(this.y * 0.4);
             for (let n = 0; n < numberRand; n++) {
                 let positionned = false;
                 while(positionned == false) {
-                    let obstNbRand = this.generateRandomNumber(this.obstacles.length),
-                        caseNbRand = this.generateRandomNumber(this.y);
+                    let obstNbRand = generateRandomNumber(this.obstacles.length),
+                        caseNbRand = generateRandomNumber(this.y);
                     if (this.generatedMap[i][caseNbRand] == 0) {
                         this.generatedMap[i][caseNbRand] = this.obstacles[obstNbRand];
                         positionned = true;
