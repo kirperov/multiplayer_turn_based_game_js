@@ -8,7 +8,6 @@ export default class Fight {
                 playerToAttack.updatShieldPlayerInfo(playerToAttack.name, playerToAttack.defense);
             }
             playerToAttack.health  = playerToAttack.health - dommage;
-            console.log(playerToAttack)
             playerToAttack.updateHealthPlayerInfo(playerToAttack);
             playerToAttack.updateSectionColorPlayer(playerToAttack.name);
         }

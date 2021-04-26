@@ -60,4 +60,50 @@ export default class Player {
         $("#"+playerToAttack).removeClass("player-infos--active");
         $("#"+this.name).addClass("player-infos--active");
     }
+
+    lightUpTheWay(possiblesWays) {  
+        for (var key in  possiblesWays) {
+            console.log("Block " + key + " has value " +  possiblesWays[key]);
+            $("#case-"+(possiblesWays[key])).addClass("case__can_go");
+        }
+    }
+
+    //Colored blocks where the player can go
+    showWaysToGo(possiblesWays, direction=null) {
+        $(".case__can_go").removeClass("case__can_go");
+        switch (direction) {
+            case "ArrowUp":
+                 this.lightUpTheWay(possiblesWays.up);
+            break;
+            case "ArrowDown":
+                this.lightUpTheWay(possiblesWays.down);
+            break;
+        
+            case "ArrowLeft":
+                this.lightUpTheWay(possiblesWays.left);
+            break;
+        
+            case "ArrowRight":
+                this.lightUpTheWay(possiblesWays.right);
+            break;
+
+            default:
+                this.lightUpTheWay(possiblesWays.up);
+                this.lightUpTheWay(possiblesWays.down);
+                this.lightUpTheWay(possiblesWays.left);
+                this.lightUpTheWay(possiblesWays.right);
+            break;
+        } 
+    }
+
+    updatePlayerPosition(nextPositionInfos) {
+        let previousPosition = nextPositionInfos[0][0]+""+nextPositionInfos[0][1],
+            nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1];
+            let that = this;
+        $.ajax({
+            success: function(){
+                $("#case-"+nextPosition).addClass("case__"+that.name);
+                $("#case-"+previousPosition).removeClass("case__"+that.name);
+        }});
+    }
 }
