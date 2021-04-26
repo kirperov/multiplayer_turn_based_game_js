@@ -18,6 +18,13 @@ export default class Game {
         this.map = new Map(10, 10, this.obstacles, this.listWeapons, this.players[0], this.players);
         this.onFight = false;
         this.fight = new Fight();
+        this.initWeapon();
+        this.initPlayer();
+        this.initMap();
+        this.movement();
+        this.turnPlayer();
+        this.toAttack();
+        this.toDefend();
     }
 
     initWeapon() {
@@ -54,52 +61,38 @@ export default class Game {
     }
 
     getOpponent() {
-        if(this.activePlayer.name === this.players[0].name) {
-            return this.players[1].name;
-        } else {
-            return this.players[0].name;
-        }
+        return this.activePlayer.name === this.players[0].name ? this.players[1] : this.players[0];
     }
 
     switchPlayer() {
-        if (this.activePlayer === this.players[0]) {
-            this.activePlayer = this.players[1];
-            this.activePlayer.updateSectionColorPlayer(this.players[0].name);
-        } else {
-            this.activePlayer = this.players[0];
-            this.activePlayer.updateSectionColorPlayer(this.players[1].name);
-        }
+        let opponent = this.getOpponent();
+        this.activePlayer === this.players[0] ? this.activePlayer = this.players[1]: this.activePlayer = this.players[0];
+        this.activePlayer.updateSectionColorPlayer(opponent.name);
     }
 
     turnPlayer() {
-        let that = this;
-        $( "#turn").on("click", function() {
+        $( "#turn").on("click", () => {
             $(".case__can_go").removeClass('case__can_go');
-            that.switchPlayer();
-            that.activePlayer.newTurn();
-            let possiblesWays = that.possiblesWays(that.activePlayer.y, that.activePlayer.x, that.activePlayer, that.getOpponent());
-            that.activePlayer.showWaysToGo(possiblesWays);
+            this.switchPlayer();
+            this.activePlayer.newTurn();
+            let possiblesWays = this.possiblesWays(this.activePlayer.y, this.activePlayer.x, this.activePlayer, this.getOpponent());
+            this.activePlayer.showWaysToGo(possiblesWays);
         });
     }
 
     toAttack() {
-        let that = this;
-        $( "#attack").on("click", function() {
+        $( "#attack").on("click", () => {
             console.log("Fight");
-            if (that.activePlayer === that.players[0]) {
-                that.fight.toAttack(that.players[1], that.activePlayer.weapon.dommage);
-            } else {
-                that.fight.toAttack(that.players[0], that.activePlayer.weapon.dommage);
-            }
-            that.switchPlayer();
+            let opponent = this.getOpponent();
+            this.fight.toAttack(opponent, this.activePlayer.weapon.dommage);
+            this.switchPlayer();
         });
     }
 
     toDefend() {
-        let that = this;
-        $("#to-defend").on("click", function() {
-            that.fight.toBlockTheAttack(that.activePlayer);
-            that.switchPlayer();
+        $("#to-defend").on("click", () => {
+            this.fight.toBlockTheAttack(this.activePlayer);
+            this.switchPlayer();
         });
     }
 
@@ -112,23 +105,15 @@ export default class Game {
 
     movement() {
         document.addEventListener('keydown', (e) => {
-            console.log(this.activePlayer)
-            this.makeStep(e.key, this.activePlayer, this.getOpponent());
-            if(this.players[0].onFight == true && this.players[1].onFight == true) {
-                this.modeFight();
-            }
-            if (!e.repeat) {
-                console.log(`Key "${e.key}" pressed  [event: keydown]`);
-            } else {
-                console.log(`Key "${e.key}" repeating  [event: keydown]`);
-            }
+            this.makeStep(e.key);
+            this.players[0].onFight == true && this.players[1].onFight == true ? this.modeFight() : false;
+            !e.repeat ? console.log(`Key "${e.key}" pressed  [event: keydown]`) :  console.log(`Key "${e.key}" repeating  [event: keydown]`);
         });
     }
 
     //Verification de la case si weapon ou obstacle
     checkPosition(direction) {
         let startPosition = this.activePlayer.startPosition;    
-        let previousPosition =  this.activePlayer.previousPosition;
         let nextPositionInfos = this.getNextPosition(direction, this.activePlayer.x, this.activePlayer.y);
         let nameNextPosition =  nextPositionInfos[2],             
             nextPositionY = nextPositionInfos[1][0],
@@ -136,16 +121,9 @@ export default class Game {
         let startPositionY =  startPosition[0],
             startPositionX = startPosition[1];
         let  nextPosition = parseInt(nextPositionY)+""+parseInt(nextPositionX);
-        let playerCurrentPosition = this.activePlayer.y + "" + this.activePlayer.x;
         let opponent = this.getOpponent();
         let possiblesBlocks = this.possiblesWays(startPositionY, startPositionX);
 
-        // Logs positions
-        console.log("Start position: " + "["+startPositionY+"]");
-        console.log("New Position: "+ "["+nextPosition+"]");
-        console.log("Previous Position: " +"["+previousPosition+"]");
-        console.log("Current Position: " +"["+playerCurrentPosition+"]");
-        console.log("Previous mouvement: "+this.activePlayer.previousMouvement);
         // Vérification si la case n'est pas un obstacle ou un joueur
         if ($.inArray(nameNextPosition, this.obstacles) == -1) {
             if (possiblesBlocks.down.includes(nextPosition) || possiblesBlocks.up.includes(nextPosition) || possiblesBlocks.left.includes(nextPosition) || possiblesBlocks.right.includes(nextPosition)) {
@@ -226,43 +204,21 @@ export default class Game {
 
     // Check position after to modify the map
     makeStep(direction) {
-        switch(direction) {
-            case "ArrowUp":
-                if (this.activePlayer.y -1 >= 0) {
-                    if(this.activePlayer.onFight == false) {
-                        this.checkPosition("ArrowUp");
-                    }
-                } else {
-                    console.error("ERROR: Can't go outside the top border")
-                }
-            break;
-            case "ArrowDown":
-                if (this.activePlayer.y +1 < this.map.y) {
-                    if(this.activePlayer.onFight == false) {
-                    this.checkPosition("ArrowDown");
-                    }
-                } else {
-                    console.error("ERROR: Can't go outside the bottom border")
-                }
-            break;
-            case "ArrowLeft":
-                if (this.activePlayer.x -1 >= 0) {
-                    if(this.activePlayer.onFight == false) {
-                    this.checkPosition("ArrowLeft");
-                    }
-                } else {
-                    console.error("ERROR: Can't go outside the left border")
-                }
-            break;
-            case "ArrowRight":
-                if (this.activePlayer.x +1 < this.map.x) {
-                    if(this.activePlayer.onFight == false) {
-                    this.checkPosition("ArrowRight");
-                    }
-                } else {
-                    console.error("ERROR: Can't go outside the right border")
-                }
-            break;
+        if(this.activePlayer.onFight == false) {
+            switch(direction) {
+                case "ArrowUp":
+                    this.activePlayer.y -1 >= 0 ? this.checkPosition("ArrowUp") : console.error("ERROR: Can't go outside the top border");
+                break;
+                case "ArrowDown":
+                    this.activePlayer.y +1 < this.map.y ?  this.checkPosition("ArrowDown") : console.error("ERROR: Can't go outside the bottom border")
+                break;
+                case "ArrowLeft":
+                    this.activePlayer.x -1 >= 0 ? this.checkPosition("ArrowLeft") : console.error("ERROR: Can't go outside the left border");
+                break;
+                case "ArrowRight":
+                    this.activePlayer.x +1 < this.map.x ? this.checkPosition("ArrowRight") :  console.error("ERROR: Can't go outside the right border");
+                break;
+            }
         }
     }
 
@@ -274,7 +230,7 @@ export default class Game {
         let leftCaseName = () => { return nextPositionX-1 >= 0 ? this.map.generatedMap[nextPositionY][nextPositionX-1] : false; }; 
         let rightCaseName = () => { return nextPositionX+1 <  this.map.y ? this.map.generatedMap[nextPositionY][nextPositionX+1] : false; }; 
 
-        if (topCaseName() === opponent || downCaseName() === opponent || leftCaseName() === opponent || rightCaseName() === opponent) {
+        if (topCaseName() === opponent.name || downCaseName() === opponent.name || leftCaseName() === opponent.name || rightCaseName() === opponent.name) {
             this.players[0].onFight = true;
             this.players[1].onFight = true;
             console.log("Opponent: "+ '['+nameNextPosition+']');
@@ -349,15 +305,5 @@ export default class Game {
             success: function(){
                 $("#case-"+nextPosition).removeClass("case case__"+currentWeapon).addClass("case case__"+previousWeapon);    
         }});
-    }
-
-    initGame() {
-        this.initWeapon();
-        this.initPlayer();
-        this.initMap();
-        this.movement();
-        this.turnPlayer();
-        this.toAttack();
-        this.toDefend();
     }
 }

@@ -131,11 +131,8 @@ export default class Map {
     generateMap() {
         this.createMatrix();
         this.positionPlayer();
-        console.log("joueur positionné")
         this.positionWeapon();
-        console.log("armes positionné")
         this.positionObstacle();
-        console.log("obstacles positionné")
     }
 
     createRowOnGrid(container, numberRow) {

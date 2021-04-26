@@ -99,11 +99,10 @@ export default class Player {
     updatePlayerPosition(nextPositionInfos) {
         let previousPosition = nextPositionInfos[0][0]+""+nextPositionInfos[0][1],
             nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1];
-            let that = this;
         $.ajax({
-            success: function(){
-                $("#case-"+nextPosition).addClass("case__"+that.name);
-                $("#case-"+previousPosition).removeClass("case__"+that.name);
+            success: () => {
+                $("#case-"+nextPosition).addClass("case__"+this.name);
+                $("#case-"+previousPosition).removeClass("case__"+this.name);
         }});
     }
 }
