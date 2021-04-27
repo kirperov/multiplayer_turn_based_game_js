@@ -69,7 +69,6 @@ export default class Player {
 
     rotatePlayer(direction) {
         let rotate;
-        console.log(direction)
         switch (direction) {
             case "ArrowUp":
                 rotate = "rotate--up";
@@ -122,7 +121,6 @@ export default class Player {
     }
 
     updatePlayerPosition(nextPositionInfos, direction) {
-        console.log(nextPositionInfos)
         let previousPosition = nextPositionInfos[0][0]+""+nextPositionInfos[0][1],
             nextPosition = nextPositionInfos[1][0]+""+nextPositionInfos[1][1];
         let rotation = this.rotatePlayer(direction);

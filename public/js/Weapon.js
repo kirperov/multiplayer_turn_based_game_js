@@ -3,6 +3,5 @@ export default class Weapon {
         this.weapon = weapon;
         this.dommage = dommage;
         this.nameWeapon = name;
-        console.log(this.dommage )
     }
 }

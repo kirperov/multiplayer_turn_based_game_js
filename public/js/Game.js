@@ -42,7 +42,6 @@ export default class Game {
     }
 
     initMap() {
-        console.log(this.players)
         this.map.generateMap();
         this.map.visualizeMap();
         let opponent = this.getOpponent();
@@ -83,11 +82,12 @@ export default class Game {
     toAttack() {
         $( "#attack").on("click", () => {
             let opponent = this.getOpponent();
-            if(this.fight.toAttack(opponent, this.activePlayer.weapon.dommage) == true) {
-                console.log("ok")
-                this.switchPlayer();
-            } else {
-                this.endGame();
+            if(this.players[0].onFight == true && this.players[1].onFight == true) {
+                if(this.fight.toAttack(opponent, this.activePlayer.weapon.dommage) == true) {
+                    this.switchPlayer();
+                } else {
+                    this.endGame();
+                }
             }
         });
     }
@@ -101,8 +101,10 @@ export default class Game {
 
     toDefend() {
         $("#to-defend").on("click", () => {
-            this.fight.toBlockTheAttack(this.activePlayer);
-            this.switchPlayer();
+            if(this.players[0].onFight == true && this.players[1].onFight == true) {
+                this.fight.toBlockTheAttack(this.activePlayer);
+                this.switchPlayer();
+            }
         });
     }
 
