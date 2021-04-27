@@ -9,9 +9,7 @@ export default class Fight {
             playerToAttack.health  = playerToAttack.health - dommage;
             playerToAttack.updateHealthPlayerInfo(playerToAttack);
             playerToAttack.updateSectionColorPlayer(playerToAttack.name);
-            if(playerToAttack.health == 0) {
-                console.log(playerToAttack)
-                // this.endGame();
+            if(playerToAttack.health <= 0) {
                 return false;
             } 
             return true;

@@ -295,6 +295,7 @@ export default class Game {
                 this.activePlayer.previousWeapon = this.activePlayer.weapon.weapon;
                 this.activePlayer.weapon.weapon =  this.listWeapons[i].weapon; 
                 this.activePlayer.weapon.name =  this.listWeapons[i].nameWeapon; 
+                this.activePlayer.weapon.dommage = this.listWeapons[i].dommage; 
                 nextPositionInfos.push(this.activePlayer.weapon, this.activePlayer.previousWeapon);
                 this.updateVisualWeaponOnMap(nextPositionInfos); 
                 this.activePlayer.updateWeaponPlayerInfo();
