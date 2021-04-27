@@ -1,4 +1,3 @@
-import Fight from './Fight.js';
 export default class Player {
     constructor(name, x, y) {
         this.name = name;
