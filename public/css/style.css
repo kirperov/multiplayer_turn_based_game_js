@@ -100,6 +100,19 @@
   background-color: #868686;
 }
 
+.rotate--right {
+  transform: rotate(90deg);
+}
+.rotate--left {
+  transform: rotate(-90deg);
+}
+.rotate--down {
+  transform: rotate(180deg);
+}
+.rotate--up {
+  transform: rotate(360deg);
+}
+
 .player-infos {
   background-color: rgba(250, 130, 17, 0.822);
   display: flex;

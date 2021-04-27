@@ -85,3 +85,18 @@
         background-color: rgb(134, 134, 134);
     }
 }
+
+.rotate {
+    &--right {
+        transform: rotate(90deg);
+    }
+    &--left {
+        transform: rotate(-90deg);
+    }
+    &--down {
+        transform: rotate(180deg);
+    }
+    &--up {
+        transform: rotate(360deg);
+    }
+}

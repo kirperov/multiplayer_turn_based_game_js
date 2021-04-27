@@ -55,7 +55,6 @@ export default class Game {
         for(let i = 0; i<this.players.length; i++) {
             this.players[i].updateWeaponPlayerInfo();
             this.players[i].updateHealthPlayerInfo(this.players[i]);
-            this.players[i].updateWeaponPlayerInfo();
         }
     }
 
@@ -127,7 +126,7 @@ export default class Game {
                 //Update the position, weapons and ways possibles
                 this.updatePosition(nextPositionY, nextPositionX, this.activePlayer);
                 this.updateWeapon(nameNextPosition, nextPositionInfos, this.activePlayer);
-                this.activePlayer.updatePlayerPosition(nextPositionInfos);
+                this.activePlayer.updatePlayerPosition(nextPositionInfos, direction);
                 let possiblesWays = this.possiblesWays(startPositionY, startPositionX);
                 this.activePlayer.showWaysToGo(possiblesWays, direction);
             } else {
@@ -200,7 +199,7 @@ export default class Game {
         return possiblesWays;
     }
 
-    // Check position after to modify the map
+    // Check position before to modify the map
     makeStep(direction) {
         if(this.activePlayer.onFight == false) {
             switch(direction) {
