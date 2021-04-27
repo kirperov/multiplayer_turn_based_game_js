@@ -2,6 +2,16 @@
   font-family: "InterBold";
   src: url("/public/fonts/Inter/static/Inter-Bold.ttf");
 }
+body {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
 .game {
   display: flex;
   justify-content: center;
@@ -10,6 +20,9 @@
 .game__field {
   display: flex;
   justify-content: space-evenly;
+}
+.game--hide {
+  display: none;
 }
 
 .map {
@@ -113,12 +126,48 @@
   transform: rotate(360deg);
 }
 
+.end-game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2em;
+}
+.end-game--hide {
+  display: none;
+}
+.end-game-info {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  padding: 4em;
+  background-color: #a1fda1;
+}
+.end-game-info__button-start {
+  border: none;
+  padding: 1em;
+  background-color: rgba(120, 21, 248, 0.877);
+  color: white;
+  font-family: "InterBold";
+  font-weight: normal;
+  cursor: pointer;
+}
+.end-game-info__winner {
+  font-family: "InterBold";
+  font-weight: bold;
+  padding: 1em;
+  color: white;
+  font-size: 150%;
+  margin: 1em;
+}
+
 .player-infos {
   background-color: rgba(250, 130, 17, 0.822);
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 20%;
+  width: 20em;
 }
 .player-infos--active {
   background-color: #76b2ff;

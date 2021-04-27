@@ -2,6 +2,7 @@ import Fight from './Fight.js';
 export default class Player {
     constructor(name, x, y) {
         this.name = name;
+        this.username = "";
         this.x = x;
         this.y = y;
         this.onFight = false;

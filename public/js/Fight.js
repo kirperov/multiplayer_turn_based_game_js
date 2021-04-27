@@ -1,5 +1,4 @@
 export default class Fight {
-   
     toAttack(playerToAttack, dommage) {
         if(playerToAttack.health > 0) {
             if(playerToAttack.defense === true) {
@@ -10,7 +9,13 @@ export default class Fight {
             playerToAttack.health  = playerToAttack.health - dommage;
             playerToAttack.updateHealthPlayerInfo(playerToAttack);
             playerToAttack.updateSectionColorPlayer(playerToAttack.name);
-        }
+            if(playerToAttack.health == 0) {
+                console.log(playerToAttack)
+                // this.endGame();
+                return false;
+            } 
+            return true;
+        } 
     }
 
     toBlockTheAttack(player) {

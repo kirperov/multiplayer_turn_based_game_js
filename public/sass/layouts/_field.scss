@@ -6,6 +6,9 @@
         display: flex;
         justify-content: space-evenly;
     }
+    &--hide {
+        display: none;
+    }
 }
 
 .map {
@@ -98,5 +101,40 @@
     }
     &--up {
         transform: rotate(360deg);
+    }
+}
+.end-game {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 2em;
+    &--hide {
+        display: none;
+    }
+    &-info {
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 4em;
+        background-color: rgb(161, 253, 161);
+        &__button-start {
+            border: none;
+            padding: 1em;
+            background-color: rgba(120, 21, 248, 0.877);
+            color: rgb(255, 255, 255);
+            font-family: 'InterBold';
+            font-weight: normal;
+            cursor: pointer;
+        }
+        &__winner {
+            font-family: 'InterBold';
+            font-weight: bold;
+            padding: 1em;
+            color: rgb(255, 255, 255);
+            font-size: 150%;
+            margin: 1em;
+        }
     }
 }

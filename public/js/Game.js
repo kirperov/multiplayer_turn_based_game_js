@@ -22,7 +22,7 @@ export default class Game {
 
     initWeapon() {
         for(let i = 0; i < weapons.length; i++) {
-            let dommageIndex=i+1+'0';
+            let dommageIndex=(i+1)+"0";
             let weapon = new Weapon("weapon_"+[i], parseInt(dommageIndex), weapons[i]);
             this.listWeapons.push(weapon);
         }
@@ -32,6 +32,7 @@ export default class Game {
         let lengthPlayers = 2;
         for(let i = 0; i<lengthPlayers; i++) {
             let player = new Player("player_"+[i]);
+            player.username = "Player " +(i+1); 
             player.weapon.weapon = this.listWeapons[0].weapon;
             player.weapon.dommage = this.listWeapons[0].dommage;
             player.weapon.name = this.listWeapons[0].nameWeapon;
@@ -41,6 +42,7 @@ export default class Game {
     }
 
     initMap() {
+        console.log(this.players)
         this.map.generateMap();
         this.map.visualizeMap();
         let opponent = this.getOpponent();
@@ -81,9 +83,20 @@ export default class Game {
     toAttack() {
         $( "#attack").on("click", () => {
             let opponent = this.getOpponent();
-            this.fight.toAttack(opponent, this.activePlayer.weapon.dommage);
-            this.switchPlayer();
+            if(this.fight.toAttack(opponent, this.activePlayer.weapon.dommage) == true) {
+                console.log("ok")
+                this.switchPlayer();
+            } else {
+                this.endGame();
+            }
         });
+    }
+
+    endGame() {
+        $("#game").empty(); 
+        $("#end-game").addClass("end-game--active");
+        $("#end-game").removeClass("end-game--hide");
+        $("#winner").text(this.activePlayer.username);
     }
 
     toDefend() {
