@@ -22,8 +22,8 @@ export default class Game {
 
     initWeapon() {
         for(let i = 0; i < weapons.length; i++) {
-            let dommageIndex=(i+1)+"0";
-            let weapon = new Weapon("weapon_"+[i], parseInt(dommageIndex), weapons[i]);
+            let damageIndex=(i+1)+"0";
+            let weapon = new Weapon("weapon_"+[i], parseInt(damageIndex), weapons[i]);
             this.listWeapons.push(weapon);
         }
     }
@@ -32,9 +32,9 @@ export default class Game {
         let lengthPlayers = 2;
         for(let i = 0; i<lengthPlayers; i++) {
             let player = new Player("player_"+[i]);
-            player.username = "Player " +(i+1); 
+            player.username = "Player "+(i+1); 
             player.weapon.weapon = this.listWeapons[0].weapon;
-            player.weapon.dommage = this.listWeapons[0].dommage;
+            player.weapon.damage = this.listWeapons[0].damage;
             player.weapon.name = this.listWeapons[0].nameWeapon;
             this.players.push(player);
         }
@@ -83,7 +83,7 @@ export default class Game {
         $( "#attack").on("click", () => {
             let opponent = this.getOpponent();
             if(this.players[0].onFight == true && this.players[1].onFight == true) {
-                if(this.fight.toAttack(opponent, this.activePlayer.weapon.dommage) == true) {
+                if(this.fight.toAttack(opponent, this.activePlayer.weapon.damage) == true) {
                     this.switchPlayer();
                 } else {
                     this.endGame();
@@ -297,7 +297,7 @@ export default class Game {
                 this.activePlayer.previousWeapon = this.activePlayer.weapon.weapon;
                 this.activePlayer.weapon.weapon =  this.listWeapons[i].weapon; 
                 this.activePlayer.weapon.name =  this.listWeapons[i].nameWeapon; 
-                this.activePlayer.weapon.dommage = this.listWeapons[i].dommage; 
+                this.activePlayer.weapon.damage = this.listWeapons[i].damage; 
                 nextPositionInfos.push(this.activePlayer.weapon, this.activePlayer.previousWeapon);
                 this.updateVisualWeaponOnMap(nextPositionInfos); 
                 this.activePlayer.updateWeaponPlayerInfo();

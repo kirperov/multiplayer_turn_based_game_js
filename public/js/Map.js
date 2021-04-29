@@ -101,8 +101,7 @@ export default class Map {
 
     //Positioning of obstacles on the map
     positionObstacle() {
-        let lengthAxeY = this.y;
-        for (let i = 0; i < lengthAxeY; i++) {
+        for (let i = 0; i < this.y; i++) {
             let numberRand = generateRandomNumber(this.y * 0.4);
             for (let n = 0; n < numberRand; n++) {
                 let positionned = false;
@@ -135,13 +134,11 @@ export default class Map {
             let caseDiv = $("<div></div>");
                 caseDiv.addClass("case");
                 caseDiv.attr('id', "case-"+[numberRow]+[n]);
-                caseDiv.text(this.generatedMap[numberRow][n]);
                 container.append(rowX);
                 rowX.append(caseDiv);
             //Add classes according to blocks generated
-            caseDiv.each(function() {
-                let classCase = 'case__'+$(this).text();
-                $(this).empty();
+            let classCase = 'case__'+this.generatedMap[numberRow][n];
+            caseDiv.each(function() {               
                 $(this).addClass(classCase);
             });
         } 

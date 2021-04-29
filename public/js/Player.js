@@ -13,7 +13,7 @@ export default class Player {
         this.defense = false;
         this.weapon = {
             weapon: "",
-            dommage: "",
+            damage: "",
             name: ""
         };
     }
