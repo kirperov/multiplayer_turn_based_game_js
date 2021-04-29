@@ -48,7 +48,7 @@ export default class Player {
     //Update if shield on section info player
     updatShieldPlayerInfo(playerName=this.name, playerDefense=this.defense) {
         let playerShieldImageInfo = $("#"+playerName+"-shield");
-        if(playerDefense) {
+        if (playerDefense) {
             $('#'+playerShieldImageInfo.attr('id')).removeClass("player-infos__shield--hidden").addClass("player-infos__shield--visible");
         } else {
             $('#'+playerShieldImageInfo.attr('id')).removeClass("player-infos__shield--visible").addClass("player-infos__shield--hidden");

@@ -21,8 +21,8 @@ export default class Game {
     }
 
     initWeapon() {
-        for(let i = 0; i < weapons.length; i++) {
-            let damageIndex=(i+1)+"0";
+        for (let i = 0; i < weapons.length; i++) {
+            let damageIndex=(i+1) +"0";
             let weapon = new Weapon("weapon_"+[i], parseInt(damageIndex), weapons[i]);
             this.listWeapons.push(weapon);
         }
@@ -30,7 +30,7 @@ export default class Game {
 
     initPlayer() {
         let lengthPlayers = 2;
-        for(let i = 0; i<lengthPlayers; i++) {
+        for (let i = 0; i<lengthPlayers; i++) {
             let player = new Player("player_"+[i]);
             player.username = "Player "+(i+1); 
             player.weapon.weapon = this.listWeapons[0].weapon;
@@ -53,7 +53,7 @@ export default class Game {
     }
 
     initplayersStartInfos() {
-        for(let i = 0; i<this.players.length; i++) {
+        for (let i = 0; i<this.players.length; i++) {
             this.players[i].updateWeaponPlayerInfo();
             this.players[i].updateHealthPlayerInfo(this.players[i]);
         }
@@ -82,8 +82,8 @@ export default class Game {
     toAttack() {
         $( "#attack").on("click", () => {
             let opponent = this.getOpponent();
-            if(this.players[0].onFight == true && this.players[1].onFight == true) {
-                if(this.fight.toAttack(opponent, this.activePlayer.weapon.damage) == true) {
+            if (this.players[0].onFight == true && this.players[1].onFight == true) {
+                if (this.fight.toAttack(opponent, this.activePlayer.weapon.damage) == true) {
                     this.switchPlayer();
                 } else {
                     this.endGame();
@@ -101,7 +101,7 @@ export default class Game {
 
     toDefend() {
         $("#to-defend").on("click", () => {
-            if(this.players[0].onFight == true && this.players[1].onFight == true) {
+            if (this.players[0].onFight == true && this.players[1].onFight == true) {
                 this.fight.toBlockTheAttack(this.activePlayer);
                 this.switchPlayer();
             }
@@ -131,7 +131,7 @@ export default class Game {
             nextPositionX = nextPositionInfos[1][1];
         let startPositionY =  startPosition[0],
             startPositionX = startPosition[1];
-        let  nextPosition = parseInt(nextPositionY)+""+parseInt(nextPositionX);
+        let  nextPosition = parseInt(nextPositionY) +""+ parseInt(nextPositionX);
         let opponent = this.getOpponent();
         let possiblesBlocks = this.possiblesWays(startPositionY, startPositionX);
 
@@ -150,7 +150,7 @@ export default class Game {
             // Check if adjacent block is opponent
             this.checkIfPlayerAdjecent(this.activePlayer.y, this.activePlayer.x, nameNextPosition, opponent, this.activePlayer);
         } else {    
-            console.log("Case obstacle: "+ '['+nameNextPosition+']');
+            console.log("Case obstacle: " + '['+nameNextPosition+']');
         }
     }
 
@@ -162,11 +162,11 @@ export default class Game {
         let stopGoRight = false;
         let possiblesWays = {down: [], up: [], left: [], right: [] };
         let oppenent = this.getOpponent();
-        for(let n = 1; n < 4; n++) {
-            if(startPositionY+n < this.map.y) {
-                if($.inArray(this.map.generatedMap[startPositionY+n][startPositionX], obstacles) == -1 && this.map.generatedMap[startPositionY+n][startPositionX] !== oppenent && stopGoDown == false) {
-                    if(!this.activePlayer.previousMouvement.includes(parseInt(startPositionY+n) + '' +parseInt((startPositionX)))) {
-                        possiblesWays.down.push(parseInt(startPositionY+n) + '' +parseInt((startPositionX)));
+        for (let n = 1; n < 4; n++) {
+            if (startPositionY+n < this.map.y) {
+                if ($.inArray(this.map.generatedMap[startPositionY+n][startPositionX], obstacles) == -1 && this.map.generatedMap[startPositionY+n][startPositionX] !== oppenent && stopGoDown == false) {
+                    if (!this.activePlayer.previousMouvement.includes(parseInt(startPositionY+n) + '' + parseInt((startPositionX)))) {
+                        possiblesWays.down.push(parseInt(startPositionY+n) + '' + parseInt((startPositionX)));
                     }
                 }  else {
                     stopGoDown = true;
@@ -175,10 +175,10 @@ export default class Game {
                 stopGoDown = true;
             }
             
-            if(startPositionY-n  >= 0) {
-                if($.inArray(this.map.generatedMap[startPositionY-n][startPositionX], obstacles) == -1 && this.map.generatedMap[startPositionY-n][startPositionX] !== oppenent && stopGoUp == false) {
-                    if(!this.activePlayer.previousMouvement.includes( parseInt(startPositionY-n) + '' +parseInt((startPositionX)))) {
-                        possiblesWays.up.push(parseInt((startPositionY-n)) + '' +parseInt((startPositionX)));
+            if (startPositionY-n  >= 0) {
+                if ($.inArray(this.map.generatedMap[startPositionY-n][startPositionX], obstacles) == -1 && this.map.generatedMap[startPositionY-n][startPositionX] !== oppenent && stopGoUp == false) {
+                    if (!this.activePlayer.previousMouvement.includes( parseInt(startPositionY-n) + '' + parseInt((startPositionX)))) {
+                        possiblesWays.up.push(parseInt((startPositionY-n)) + '' + parseInt((startPositionX)));
                     }
                 }  else {
                     stopGoUp = true;
@@ -187,10 +187,10 @@ export default class Game {
                 stopGoUp = true;
             }
 
-            if(startPositionX-n >= 0) {
-                if($.inArray(this.map.generatedMap[startPositionY][startPositionX-n], obstacles) == -1 && this.map.generatedMap[startPositionY][startPositionX-n] !== oppenent &&  stopGoLeft == false) {
-                    if(!this.activePlayer.previousMouvement.includes( parseInt(startPositionY) + '' +parseInt((startPositionX-n)))) {
-                        possiblesWays.left.push(parseInt((startPositionY)) + '' +parseInt((startPositionX-n)));
+            if (startPositionX-n >= 0) {
+                if ($.inArray(this.map.generatedMap[startPositionY][startPositionX-n], obstacles) == -1 && this.map.generatedMap[startPositionY][startPositionX-n] !== oppenent &&  stopGoLeft == false) {
+                    if (!this.activePlayer.previousMouvement.includes( parseInt(startPositionY) + '' + parseInt((startPositionX-n)))) {
+                        possiblesWays.left.push(parseInt((startPositionY)) + '' + parseInt((startPositionX-n)));
                     }
                 }  else {
                     stopGoLeft = true;
@@ -199,10 +199,10 @@ export default class Game {
                 stopGoLeft = true;
             }
 
-            if(startPositionX+n < this.map.x) {
-                if($.inArray(this.map.generatedMap[startPositionY][startPositionX+n], obstacles) == -1 && this.map.generatedMap[startPositionY][startPositionX+n] !== oppenent && stopGoRight == false) {
-                    if(!this.activePlayer.previousMouvement.includes( parseInt(startPositionY) + '' +parseInt((startPositionX+n)))) {
-                        possiblesWays.right.push(parseInt((startPositionY)) + '' +parseInt((startPositionX+n)));
+            if (startPositionX+n < this.map.x) {
+                if ($.inArray(this.map.generatedMap[startPositionY][startPositionX+n], obstacles) == -1 && this.map.generatedMap[startPositionY][startPositionX+n] !== oppenent && stopGoRight == false) {
+                    if (!this.activePlayer.previousMouvement.includes( parseInt(startPositionY) + '' + parseInt((startPositionX+n)))) {
+                        possiblesWays.right.push(parseInt((startPositionY)) + '' + parseInt((startPositionX+n)));
                     }
                 }  else {
                     stopGoRight = true;
@@ -216,7 +216,7 @@ export default class Game {
 
     // Check position before to modify the map
     makeStep(direction) {
-        if(this.activePlayer.onFight == false) {
+        if (this.activePlayer.onFight == false) {
             switch(direction) {
                 case "ArrowUp":
                     this.activePlayer.y -1 >= 0 ? this.checkPosition("ArrowUp") : console.error("ERROR: Can't go outside the top border");
@@ -235,7 +235,7 @@ export default class Game {
     }
 
     // Method who verify if case adjacent is player
-    checkIfPlayerAdjecent(nextPositionY, nextPositionX, nameNextPosition) {
+    checkIfPlayerAdjecent(nextPositionY, nextPositionX) {
         let opponent = this.getOpponent();
         let topCaseName = () => { return nextPositionY-1 >= 0 ? this.map.generatedMap[nextPositionY-1][nextPositionX] : false; }; 
         let downCaseName =  () => { return nextPositionY+1 < this.map.y ? this.map.generatedMap[nextPositionY+1][nextPositionX] : false; }; 
@@ -248,20 +248,20 @@ export default class Game {
         }
     }
 
-    //Update position of player and delete previous position if not weapon
+    //Update position of player
     updatePosition(nextPositionY, nextPositionX) {
-        //Erase the previous position
+        //Erase the previous weapon
         if (this.activePlayer.previousWeapon) {
-            this.map.generatedMap[this.activePlayer.y][this.activePlayer.x] =  this.activePlayer.previousWeapon;
+            this.map.generatedMap[this.activePlayer.y][this.activePlayer.x] = this.activePlayer.previousWeapon;
             this.activePlayer.previousWeapon = null;
         } else {
             this.map.generatedMap[this.activePlayer.y][this.activePlayer.x] = 0; 
         }
         this.map.generatedMap[nextPositionY][nextPositionX] = this.activePlayer.name;    
-        this.activePlayer.previousPosition = parseInt(this.activePlayer.y)+""+parseInt(this.activePlayer.x);
+        this.activePlayer.previousPosition = parseInt(this.activePlayer.y) +""+ parseInt(this.activePlayer.x);
         this.activePlayer.y = nextPositionY;
         this.activePlayer.x = nextPositionX;
-        this.activePlayer.previousMouvement.push(parseInt(this.activePlayer.y)+""+parseInt(this.activePlayer.x));
+        this.activePlayer.previousMouvement.push(parseInt(this.activePlayer.y) +""+ parseInt(this.activePlayer.x));
     }
 
     getNextPosition(direction, playerPositionX, playerPositionY) {

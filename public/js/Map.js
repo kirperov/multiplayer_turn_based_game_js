@@ -27,7 +27,7 @@ export default class Map {
     positionPlayer() {
         for (let i = 0; i < this.players.length; i++) {
             let positionned = false;
-            while(positionned == false) {
+            while (positionned == false) {
                 let nbRandX = generateRandomNumber(this.generatedMap.length),
                     nbRandY = generateRandomNumber(this.generatedMap.length); 
                 if (this.generatedMap[nbRandY][nbRandX] == 0) {
@@ -86,7 +86,7 @@ export default class Map {
         let weaponsLength = this.weapons.length;
         for (let i = 0; i < weaponsLength; i++) {
             let positionned = false;
-            while(positionned == false) {
+            while (positionned == false) {
                 let nbRandX = generateRandomNumber(this.generatedMap.length),
                     nbRandY = generateRandomNumber(this.generatedMap.length); 
                 if (this.generatedMap[nbRandY][nbRandX] == 0) {
@@ -105,7 +105,7 @@ export default class Map {
             let numberRand = generateRandomNumber(this.y * 0.4);
             for (let n = 0; n < numberRand; n++) {
                 let positionned = false;
-                while(positionned == false) {
+                while (positionned == false) {
                     let obstNbRand = generateRandomNumber(this.obstacles.length),
                         caseNbRand = generateRandomNumber(this.y);
                     if (this.generatedMap[i][caseNbRand] == 0) {

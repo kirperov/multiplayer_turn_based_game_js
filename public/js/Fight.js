@@ -1,7 +1,7 @@
 export default class Fight {
     toAttack(playerToAttack, damage) {
-        if(playerToAttack.health > 0) {
-            if(playerToAttack.defense === true) {
+        if (playerToAttack.health > 0) {
+            if (playerToAttack.defense === true) {
                 damage = damage-(damage * 50/100);
                 playerToAttack.defense = false;
                 playerToAttack.updatShieldPlayerInfo(playerToAttack.name, playerToAttack.defense);
@@ -9,7 +9,7 @@ export default class Fight {
             playerToAttack.health  = playerToAttack.health - damage;
             playerToAttack.updateHealthPlayerInfo(playerToAttack);
             playerToAttack.updateSectionColorPlayer(playerToAttack.name);
-            if(playerToAttack.health <= 0) {
+            if (playerToAttack.health <= 0) {
                 return false;
             } 
             return true;

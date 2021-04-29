@@ -142,7 +142,7 @@ body {
   flex-direction: column;
   justify-content: space-around;
   padding: 4em;
-  background-color: #a1fda1;
+  background-color: #b5ff9f;
 }
 .end-game-info__button-start {
   border: none;
@@ -157,7 +157,7 @@ body {
   font-family: "InterBold";
   font-weight: bold;
   padding: 1em;
-  color: white;
+  color: #494949;
   font-size: 150%;
   margin: 1em;
 }
